@@ -13,12 +13,12 @@ class Campus
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="id" , type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(name="nom" , type="string", length=150)
      */
     private $nom;
 
