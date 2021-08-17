@@ -8,6 +8,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=LieuRepository::class)
+ * @ORM\Table(name="lieux")
  * @UniqueEntity(fields={"nom"}, message="Ce lieu existe déjà.")
  */
 class Lieu

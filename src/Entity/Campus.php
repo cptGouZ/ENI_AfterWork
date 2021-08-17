@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=CampusRepository::class)
+ * @ORM\Table(name="campus")
  * @UniqueEntity(fields={"nom"}, message={"Le nom du campus existe déjà !"})
  */
 class Campus

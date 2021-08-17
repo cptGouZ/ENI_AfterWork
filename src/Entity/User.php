@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -10,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @ORM\Table(name="`user`")
+ * @ORM\Table(name="users")
  * @UniqueEntity(fields={"pseudo"}, message="Un compte possède déjà ce pseudo")
  * @UniqueEntity(fields={"email"}, message="Un compte possède déjà cet email")
  *
@@ -69,6 +71,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="users")
      */
     private $campus;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Sortie::class, mappedBy="inscrits", orphanRemoval=true)
+     */
+    private $sorties;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organisteur", orphanRemoval=true)
+     */
+    private $sortiesOrganises;
+
+    public function __construct()
+    {
+        $this->sorties = new ArrayCollection();
+        $this->sortiesOrganises = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -215,18 +233,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setActif(bool $actif): self
     {
         $this->actif = $actif;
-
-        return $this;
-    }
-
-    public function getCampus(): ?Campus
-    {
-        return $this->campus;
-    }
-
-    public function setCampus(?Campus $campus): self
-    {
-        $this->campus = $campus;
 
         return $this;
     }

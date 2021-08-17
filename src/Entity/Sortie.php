@@ -3,11 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\SortieRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=SortieRepository::class)
+ * @ORM\Table(name="sorties")
  * @UniqueEntity(fields={"date_heure_debut", "nom"}, message="Un évènement existe déjà avec ce nom et à cette date")
  */
 class Sortie
@@ -66,6 +69,26 @@ class Sortie
      * @ORM\JoinColumn(name="id_lieu", nullable=false)
      */
     private $lieu;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="sorties")
+     * @ORM\JoinTable(name="users_sorties",
+     *     @ORM\JoinColumns={ @ORM\JoinColumn(name="id_sortie", referencedColumnName="id") },
+     *     @ORM\inverseJoinColumns={ @ORM\invers(name="id_user", referencedColumnName="id") },
+     * )
+     */
+    private $inscrits;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="sortiesOrganises")
+     * @ORM\JoinColumn(name="organisateur", nullable=false)
+     */
+    private $organisteur;
+
+    public function __construct()
+    {
+        $this->inscrits = new ArrayCollection();
+    }
 
     public function getId(): ?int {
         return $this->id;
@@ -149,6 +172,42 @@ class Sortie
 
     public function setLieu(?Lieu $lieu): self {
         $this->lieu = $lieu;
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getInscrits(): Collection
+    {
+        return $this->inscrits;
+    }
+
+    public function addInscrit(User $inscrit): self
+    {
+        if (!$this->inscrits->contains($inscrit)) {
+            $this->inscrits[] = $inscrit;
+        }
+
+        return $this;
+    }
+
+    public function removeInscrit(User $inscrit): self
+    {
+        $this->inscrits->removeElement($inscrit);
+
+        return $this;
+    }
+
+    public function getOrganisteur(): ?User
+    {
+        return $this->organisteur;
+    }
+
+    public function setOrganisteur(?User $organisteur): self
+    {
+        $this->organisteur = $organisteur;
+
         return $this;
     }
 }

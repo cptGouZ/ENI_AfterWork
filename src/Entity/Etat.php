@@ -8,6 +8,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=EtatRepository::class)
+ * @ORM\Table(name="etats")
  * @UniqueEntity(fields={"libelle"}, message={"Ce status existe déjà !"})
  */
 class Etat

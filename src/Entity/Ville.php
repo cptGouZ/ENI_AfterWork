@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=VilleRepository::class)
+ * @ORM\Table(name="villes")
  * @UniqueEntity(fields={"nom", "code_postal"}, message="Cette ville existe déjà.")
  */
 class Ville
