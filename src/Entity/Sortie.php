@@ -4,9 +4,11 @@ namespace App\Entity;
 
 use App\Repository\SortieRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=SortieRepository::class)
+ * @UniqueEntity(fields={"date_heure_debut", "nom"}, message="Un évènement existe déjà avec ce nom et à cette date")
  */
 class Sortie
 {
