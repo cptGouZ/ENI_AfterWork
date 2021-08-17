@@ -24,6 +24,7 @@ class Campus
 
     public function getId(): ?int
     {
+        $test = "test" ;
         return $this->id;
     }
 
