@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\VilleRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,41 +20,68 @@ class Ville
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(name="nom", type="string", length=50)
      */
     private $nom;
 
     /**
-     * @ORM\Column(type="string", length=5)
+     * @ORM\Column(name="code_postal", type="string", length=5)
      */
     private $codePostal;
 
-    public function getId(): ?int
-    {
+    /**
+     * @ORM\OneToMany(targetEntity=Lieu::class, mappedBy="ville")
+     */
+    private $lieux;
+
+    public function __construct() {
+        $this->lieux = new ArrayCollection();
+    }
+
+    public function getId(): ?int {
         return $this->id;
     }
 
-    public function getNom(): ?string
-    {
+    public function getNom(): ?string {
         return $this->nom;
     }
 
-    public function setNom(string $nom): self
-    {
+    public function setNom(string $nom): self {
         $this->nom = $nom;
-
         return $this;
     }
 
-    public function getCodePostal(): ?string
-    {
+    public function getCodePostal(): ?string {
         return $this->codePostal;
     }
 
-    public function setCodePostal(string $codePostal): self
-    {
+    public function setCodePostal(string $codePostal): self {
         $this->codePostal = $codePostal;
+        return $this;
+    }
 
+    /**
+     * @return Collection|Lieu[]
+     */
+    public function getLieux(): Collection {
+        return $this->lieux;
+    }
+
+    public function addLieux(Lieu $lieux): self {
+        if (!$this->lieux->contains($lieux)) {
+            $this->lieux[] = $lieux;
+            $lieux->setVille($this);
+        }
+        return $this;
+    }
+
+    public function removeLieux(Lieu $lieux): self {
+        if ($this->lieux->removeElement($lieux)) {
+            // set the owning side to null (unless already changed)
+            if ($lieux->getVille() === $this) {
+                $lieux->setVille(null);
+            }
+        }
         return $this;
     }
 }
