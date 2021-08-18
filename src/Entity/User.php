@@ -15,7 +15,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="users")
  * @UniqueEntity(fields={"pseudo"}, message="Un compte possède déjà ce pseudo")
  * @UniqueEntity(fields={"email"}, message="Un compte possède déjà cet email")
- *
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -73,12 +72,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $campus;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Sortie::class, mappedBy="inscrits", orphanRemoval=true)
+     * @ORM\ManyToMany(targetEntity=Sortie::class, mappedBy="inscrits")
      */
     private $sorties;
 
     /**
-     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organisteur", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organisateur")
      */
     private $sortiesOrganises;
 
@@ -233,6 +232,63 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setActif(bool $actif): self
     {
         $this->actif = $actif;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sortie[]
+     */
+    public function getSorties(): Collection
+    {
+        return $this->sorties;
+    }
+
+    public function addSortie(Sortie $sorty): self
+    {
+        if (!$this->sorties->contains($sorty)) {
+            $this->sorties[] = $sorty;
+            $sorty->addInscrit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSortie(Sortie $sorty): self
+    {
+        if ($this->sorties->removeElement($sorty)) {
+            $sorty->removeInscrit($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sortie[]
+     */
+    public function getSortiesOrganises(): Collection
+    {
+        return $this->sortiesOrganises;
+    }
+
+    public function addSortiesOrganise(Sortie $sortiesOrganise): self
+    {
+        if (!$this->sortiesOrganises->contains($sortiesOrganise)) {
+            $this->sortiesOrganises[] = $sortiesOrganise;
+            $sortiesOrganise->setOrganisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSortiesOrganise(Sortie $sortiesOrganise): self
+    {
+        if ($this->sortiesOrganises->removeElement($sortiesOrganise)) {
+            // set the owning side to null (unless already changed)
+            if ($sortiesOrganise->getOrganisateur() === $this) {
+                $sortiesOrganise->setOrganisateur(null);
+            }
+        }
 
         return $this;
     }
