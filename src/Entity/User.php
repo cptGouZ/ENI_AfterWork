@@ -67,10 +67,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $actif;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="users")
-     */
-    private $campus;
 
     /**
      * @ORM\ManyToMany(targetEntity=Sortie::class, mappedBy="inscrits")
@@ -81,6 +77,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organisateur")
      */
     private $sortiesOrganises;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="users")
+     */
+    private $campus;
 
     public function __construct()
     {
@@ -290,6 +291,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $sortiesOrganise->setOrganisateur(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCampus(): ?Campus
+    {
+        return $this->campus;
+    }
+
+    public function setCampus(?Campus $campus): self
+    {
+        $this->campus = $campus;
 
         return $this;
     }

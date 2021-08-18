@@ -37,6 +37,8 @@ class Campus
         $this->users = new ArrayCollection();
     }
 
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -83,4 +85,5 @@ class Campus
 
         return $this;
     }
+
 }

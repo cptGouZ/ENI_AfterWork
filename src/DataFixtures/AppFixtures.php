@@ -48,6 +48,8 @@ class AppFixtures extends Fixture
             $users[$i]->setPassword($faker->password);
             $users[$i]->setAdministrateur($faker->boolean);
             $users[$i]->setActif($faker->boolean);
+            $users[$i]->setCampus($campus[rand(0,count($campus)-1)]);
+
             $manager->persist($users[$i]);
         }
         $manager->flush();
