@@ -12,25 +12,31 @@
     </head>
 
     <body>
-    <div class="container">
-        <header>
-            <a class="site-title" href=""><img src="{{ asset('img/logo_afterwork.jpg') }}" alt="ENI AfterWork"  width="200" height="150"> ENI AfterWork
-            </a>
+        <div class="container">
 
-            <nav>
-                <ul>
-                    <li><a href="{{ url('user_create') }}" title="profil">Mon Profil</a></li>
-                </ul>
-            </nav>
-        </header>
+            {# HEADER #}
+                <header>
+                    {# TITRE ET LOGO #}
+                    <a class="site-title" href=""><img src="{{ asset('img/logo_afterwork.jpg') }}" alt="ENI AfterWork"  width="200" height="150"> ENI AfterWork
+                    </a>
 
-        <main>{% block main %}{% endblock main %}</main>
+                    {# NAVIGATION SITE #}
+                    <nav>
+                        <ul>
+                            <li><a href="{{ url('user_create') }}" title="profil">Mon Profil</a></li>
+                        </ul>
+                    </nav>
+                </header>
 
-        <footer>
-            © {{ "now"|date("Y") }} ENI AfterWork inc.
-        </footer>
-    </div>
+            {# MAIN #}
+                <main>{% block body %}{% endblock body %}</main>
 
-    {% block javascripts %}{% endblock javascripts %}
+            {# FOOTER #}
+                <footer>
+                    © {{ "now"|date("Y") }} ENI AfterWork inc.
+                </footer>
+        </div>
+
+        {% block javascripts %}{% endblock javascripts %}
     </body>
 </html>
