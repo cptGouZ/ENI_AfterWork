@@ -73,8 +73,8 @@ class Sortie
     /**
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="sorties")
      * @ORM\JoinTable(name="users_sorties",
-     *     @ORM\JoinColumns={ @ORM\JoinColumn(name="id_sortie", referencedColumnName="id") },
-     *     @ORM\inverseJoinColumns={ @ORM\invers(name="id_user", referencedColumnName="id") },
+     *     joinColumns={ @ORM\JoinColumn(name="id_sortie", referencedColumnName="id") },
+     *     inverseJoinColumns={ @ORM\JoinColumn(name="id_user", referencedColumnName="id") },
      * )
      */
     private $inscrits;

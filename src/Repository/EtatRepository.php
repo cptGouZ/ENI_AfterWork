@@ -20,7 +20,7 @@ class EtatRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return Etat[] Returns an array of Etat objects
+    //  * @return EtatFixture[] Returns an array of EtatFixture objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class EtatRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Etat
+    public function findOneBySomeField($value): ?EtatFixture
     {
         return $this->createQueryBuilder('e')
             ->andWhere('e.exampleField = :val')
