@@ -16,13 +16,9 @@ class VilleType extends AbstractType
         $builder
             ->add('nom', TextType::class, [
                 'label' => 'Ville',
-                'trim' => true,
-                'required' => true,
             ])
             ->add('codePostal', TextType::class, [
                 'label' => 'Code Postal',
-                'trim' => true,
-                'required' => true,
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Valider formulaire',
@@ -33,6 +29,8 @@ class VilleType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Ville::class,
+            'trim' => true,
+            'required' => true,
         ]);
     }
 }
