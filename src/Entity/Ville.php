@@ -7,11 +7,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=VilleRepository::class)
  * @ORM\Table(name="villes")
- * @UniqueEntity(fields={"nom", "code_postal"}, message="Cette ville existe déjà.")
+ * @UniqueEntity(fields="codePostal", message="Ce code postal existe déjà.")
  */
 class Ville
 {
@@ -24,11 +26,18 @@ class Ville
 
     /**
      * @ORM\Column(name="nom", type="string", length=50)
+     * @Assert\NotBlank(message="Le nom de la ville doit être renseigné.")
+     * @Assert\Length(
+     *     min=3, minMessage="Le nom de la ville doit être au minimum de 3 caractères",
+     *     max=50, maxMessage="Le nom de la ville ne peut pas dépasser 50 caratères"
+     * )
      */
     private $nom;
 
     /**
-     * @ORM\Column(name="code_postal", type="string", length=5)
+     * @ORM\Column(name="code_postal", type="string", length=5, unique=true)
+     * @Assert\NotBlank(message="Le code postal doit être renseigné.")
+     * @Assert\Regex(pattern="#\d{5}#", message="Le code postal doit être constitué de 5 chiffres")
      */
     private $codePostal;
 

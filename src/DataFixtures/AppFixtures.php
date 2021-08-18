@@ -32,7 +32,6 @@ class AppFixtures extends Fixture
         for ($i = 0; $i < 20; $i++) {
             $campus[$i] = new Campus();
             $campus[$i]->setNom($faker->city);
-
             $manager->persist($campus[$i]);
         }
         $manager->flush();
@@ -49,7 +48,6 @@ class AppFixtures extends Fixture
             $users[$i]->setAdministrateur($faker->boolean);
             $users[$i]->setActif($faker->boolean);
             $users[$i]->setCampus($campus[rand(0,count($campus)-1)]);
-
             $manager->persist($users[$i]);
         }
         $manager->flush();
@@ -84,7 +82,8 @@ class AppFixtures extends Fixture
             $sorties[$i]->setNom($faker->name);
             $sorties[$i]->setCampus($campus[rand(0, count($campus)-1)]);
             $sorties[$i]->setDateHeureDebut($faker->dateTimeInInterval('-3months', '+15days'));
-            $sorties[$i]->setDateLimiteInscription( date_add(new DateTime('now'), new DateInterval('P10M')));
+            $dateLimiteInscription = date_format($sorties[$i]->getDateHeureDebut(),  'Y/m/d h:i');
+            $sorties[$i]->setDateLimiteInscription( date_sub(new DateTime($dateLimiteInscription), new DateInterval('PT90M')) );
             $sorties[$i]->setDuree(rand(10, 90));
             $sorties[$i]->setEtat($etats[rand(0, count($etats)-1)]);
             $sorties[$i]->setInfosSortie($faker->text);
