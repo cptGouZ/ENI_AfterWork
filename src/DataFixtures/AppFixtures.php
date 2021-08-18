@@ -8,6 +8,8 @@ use App\Entity\Sortie;
 use App\Entity\Ville;
 use App\Entity\Campus;
 use App\Entity\User;
+use DateInterval;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
@@ -23,6 +25,7 @@ class AppFixtures extends Fixture
             $etats[$i]->setLibelle($faker->word);
             $manager->persist($etats[$i]);
         }
+        $manager->flush();
 
         // CAMPUS
         $campus[] = Array() ;
@@ -32,6 +35,7 @@ class AppFixtures extends Fixture
 
             $manager->persist($campus[$i]);
         }
+        $manager->flush();
 
         // USERS
         $users[] = Array() ;
@@ -39,23 +43,24 @@ class AppFixtures extends Fixture
             $users[$i] = new User();
             $users[$i]->setNom($faker->lastName);
             $users[$i]->setPrenom($faker->firstName);
-            $users[$i]->setTelephone($faker->phoneNumber);
+            $users[$i]->setTelephone($faker->numerify('##########'));
             $users[$i]->setEmail($faker->email);
             $users[$i]->setPassword($faker->password);
             $users[$i]->setAdministrateur($faker->boolean);
             $users[$i]->setActif($faker->boolean);
-
             $manager->persist($users[$i]);
         }
+        $manager->flush();
 
         // VILLES
         $villes = Array();
         for ($i = 0; $i < 10; $i++) {
             $villes[$i] = new Ville();
             $villes[$i]->setNom($faker->city);
-            $villes[$i]->setCodePostal($faker->citySuffix);
+            $villes[$i]->setCodePostal($faker->numerify('#####'));
             $manager->persist($villes[$i]);
         }
+        $manager->flush();
 
         // LIEUX
         $lieux[] = Array();
@@ -68,6 +73,7 @@ class AppFixtures extends Fixture
             $lieux[$i]->setVille($villes[rand(0, count($villes)-1)]);
             $manager->persist($lieux[$i]);
         }
+        $manager->flush();
 
         // SORTIES
         $sorties[] = Array();
@@ -75,15 +81,15 @@ class AppFixtures extends Fixture
             $sorties[$i] = new Sortie();
             $sorties[$i]->setNom($faker->name);
             $sorties[$i]->setCampus($campus[rand(0, count($campus)-1)]);
-            $sorties[$i]->setDateHeureDebut($faker->dateTime);
-            $sorties[$i]->setDateLimiteInscription($sorties[$i]->getDateHeureDebut + 5);
-            $sorties[$i]->setDuree($faker->numberBetween(20, 180));
+            $sorties[$i]->setDateHeureDebut($faker->dateTimeInInterval('-3months', '+15days'));
+            $sorties[$i]->setDateLimiteInscription( date_add(new DateTime('now'), new DateInterval('P10M')));
+            $sorties[$i]->setDuree(rand(10, 90));
             $sorties[$i]->setEtat($etats[rand(0, count($etats)-1)]);
             $sorties[$i]->setInfosSortie($faker->text);
             $sorties[$i]->setLieu($lieux[rand(0, count($lieux)-1)]);
             $sorties[$i]->setNbInscriptionMax($faker->numberBetween(5, 12));
             $sorties[$i]->setOrganisateur($users[rand(0, count($users)-1)]);
-            for ($i = 0; $i < rand(5,12); $i++){
+            for ($j = 0; $j < rand(5,12); $j++){
                 $sorties[$i]->addInscrit($users[rand(0, count($users)-1)]);
             }
             $manager->persist($sorties[$i]);
