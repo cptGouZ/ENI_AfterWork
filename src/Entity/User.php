@@ -27,6 +27,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $pseudo;
+
+    /**
      * @ORM\Column(name="email" , type="string", length=180, unique=true)
      */
     private $email;
@@ -84,6 +89,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $campus;
 
+
+
     public function __construct()
     {
         $this->sorties = new ArrayCollection();
@@ -93,6 +100,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getPseudo(): ?string
+    {
+        return $this->pseudo;
+    }
+
+    public function setPseudo(string $pseudo): self
+    {
+        $this->pseudo = $pseudo;
+
+        return $this;
     }
 
     public function getEmail(): ?string
@@ -307,4 +326,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+
 }

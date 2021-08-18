@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} : Modifier son profil {% endblock title %}
+
+{% block main %}
+
+    {% form_theme formUser 'bootstrap_4_horizontal_layout.html.twig' %}
+
+    {{ form_start(formUser) }}
+
+        <div class="mb-3">
+            {{ form_label(formUser.pseudo) }}
+            {{ form_widget(formUser.pseudo) }}
+            {{ form_errors(formUser.pseudo) }}
+        </div>
+        <div class="mb-3">
+            {{ form_label(formUser.prenom) }}
+            {{ form_widget(formUser.prenom) }}
+            {{ form_errors(formUser.prenom) }}
+        </div>
+        <div class="mb-3">
+            {{ form_label(formUser.nom) }}
+            {{ form_widget(formUser.nom) }}
+            {{ form_errors(formUser.nom) }}
+        </div>
+        <div class="mb-3">
+            {{ form_label(formUser.telephone) }}
+            {{ form_widget(formUser.telephone) }}
+            {{ form_errors(formUser.telephone) }}
+        </div>
+        <div class="mb-3">
+            {{ form_label(formUser.email) }}
+            {{ form_widget(formUser.email) }}
+            {{ form_errors(formUser.email) }}
+        </div>
+        <div class="mb-3">
+            {{ form_label(formUser.password) }}
+            {{ form_widget(formUser.password) }}
+            {{ form_errors(formUser.password) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_widget(formUser.submit) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_widget(formUser.annuler) }}
+        </div>
+
+    {{ form_end(formUser) }}
+
+{% endblock main %}

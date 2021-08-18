@@ -40,6 +40,7 @@ class AppFixtures extends Fixture
         $users[] = Array() ;
         for ($i = 0; $i < 20; $i++) {
             $users[$i] = new User();
+            $users[$i]->setPseudo($faker->name);
             $users[$i]->setNom($faker->lastName);
             $users[$i]->setPrenom($faker->firstName);
             $users[$i]->setTelephone($faker->numerify('##########'));
