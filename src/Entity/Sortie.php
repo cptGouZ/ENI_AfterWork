@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SortieRepository;
+use DateInterval;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -101,6 +103,11 @@ class Sortie
     public function setNom(string $nom): self {
         $this->nom = $nom;
         return $this;
+    }
+
+    public function getDateHeureFin(): ?\DateTimeInterface {
+        $dateTimeDebut = new DateTime(date_format($this->getDateHeureDebut(), 'Y/m/d h:i'));
+        return date_add($dateTimeDebut, new DateInterval('PT'.$this->duree.'M'));
     }
 
     public function getDateHeureDebut(): ?\DateTimeInterface {

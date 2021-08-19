@@ -9,25 +9,40 @@ use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @method Sortie|null find($id, $lockMode = null, $lockVersion = null)
- * @method Sortie|null findOneBy(array $criteria, array $orderBy = null)
- * @method Sortie[]    findAll()
- * @method Sortie[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
 class SortieRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private Security $security;
+    public function __construct(ManagerRegistry $registry, Security $security)
     {
         parent::__construct($registry, Sortie::class);
+        $this->security = $security;
     }
 
-    public function getBySearch(FormInterface $formSearch){
-        $query = $this->createQueryBuilder('s')->addSelect('u');
-        if( !empty( $formSearch->getData()['inscrit'] ) ){
-            $query->andWhere('u.nom = :nom')->setParameter('nom', 'Rohan');
-            //$query->andWhere();
+    public function getBySearch(User $user, array $options){
+//        private $sortie = new Sortie();
+//        $sortie->getDateHeureFin();
+        //Création de la requête générale avec la limite de date à 1 mois
+        $query = $this->createQueryBuilder('s')->addSelect('u')
+            ->innerJoin('s.inscrits', 'u')
+            ->andWhere('s.dateHeureDebut => DATE_SUB(NOW() , INTERVAL 30 DAY)')
+        ;
+        //Filtre sur les inscriptions pour lesquelles je suis inscrit
+        if( array_key_exists(SortieSearchOptions::INSCRIT, $options )
+            && $options[SortieSearchOptions::INSCRIT] === true ) {
+            $query->andWhere('u.nom = :nom')->setParameter('nom', $user->getNom());
+        }
+        //Filtre sur les inscriptions pour lesquelles je ne suis pas inscrit
+        if( array_key_exists(SortieSearchOptions::INSCRIT, $options )
+            && $options[SortieSearchOptions::INSCRIT] === false ) {
+            $query->andWhere('u.nom != :nom')->setParameter('nom', $user->getNom());
+        }
+        //Filtre sur les sorties passées
+        if( array_key_exists(SortieSearchOptions::SORTIES_PASSEES, $options )
+            && $options[SortieSearchOptions::SORTIES_PASSEES] === true ) {
+            $query->andWhere('s.getDateHeureFin < NOW()');
         }
         dump($query->getQuery()->getSQL());
         exit();

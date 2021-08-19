@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Sortie;
+use App\Entity\User;
 use App\Form\SortieSearchType;
+use App\Repository\SortieSearchOptions;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,9 +23,14 @@ class SortieController extends AbstractController
         $repoSortie = $entityManager->getRepository(Sortie::class);
         $formSortieSearch = $this->createForm(SortieSearchType::class,null,[]);
         $formSortieSearch->handleRequest($request);
-        $sorties = $repoSortie->findAll();
+
+        /** @var User $user */
+        $user = $this->getUser();
         if($formSortieSearch->isSubmitted() && $formSortieSearch->isValid()){
-            $sorties = $repoSortie->getBySearch($formSortieSearch);
+            $sorties = $repoSortie->getBySearch( $user,[
+                SortieSearchOptions::INSCRIT => $formSortieSearch->get('inscrit')->getData(),
+                SortieSearchOptions::MES_SORTIES =>  $formSortieSearch->get('inscrit')->getData()
+            ]);
         }
         return $this->render('sortie/index.html.twig', [
             'formSortieSearch' => $formSortieSearch->createView(),
