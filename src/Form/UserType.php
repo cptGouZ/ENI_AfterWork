@@ -74,15 +74,15 @@ class UserType extends AbstractType
                 ]);
 
         //CAMPUS
-/*            $builder
+           $builder
                 ->add('campus' , EntityType::class, [
                     'label'=> 'Campus : ',
                     'required' => true,
                     'class' => Campus::class,
-                    'query_builder' => function (CampusRepository $cr) {
-                    return $cr->createQueryBuilder('campus')->orderBy('campus.nom' , 'ASC');
+                    'choice_label' => function($campus) {
+                    return $campus->getNom() ;
                     }
-                ]) ;*/
+                ]) ;
 
         //BOUTON ENREGISTER
              $builder->add('submit', SubmitType::class, [

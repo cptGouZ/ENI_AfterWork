@@ -2,7 +2,7 @@
 
 {% block title %} {{ parent() }} : Modifier son profil {% endblock title %}
 
-{% block main %}
+{% block body %}
 
     {% form_theme formUser 'bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -49,4 +49,4 @@
 
     {{ form_end(formUser) }}
 
-{% endblock main %}
+{% endblock %}

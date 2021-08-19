@@ -40,7 +40,7 @@ class UserController extends AbstractController
             $this->addFlash('success', 'Category successfully added !');
 
             // Redirection sur le controlleur
-            return $this->redirectToRoute('user_create');
+            return $this->redirectToRoute('app_login');
 
         }
 
