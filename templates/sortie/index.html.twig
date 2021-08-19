@@ -3,10 +3,66 @@
 {% block title %}Hello SortieController!{% endblock %}
 
 {% block body %}
-    {{ app.user.nom }}
-    {% form_theme formSortieSearch 'bootstrap_5_horizontal_layout.html.twig' %}
-    {{ form(formSortieSearch) }}
-    {% for sortie in sorties %}
-        {{ sortie.nom }}<br>
-    {% endfor %}
+    Date du jour : {{ "now"|date("d/m/Y") }} <br>
+    Participant : {{ app.user.prenom | capitalize  }} {{ app.user.nom | capitalize }} <br>
+    <div class="search">
+        <h2>Filtrer les sorties</h2>
+        {% form_theme formSortieSearch 'bootstrap_5_horizontal_layout.html.twig' %}
+        {{ form_start(formSortieSearch) }}
+            <div class="row justify-content-center">
+                <div class="col-4">
+                    {{ form_row(formSortieSearch.campus) }}
+                    {{ form_row(formSortieSearch.nom_sortie) }}
+                    {{ form_row(formSortieSearch.date_debut) }}
+                    {{ form_row(formSortieSearch.date_fin) }}
+                </div>
+                <div class="col-3">
+                    {{ form_row(formSortieSearch.mes_sorties) }}
+                    {{ form_row(formSortieSearch.inscrit_oui) }}
+                    {{ form_row(formSortieSearch.inscrit_non) }}
+                    {{ form_row(formSortieSearch.sorties_passees) }}
+                    {{ form_row(formSortieSearch.submit) }}
+                </div>
+            </div>
+        {{ form_end(formSortieSearch) }}
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Nom de la sortie</th>
+                <th scope="col">Date de la sortie</th>
+                <th scope="col">Clôture</th>
+                <th scope="col">inscrtis/places</th>
+                <th scope="col">Etat</th>
+                <th scope="col">Inscrit</th>
+                <th scope="col">Organistateur</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sortie in sorties %}
+                <tr>
+                    <td>{{ sortie.nom }}</td>
+                    <td>{{ sortie.dateheuredebut | date("d/m/Y") }}</td>
+                    <td>{{ sortie.datelimiteinscription | date("d/m/Y h:i") }}</td>
+                    <td>{{ sortie.inscrits | length }}/{{ sortie.nbinscriptionmax }}</td>
+                    <td>{{ sortie.etat.libelle }}</td>
+                    <td>{{ app.user in sortie.inscrits ? 'oui' : 'non'}}</td>
+                    <td>{{ sortie.organisateur.prenom | capitalize }} {{ sortie.organisateur.nom | capitalize }}</td>
+                    <td>
+                        {% if app.user in sortie.inscrits %}
+                            <a href="http://google.com">Se désinscrire</a>
+                        {% endif %}
+                        {% if app.user not in sortie.inscrits %}
+                            <a href="http://google.com">S'inscrire</a>
+                        {% endif %}
+                        {% if sortie.organisateur == app.user %}
+                            <a href="http://google.com">Publier</a>
+                            <a href="http://google.com">Modifier</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

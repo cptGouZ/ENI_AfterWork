@@ -47,14 +47,18 @@ class SortieRepository extends ServiceEntityRepository
         }
 
         //Filtre sur les inscriptions pour lesquelles je suis inscrit
-        if(    $options[SortieSearchOptions::INSCRIT_OUI] === true
+        if( !empty($options[SortieSearchOptions::INSCRIT_OUI])
+            && $options[SortieSearchOptions::INSCRIT_OUI] === true
+            && !empty($options[SortieSearchOptions::INSCRIT_NON])
             && $options[SortieSearchOptions::INSCRIT_NON] === false) {
             $query->andWhere('u = :user')
                 ->setParameter('user', $user);
         }
 
         //Filtre sur les inscriptions pour lesquelles je ne suis pas inscrit
-        if(    $options[SortieSearchOptions::INSCRIT_OUI] === false
+        if( !empty($options[SortieSearchOptions::INSCRIT_OUI])
+            && $options[SortieSearchOptions::INSCRIT_OUI] === false
+            && !empty($options[SortieSearchOptions::INSCRIT_NON])
             && $options[SortieSearchOptions::INSCRIT_NON] === true ) {
             //Recherche des sorties où je suis inscrit pour les sortir de la requête finale
             $sortiesInscrit= $this->createQueryBuilder('s')
@@ -69,7 +73,7 @@ class SortieRepository extends ServiceEntityRepository
         }
 
         //Filtre sur les sorties passées
-        if( $options[SortieSearchOptions::SORTIES_PASSEES] === true ) {
+        if( $options[SortieSearchOptions::SORTIES_PASSEES] ?? false ) {
             $query->andWhere('s.dateHeureDebut < CURRENT_TIMESTAMP()');
         }
 

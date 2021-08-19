@@ -26,7 +26,7 @@ class SortieController extends AbstractController
 
         /** @var User $user */
         $user = $this->getUser();
-        $sorties = $repoSortie->findAll();
+        $sorties = $repoSortie->getBySearch($user,[]);
         if($formSortieSearch->isSubmitted() && $formSortieSearch->isValid()){
             $sorties = $repoSortie->getBySearch( $user,[
                 SortieSearchOptions::INSCRIT_OUI => $formSortieSearch->get('inscrit_oui')->getData(),
