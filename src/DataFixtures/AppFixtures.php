@@ -13,8 +13,20 @@ use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+
 class AppFixtures extends Fixture
 {
+
+    // Utiliser pour générer un hash (depuis version 5.3 de Symfony)
+     private $passwordHasher;
+
+     public function __construct(UserPasswordHasherInterface $passwordHasher)
+     {
+         $this->passwordHasher = $passwordHasher;
+     }
+
+
     public function load(ObjectManager $manager)
     {
         $faker = Faker\Factory::create();
@@ -45,7 +57,8 @@ class AppFixtures extends Fixture
             $users[$i]->setPrenom($faker->firstName);
             $users[$i]->setTelephone($faker->numerify('##########'));
             $users[$i]->setEmail($faker->email);
-            $users[$i]->setPassword($faker->password);
+            $users[$i]->setPassword($this->passwordHasher->hashPassword(
+                             $users[$i],'0000'));
             $users[$i]->setAdministrateur($faker->boolean);
             $users[$i]->setActif($faker->boolean);
             $users[$i]->setCampus($campus[rand(0,count($campus)-1)]);
