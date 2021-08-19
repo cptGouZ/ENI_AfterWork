@@ -26,14 +26,22 @@ class SortieController extends AbstractController
 
         /** @var User $user */
         $user = $this->getUser();
+        $sorties = $repoSortie->findAll();
         if($formSortieSearch->isSubmitted() && $formSortieSearch->isValid()){
             $sorties = $repoSortie->getBySearch( $user,[
-                SortieSearchOptions::INSCRIT => $formSortieSearch->get('inscrit')->getData(),
-                SortieSearchOptions::MES_SORTIES =>  $formSortieSearch->get('inscrit')->getData()
+                SortieSearchOptions::INSCRIT_OUI => $formSortieSearch->get('inscrit_oui')->getData(),
+                SortieSearchOptions::INSCRIT_NON => $formSortieSearch->get('inscrit_non')->getData(),
+                SortieSearchOptions::MES_SORTIES =>  $formSortieSearch->get('mes_sorties')->getData(),
+                SortieSearchOptions::DATE_DEBUT => $formSortieSearch->get('date_debut')->getData(),
+                SortieSearchOptions::DATE_FIN => $formSortieSearch->get('date_fin')->getData(),
+                SortieSearchOptions::SORTIES_PASSEES => $formSortieSearch->get('sorties_passees')->getData(),
+                SortieSearchOptions::NOM_CONTIENT => $formSortieSearch->get('nom_sortie')->getData(),
+                SortieSearchOptions::CAMPUS => $formSortieSearch->get('campus')->getData(),
             ]);
         }
         return $this->render('sortie/index.html.twig', [
             'formSortieSearch' => $formSortieSearch->createView(),
+            'sorties' => $sorties,
         ]);
     }
 

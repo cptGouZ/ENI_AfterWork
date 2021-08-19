@@ -41,7 +41,7 @@ class AppFixtures extends Fixture
 
         // CAMPUS
         $campus[] = Array() ;
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $campus[$i] = new Campus();
             $campus[$i]->setNom($faker->city);
             $manager->persist($campus[$i]);
@@ -91,7 +91,7 @@ class AppFixtures extends Fixture
 
         // SORTIES
         $sorties[] = Array();
-        for ($i = 0; $i < 15; $i++) {
+        for ($i = 0; $i < 8; $i++) {
             $sorties[$i] = new Sortie();
             $sorties[$i]->setNom($faker->name);
             $sorties[$i]->setCampus($campus[rand(0, count($campus)-1)]);

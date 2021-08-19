@@ -12,11 +12,12 @@ use App\Entity\Sortie;
  */
 abstract class SortieSearchOptions
 {
-    const INSCRIT = 0;
-    const MES_SORTIES = 1;
-    const SORTIES_PASSEES = 2;
-    const NOM_CONTIENT = 3;
-    const CAMPUS = 4;
-    const DATE_DEBUT = 5;
-    const DATE_FIN = 6;
+    const INSCRIT_OUI = 0;
+    const INSCRIT_NON = 1;
+    const MES_SORTIES = 2;
+    const DATE_DEBUT = 3;
+    const DATE_FIN = 4;
+    const SORTIES_PASSEES = 5;
+    const NOM_CONTIENT = 6;
+    const CAMPUS = 7;
 }

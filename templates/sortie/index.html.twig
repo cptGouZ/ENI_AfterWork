@@ -3,6 +3,10 @@
 {% block title %}Hello SortieController!{% endblock %}
 
 {% block body %}
+    {{ app.user.nom }}
     {% form_theme formSortieSearch 'bootstrap_5_horizontal_layout.html.twig' %}
     {{ form(formSortieSearch) }}
+    {% for sortie in sorties %}
+        {{ sortie.nom }}<br>
+    {% endfor %}
 {% endblock %}
