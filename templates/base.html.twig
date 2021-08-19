@@ -17,13 +17,15 @@
             {# HEADER #}
                 <header>
                     {# TITRE ET LOGO #}
-                    <a class="site-title" href=""><img src="{{ asset('img/logo_afterwork.jpg') }}" alt="ENI AfterWork"  width="200" height="150"> ENI AfterWork
+                    <a class="site-title" href="{{ url('app_logout') }}"><img src="{{ asset('img/logo_afterwork.jpg') }}" alt="ENI AfterWork"  width="200" height="150"> ENI AfterWork
                     </a>
 
                     {# NAVIGATION SITE #}
-                    <nav>
-                        <ul>
-                            <li><a href="{{ url('user_create') }}" title="profil">Mon Profil</a></li>
+                    <nav  class="navbar navbar-light" style="background-color: #e3f2fd;">
+                        <ul >
+                            <li class="nav-item"><a class="nav-link active c" href="{{ url('app_logout') }}" title="profil">Rechercher Sorties</a></li>
+                            <li class="nav-item"><a class="nav-link active" href="{{ url('user_modify') }}" title="profil">Mon Profil</a></li>
+                            <li class="nav-item"><a class="nav-link active" href="{{ url('app_logout') }}" title="deconnexion">Se deconnecter</a></li>
                         </ul>
                     </nav>
                 </header>

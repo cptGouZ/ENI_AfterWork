@@ -27,6 +27,10 @@ security:
                 # where to redirect after logout
                 # target: app_any_route
 
+            remember_me:
+                secret:     '%env(APP_SECRET)%'
+                name:       'cmoi'
+                lifetime:   5
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 

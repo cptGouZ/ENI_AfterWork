@@ -24,7 +24,7 @@ class UserType extends AbstractType
         //PSEUDO
         $builder
             ->add('pseudo' , TextType::class, [
-                'label'=> 'Pseudo : ',
+                'label'=> 'Pseudo :',
                 'trim' => true ,
                 'required' => true,
             ]);
@@ -33,7 +33,7 @@ class UserType extends AbstractType
         //PRENOM
             $builder
                 ->add('prenom' , TextType::class, [
-                    'label'=> 'Prénom : ',
+                    'label'=> 'Prénom :',
                     'trim' => true ,
                     'required' => true,
                 ]);
@@ -41,7 +41,7 @@ class UserType extends AbstractType
         //NOM
             $builder
                 ->add('nom' , TextType::class, [
-                    'label'=> 'Nom : ',
+                    'label'=> 'Nom :',
                     'trim' => true ,
                     'required' => true,
                 ]) ;
@@ -49,7 +49,7 @@ class UserType extends AbstractType
         //TELEPHONE
             $builder
                 ->add('telephone' , TextType::class, [
-                    'label'=> 'Téléphone : ',
+                    'label'=> 'Téléphone :',
                     'trim' => true ,
                     'required' => true,
                 ]);
@@ -57,7 +57,7 @@ class UserType extends AbstractType
         //EMAIL
             $builder
                 ->add('email' , EmailType::class ,[
-                    'label' => 'Email',
+                    'label' => 'Email :',
                     'trim' => true ,
                     'required' => true,
                 ]);
@@ -68,15 +68,15 @@ class UserType extends AbstractType
                     'type' => PasswordType::class,
                     'invalid_message' => 'Les mots de passe ne sont pas identiques.',
                     'required' => true ,
-                    'first_options' =>['label' => 'Mot de passe : '],
-                    'second_options' =>['label' => 'Confirmation Mot de passe : '],
+                    'first_options' =>['label' => 'Mot de passe :'],
+                    'second_options' =>['label' => 'Confirmation Mot de passe :'],
 
                 ]);
 
         //CAMPUS
            $builder
                 ->add('campus' , EntityType::class, [
-                    'label'=> 'Campus : ',
+                    'label'=> 'Campus :',
                     'required' => true,
                     'class' => Campus::class,
                     'choice_label' => function($campus) {
@@ -90,7 +90,7 @@ class UserType extends AbstractType
                 ]);
 
         //BOUTON ANNULER
-             $builder->add('annuler', ButtonType::class, [
+             $builder->add('annuler', SubmitType::class, [
                  'label' => 'Annuler',
                 ]);
     }

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} {{ parent() }} : Modifier son profil {% endblock title %}
+{% block title %} {{ parent() }} : Modifier mon profil {% endblock title %}
 
 {% block body %}
 
@@ -37,6 +37,11 @@
             {{ form_label(formUser.password) }}
             {{ form_widget(formUser.password) }}
             {{ form_errors(formUser.password) }}
+        </div>
+        <div class="mb-3">
+            {{ form_label(formUser.campus) }}
+            {{ form_widget(formUser.campus) }}
+            {{ form_errors(formUser.campus) }}
         </div>
 
         <div class="mb-3">
