@@ -4,19 +4,21 @@
 
 {% block body %}
     Date du jour : {{ "now"|date("d/m/Y") }} <br>
-    Participant : {{ app.user.prenom | capitalize  }} {{ app.user.nom | capitalize }} <br>
+    Participant : {{ app.user.pseudo | capitalize }} <br>
+
+    {# Recherche de sortie #}
     <div class="search">
         <h2>Filtrer les sorties</h2>
         {% form_theme formSortieSearch 'bootstrap_5_horizontal_layout.html.twig' %}
         {{ form_start(formSortieSearch) }}
             <div class="row justify-content-center">
-                <div class="col-4">
+                <div class="col-7">
                     {{ form_row(formSortieSearch.campus) }}
-                    {{ form_row(formSortieSearch.nom_sortie) }}
+                    {{ form_row(formSortieSearch.nom_contient) }}
                     {{ form_row(formSortieSearch.date_debut) }}
                     {{ form_row(formSortieSearch.date_fin) }}
                 </div>
-                <div class="col-3">
+                <div class="col-4">
                     {{ form_row(formSortieSearch.mes_sorties) }}
                     {{ form_row(formSortieSearch.inscrit_oui) }}
                     {{ form_row(formSortieSearch.inscrit_non) }}
@@ -26,6 +28,8 @@
             </div>
         {{ form_end(formSortieSearch) }}
     </div>
+
+    {# Affichage du tableau de résultats #}
     <table class="table">
         <thead>
             <tr>
@@ -67,8 +71,9 @@
 
                         {# Je suis organisateur : Modifier, Publier, Annuler #}
                         {% if sortie.organisateur == app.user %}
-                            <a href="http://google.com">Publier</a>
+                            <a href="{{ path('sortie_publier', {'id': sortie.id}) }}">Publier</a>
                             <a href="http://google.com">Modifier</a>
+                            <a href="{{ path('sortie_annuler', {'id': sortie.id}) }}">Annuler</a>
                         {% endif %}
                     </td>
                 </tr>

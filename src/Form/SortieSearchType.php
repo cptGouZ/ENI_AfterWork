@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Campus;
 use App\Entity\Sortie;
+use App\Enums\SortieSearchOptions;
 use DateTime;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -20,7 +21,7 @@ class SortieSearchType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('campus', EntityType::class, [
+            ->add(SortieSearchOptions::CAMPUS, EntityType::class, [
                 'label' => 'Campus :',
                 'empty_data'=> '',
                 'placeholder' => 'Choix du campus',
@@ -29,30 +30,30 @@ class SortieSearchType extends AbstractType
                     return $campus->getNom();
                 }
             ])
-            ->add('nom_sortie', TextType::class, [
+            ->add(SortieSearchOptions::NOM_CONTIENT, TextType::class, [
                 'label' => 'Nom de la sortie :',
             ])
-            ->add('date_debut', DateType::class, [
+            ->add(SortieSearchOptions::DATE_DEBUT, DateType::class, [
                 'label' => 'Entre :',
                 'widget' => 'single_text',
                 'data' => new DateTime('now'),
             ])
-            ->add('date_fin', DateType::class, [
+            ->add(SortieSearchOptions::DATE_FIN, DateType::class, [
 
                 'label' => 'et',
                 'widget' => 'single_text',
                 'data' => date_add(new DateTime('now'), new \DateInterval('P1M') ),
             ])
-            ->add('mes_sorties', CheckboxType::class, [
+            ->add(SortieSearchOptions::MES_SORTIES, CheckboxType::class, [
                 'label' => 'Sorties que j\'organise'
             ])
-            ->add('inscrit_oui', CheckboxType::class, [
+            ->add(SortieSearchOptions::INSCRIT_OUI, CheckboxType::class, [
                 'label' => 'Sorties auxquelles je participe'
             ])
-            ->add('inscrit_non', CheckboxType::class, [
+            ->add(SortieSearchOptions::INSCRIT_NON, CheckboxType::class, [
                 'label' => 'Sorties auxquelles je ne participe pas encore'
             ])
-            ->add('sorties_passees', CheckboxType::class, [
+            ->add(SortieSearchOptions::SORTIES_PASSEES, CheckboxType::class, [
                 'label' => 'Sorties passées'
             ])
             ->add('submit', SubmitType::class, [

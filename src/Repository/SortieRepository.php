@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Sortie;
 use App\Entity\User;
+use App\Enums\SortieSearchOptions;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
