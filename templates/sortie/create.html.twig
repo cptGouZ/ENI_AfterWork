@@ -4,15 +4,14 @@
 
 {% block body %}
 
-    <h2>Créer une sortie</h2>
-    <h3>Organisteur : {{ app.user.prenom }} {{ app.user.nom  }}</h3><br>
+    <h2>Créer une sortie</h2><h5>Organisteur : {{ app.user.prenom }} {{ app.user.nom  }}</h5><br>
 
     {% form_theme formCreateSortie 'bootstrap_4_horizontal_layout.html.twig' %}
 
     {{ form_start(formCreateSortie) }}
 
     <div class="container border border-dark">
-        <div class="row">
+        <div class="row ">
              <div class="col">
                 <div class="mb-3">
                     {{ form_label(formCreateSortie.nom) }}
@@ -53,25 +52,33 @@
                     {{ form_errors(formCreateSortie.campus) }}
                 </div>
                 <div class="mb-3">
-                    {{ form_label(formCreateSortie.dateHeureDebut) }}
-
+                    {{ form_label(formCreateSortie.ville) }}
+                    {{ form_widget(formCreateSortie.ville) }}
+                    {{ form_errors(formCreateSortie.ville) }}
                 </div>
                 <div class="mb-3">
-                    {{ form_label(formCreateSortie.dateLimiteInscription) }}
-
+                    {{ form_label(formCreateSortie.lieu) }}
+                    {{ form_widget(formCreateSortie.lieu) }}
+                    {{ form_errors(formCreateSortie.lieu) }}
                 </div>
                 <div class="mb-3">
-                    {{ form_label(formCreateSortie.nbInscriptionMax) }}
-
+                    {{ form_label(formCreateSortie.rue) }}
+                    {{ form_widget(formCreateSortie.rue) }}
+                    {{ form_errors(formCreateSortie.rue) }}
                 </div>
+
                 <div class="mb-3">
-                    {{ form_label(formCreateSortie.duree) }}
-
+                    {{ form_label(formCreateSortie.cpo) }}
+                    {{ form_widget(formCreateSortie.cpo) }}
+                    {{ form_errors(formCreateSortie.cpo) }}
                 </div>
-                <div class="mb-3">
-                    {{ form_label(formCreateSortie.infosSortie) }}
-
-                </div>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col ">
+                {{ form_widget(formCreateSortie.submit) }}
+                {{ form_widget(formCreateSortie.publier) }}
+                {{ form_widget(formCreateSortie.annuler) }}
             </div>
         </div>
     </div>

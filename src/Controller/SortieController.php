@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Lieu;
 use App\Entity\Sortie;
 use App\Entity\User;
 use App\Form\SortieSearchType;
@@ -57,6 +58,10 @@ class SortieController extends AbstractController
      */
     public function create (Request $request , EntityManagerInterface $entityManager): Response {
 
+        /**@var  User $userConnect */
+
+        $userConnect = $this->getUser();
+
         //Création d'une instance sortie
         $sortie = new Sortie() ;
 
@@ -76,9 +81,8 @@ class SortieController extends AbstractController
             //Message de success
             $this->addFlash('success', 'Youhou une nouvelle sortie a bien été créée !');
 
-            //Redirection ur le controller
+            //Redirection sur le controller
             return $this->redirectToRoute('sortie_');
-
 
         }
 
