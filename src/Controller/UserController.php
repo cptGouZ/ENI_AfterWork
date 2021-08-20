@@ -57,8 +57,6 @@ class UserController extends AbstractController
 
         $userConnect = $this->getUser() ;
 
-        //$entityManager->getRepository('App:User')->find($userConnect->getId());
-
         // Création du formulaire
         $formUser = $this->createForm('App\Form\UserType', $userConnect);
 

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Sortie;
 use App\Entity\User;
 use App\Form\SortieSearchType;
+use App\Form\SortieType;
 use App\Repository\SortieSearchOptions;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -44,5 +45,47 @@ class SortieController extends AbstractController
             'sorties' => $sorties,
         ]);
     }
+
+
+    /**
+     * @Route (path="/create" , name="_create" , methods={"GET", "POST"})
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     */
+    public function create (Request $request , EntityManagerInterface $entityManager) {
+
+        //Création d'une instance sortie
+        $sortie = new Sortie() ;
+
+        //Création formulaire de sortie
+        $formCreateSortie = $this->createForm(SortieType::class) ;
+
+        //Récupération des données du navigateur et les transmettre au form
+        $formCreateSortie->handleRequest($request) ;
+
+        //Vérification des données du form
+        if ($formCreateSortie->isSubmitted() && $formCreateSortie->isValid()){
+
+            //Enregistrer la sortie en BDD
+            $entityManager->persist($sortie);
+            $entityManager->flush();
+
+            //Message de success
+            $this->addFlash('success', 'Youhou une nouvelle sortie a bien été créée !');
+
+            //Redirection ur le controller
+            return $this->redirectToRoute('sortie_');
+
+
+        }
+
+
+        return $this->render('sortie/create.html.twig', [
+            'formCreateSortie' => $formCreateSortie->createView()
+        ]);
+
+    }
+
+
 
 }

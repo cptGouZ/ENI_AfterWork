@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} : Créer une sortie {% endblock title %}
+
+{% block body %}
+
+    <h2>Créer une sortie</h2>
+    <h3>Organisteur : {{ app.user.prenom }} {{ app.user.nom  }}</h3><br>
+
+    {% form_theme formCreateSortie 'bootstrap_4_horizontal_layout.html.twig' %}
+
+    {{ form_start(formCreateSortie) }}
+
+    <div class="container border border-dark">
+        <div class="row">
+             <div class="col">
+                <div class="mb-3">
+                    {{ form_label(formCreateSortie.nom) }}
+                    {{ form_widget(formCreateSortie.nom) }}
+                    {{ form_errors(formCreateSortie.nom) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(formCreateSortie.dateHeureDebut) }}
+                    {{ form_widget(formCreateSortie.dateHeureDebut) }}
+                    {{ form_errors(formCreateSortie.dateHeureDebut) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(formCreateSortie.dateLimiteInscription) }}
+                    {{ form_widget(formCreateSortie.dateLimiteInscription) }}
+                    {{ form_errors(formCreateSortie.dateLimiteInscription) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(formCreateSortie.nbInscriptionMax) }}
+                    {{ form_widget(formCreateSortie.nbInscriptionMax) }}
+                    {{ form_errors(formCreateSortie.nbInscriptionMax) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(formCreateSortie.duree) }}
+                    {{ form_widget(formCreateSortie.duree) }}
+                    {{ form_errors(formCreateSortie.duree) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(formCreateSortie.infosSortie) }}
+                    {{ form_widget(formCreateSortie.infosSortie) }}
+                    {{ form_errors(formCreateSortie.infosSortie) }}
+                </div>
+             </div>
+
+            <div class="col">
+                <div class="mb-3">
+                    {{ form_label(formCreateSortie.campus) }}
+                    {{ form_widget(formCreateSortie.campus) }}
+                    {{ form_errors(formCreateSortie.campus) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(formCreateSortie.dateHeureDebut) }}
+
+                </div>
+                <div class="mb-3">
+                    {{ form_label(formCreateSortie.dateLimiteInscription) }}
+
+                </div>
+                <div class="mb-3">
+                    {{ form_label(formCreateSortie.nbInscriptionMax) }}
+
+                </div>
+                <div class="mb-3">
+                    {{ form_label(formCreateSortie.duree) }}
+
+                </div>
+                <div class="mb-3">
+                    {{ form_label(formCreateSortie.infosSortie) }}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock body %}
