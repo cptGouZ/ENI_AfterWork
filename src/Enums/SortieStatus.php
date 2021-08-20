@@ -4,10 +4,10 @@ namespace App\Enums;
 
 abstract class SortieStatus
 {
-    const CREEE = 0;
-    const OUVERTE = 1;
-    const FERME = 2;
-    const EN_COURS = 3;
-    const PASSEE = 4;
-    const ANNULEE = 5;
+    const CREEE = 'Créée';
+    const OUVERTE = 'Ouverte';
+    const FERME = 'Fermée';
+    const EN_COURS = 'En cours';
+    const PASSEE = 'Passée';
+    const ANNULEE = 'Annulée';
 }

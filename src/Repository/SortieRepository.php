@@ -46,29 +46,26 @@ class SortieRepository extends ServiceEntityRepository
                 ->setParameter('user', $user);
         }
 
-        //Filtre sur les inscriptions pour lesquelles je suis inscrit
-        if( !empty($options[SortieSearchOptions::INSCRIT_OUI])
-            && $options[SortieSearchOptions::INSCRIT_OUI] === true
-            && !empty($options[SortieSearchOptions::INSCRIT_NON])
-            && $options[SortieSearchOptions::INSCRIT_NON] === false) {
-            $query->andWhere('u = :user')
-                ->setParameter('user', $user);
-        }
+        //Filtre si une des deux checkbox inscrit/pas inscrit est coché
+        if($options[SortieSearchOptions::INSCRIT_OUI] ?? false xor $options[SortieSearchOptions::INSCRIT_NON] ?? false){
+            //Filtre sur les inscriptions pour lesquelles je suis inscrit
+            if( $options[SortieSearchOptions::INSCRIT_OUI] ?? false) {
+                $query->andWhere('u = :user')
+                    ->setParameter('user', $user);
+            }
 
-        //Filtre sur les inscriptions pour lesquelles je ne suis pas inscrit
-        if( !empty($options[SortieSearchOptions::INSCRIT_OUI])
-            && $options[SortieSearchOptions::INSCRIT_OUI] === false
-            && !empty($options[SortieSearchOptions::INSCRIT_NON])
-            && $options[SortieSearchOptions::INSCRIT_NON] === true ) {
-            //Recherche des sorties où je suis inscrit pour les sortir de la requête finale
-            $sortiesInscrit= $this->createQueryBuilder('s')
-                ->join('s.inscrits', 'u')
-                ->andWhere( 'u = :user' )
-                    ->setParameter('user', $user)
-                ->getQuery()->getResult();
-            if(!empty($sortiesInscrit)) {
-                $query->andWhere('s NOT IN (:sortiesInscrits)')
-                    ->setParameter('sortiesInscrits', $sortiesInscrit);
+            //Filtre sur les inscriptions pour lesquelles je ne suis pas inscrit
+            if( $options[SortieSearchOptions::INSCRIT_NON] ?? false) {
+                //Recherche des sorties où je suis inscrit pour les sortir de la requête finale
+                $sortiesInscrit= $this->createQueryBuilder('s')
+                    ->join('s.inscrits', 'u')
+                    ->andWhere( 'u = :user' )
+                        ->setParameter('user', $user)
+                    ->getQuery()->getResult();
+                if(!empty($sortiesInscrit)) {
+                    $query->andWhere('s NOT IN (:sortiesInscrits)')
+                        ->setParameter('sortiesInscrits', $sortiesInscrit);
+                }
             }
         }
 

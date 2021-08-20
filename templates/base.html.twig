@@ -29,7 +29,14 @@
                         </ul>
                     </nav>
                 </header>
-
+            {# APP FLASH #}
+                {%  for group, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ group }}" role=""alert>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
             {# MAIN #}
                 <main>{% block body %}{% endblock body %}</main>
 

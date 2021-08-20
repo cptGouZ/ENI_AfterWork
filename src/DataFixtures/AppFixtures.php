@@ -39,7 +39,6 @@ class AppFixtures extends Fixture
                 case 1 : $etats[$i]->setLibelle('published'); break;
                 case 2 : $etats[$i]->setLibelle('cancelled'); break;
             }
-            $etats[$i]->setLibelle($faker->word);
             $manager->persist($etats[$i]);
         }
         $manager->flush();

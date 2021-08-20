@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Campus;
 use App\Entity\Sortie;
+use DateTime;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -32,10 +33,15 @@ class SortieSearchType extends AbstractType
                 'label' => 'Nom de la sortie :',
             ])
             ->add('date_debut', DateType::class, [
-                'label' => 'Entre :'
+                'label' => 'Entre :',
+                'widget' => 'single_text',
+                'data' => new DateTime('now'),
             ])
             ->add('date_fin', DateType::class, [
-                'label' => 'et'
+
+                'label' => 'et',
+                'widget' => 'single_text',
+                'data' => date_add(new DateTime('now'), new \DateInterval('P1M') ),
             ])
             ->add('mes_sorties', CheckboxType::class, [
                 'label' => 'Sorties que j\'organise'

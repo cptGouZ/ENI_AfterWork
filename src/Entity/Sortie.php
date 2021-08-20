@@ -220,7 +220,7 @@ class Sortie
     }
 
     public function getStatut() :string {
-        $statut = '';
+        $statut = 'toto';
 
         $statut = $this->etat->getLibelle() === 'created' ? SortieStatus::CREEE : $statut;
 

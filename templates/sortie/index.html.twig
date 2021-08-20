@@ -30,9 +30,9 @@
         <thead>
             <tr>
                 <th scope="col">Nom de la sortie</th>
+                <th scope="col">Date limite d'inscription</th>
                 <th scope="col">Date de la sortie</th>
-                <th scope="col">Clôture</th>
-                <th scope="col">inscrtis/places</th>
+                <th scope="col">Nb inscrits/Nb places</th>
                 <th scope="col">Etat</th>
                 <th scope="col">Inscrit</th>
                 <th scope="col">Organistateur</th>
@@ -43,10 +43,10 @@
             {% for sortie in sorties %}
                 <tr>
                     <td>{{ sortie.nom }}</td>
-                    <td>{{ sortie.dateheuredebut | date("d/m/Y") }}</td>
                     <td>{{ sortie.datelimiteinscription | date("d/m/Y h:i") }}</td>
+                    <td>{{ sortie.dateheuredebut | date("d/m/Y") }}</td>
                     <td>{{ sortie.inscrits | length }}/{{ sortie.nbinscriptionmax }}</td>
-                    <td>{{ sortie.etat.libelle }}</td>
+                    <td>{{ sortie.getStatut() }}</td>
                     <td>{{ app.user in sortie.inscrits ? 'oui' : 'non'}}</td>
                     <td>{{ sortie.organisateur.prenom | capitalize }}{{ sortie.organisateur.nom | capitalize }}</td>
                     <td>
@@ -56,11 +56,11 @@
                             {% if sortie.getStatut() == constant('App\\Enums\\SortieStatus::OUVERTE') %}
                                 {# S'inscrire #}
                                 {% if app.user not in sortie.inscrits %}
-                                    <a href="http://google.com">S'inscrire</a>
+                                    <a href="{{ path('sortie_inscrire', {'id': sortie.id}) }}">S'inscrire</a>
                                 {% endif %}
                                 {# Se désinscrire #}
                                 {% if app.user in sortie.inscrits %}
-                                    <a href="http://google.com">Se désinscrire</a>
+                                    <a href="{{ path('sortie_desinscrire', {'id': sortie.id}) }}">Se désinscrire</a>
                                 {% endif %}
                             {% endif %}
                         {% endif %}
