@@ -48,19 +48,33 @@
                     <td>{{ sortie.inscrits | length }}/{{ sortie.nbinscriptionmax }}</td>
                     <td>{{ sortie.etat.libelle }}</td>
                     <td>{{ app.user in sortie.inscrits ? 'oui' : 'non'}}</td>
-                    <td>{{ sortie.organisateur.prenom | capitalize }} {{ sortie.organisateur.nom | capitalize }}</td>
+                    <td>{{ sortie.organisateur.prenom | capitalize }}{{ sortie.organisateur.nom | capitalize }}</td>
                     <td>
-                        {% if app.user in sortie.inscrits %}
-                            <a href="http://google.com">Se désinscrire</a>
+                        {# Je suis participant #}
+                        {% if sortie.organisateur != app.user %}
+                            <a href="http://google.com">Afficher</a>
+                            {% if sortie.getStatut() == constant('App\\Enums\\SortieStatus::OUVERTE') %}
+                                {# S'inscrire #}
+                                {% if app.user not in sortie.inscrits %}
+                                    <a href="http://google.com">S'inscrire</a>
+                                {% endif %}
+                                {# Se désinscrire #}
+                                {% if app.user in sortie.inscrits %}
+                                    <a href="http://google.com">Se désinscrire</a>
+                                {% endif %}
+                            {% endif %}
                         {% endif %}
-                        {% if app.user not in sortie.inscrits %}
-                            <a href="http://google.com">S'inscrire</a>
-                        {% endif %}
+
+                        {# Je suis organisateur : Modifier, Publier, Annuler #}
                         {% if sortie.organisateur == app.user %}
                             <a href="http://google.com">Publier</a>
                             <a href="http://google.com">Modifier</a>
                         {% endif %}
                     </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8" style="text-align: center">Aucune sortie ne correspond à ces filtres</td>
                 </tr>
             {% endfor %}
         </tbody>

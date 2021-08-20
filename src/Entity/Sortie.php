@@ -2,12 +2,14 @@
 
 namespace App\Entity;
 
+use App\Enums\SortieStatus;
 use App\Repository\SortieRepository;
 use DateInterval;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -58,7 +60,7 @@ class Sortie
      * @ORM\ManyToOne(targetEntity=Etat::class)
      * @ORM\JoinColumn(name="id_etat", nullable=false)
      */
-    private $etat;
+    private Etat $etat;
 
     /**
      * @ORM\ManyToOne(targetEntity=Campus::class)
@@ -106,8 +108,7 @@ class Sortie
     }
 
     public function getDateHeureFin(): ?\DateTimeInterface {
-        $dateTimeDebut = new DateTime(date_format($this->getDateHeureDebut(), 'Y/m/d h:i'));
-        return date_add($dateTimeDebut, new DateInterval('PT'.$this->duree.'M'));
+        return date_add($this->dateHeureDebut, new DateInterval('PT'.$this->duree.'M'));
     }
 
     public function getDateHeureDebut(): ?\DateTimeInterface {
@@ -216,5 +217,44 @@ class Sortie
         $this->organisateur = $organisateur;
 
         return $this;
+    }
+
+    public function getStatut() :string {
+        $statut = '';
+
+        $statut = $this->etat->getLibelle() === 'created' ? SortieStatus::CREEE : $statut;
+
+        if($this->etat->getLibelle() === 'published' ){
+            //published et date limite d'inscription est dans le future => Ouverte
+            if( date_diff(new DateTime('now'), $this->dateLimiteInscription)->invert === 0) {
+                $statut = SortieStatus::OUVERTE;
+            }
+
+            //date limite d'inscription dans le passée => Fermée
+            if( date_diff($this->dateLimiteInscription, new DateTime('now') )->invert === 0) {
+                $statut = SortieStatus::FERME;
+            }
+
+            //date début < now < date de fin => En cours
+            if( date_diff($this->getDateHeureDebut(), new DateTime('now'))->invert === 0
+                && date_diff(new DateTime('now'), $this->getDateHeureFin())){
+                $statut = SortieStatus::EN_COURS;
+            }
+        }
+
+
+        //Date de fin dans le passée
+        if(date_diff( $this->getDateHeureFin(), new DateTime('now') )->invert === 0){
+            $statut = SortieStatus::PASSEE;
+        }
+
+        //En dernier contrôle d'une sortie annulée ou ( sortie créée avec et date d'inscription dépassée )
+        if( $this->etat->getLibelle() === 'cancelled' ||
+            ($this->etat->getLibelle() === 'created' &&
+                date_diff( $this->getDateLimiteInscription(), new DateTime('now') )->invert === 0)
+        ){
+            $statut = SortieStatus::ANNULEE;
+        }
+        return $statut;
     }
 }

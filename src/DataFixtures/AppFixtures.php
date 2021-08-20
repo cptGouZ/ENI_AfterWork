@@ -32,8 +32,13 @@ class AppFixtures extends Fixture
         $faker = Faker\Factory::create();
         // ETATS
         $etats = Array();
-        for ($i = 0; $i < 4; $i++) {
+        for ($i = 0; $i < 3; $i++) {
             $etats[$i] = new Etat();
+            switch ($i){
+                case 0 : $etats[$i]->setLibelle('created'); break;
+                case 1 : $etats[$i]->setLibelle('published'); break;
+                case 2 : $etats[$i]->setLibelle('cancelled'); break;
+            }
             $etats[$i]->setLibelle($faker->word);
             $manager->persist($etats[$i]);
         }
@@ -41,9 +46,14 @@ class AppFixtures extends Fixture
 
         // CAMPUS
         $campus[] = Array() ;
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 4; $i++) {
             $campus[$i] = new Campus();
-            $campus[$i]->setNom($faker->city);
+            switch ($i){
+                case 0 : $campus[$i]->setNom('Saint-Herblain'); break;
+                case 1 : $campus[$i]->setNom('Niort'); break;
+                case 2 : $campus[$i]->setNom('Rennes'); break;
+                case 3 : $campus[$i]->setNom('Angers'); break;
+            }
             $manager->persist($campus[$i]);
         }
         $manager->flush();
