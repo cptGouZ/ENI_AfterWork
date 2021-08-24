@@ -15,7 +15,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass=SortieRepository::class)
  * @ORM\Table(name="sorties")
- * @UniqueEntity(fields={"date_heure_debut", "nom"}, message="Un évènement existe déjà avec ce nom et à cette date")
+ * @UniqueEntity(fields={"dateHeureDebut", "nom"}, message="Un évènement existe déjà avec ce nom et à cette date")
  */
 class Sortie
 {
@@ -107,15 +107,15 @@ class Sortie
         return $this;
     }
 
-    public function getDateHeureFin(): ?\DateTimeInterface {
+    public function getDateHeureFin(): ?\DateTime {
         return date_add($this->dateHeureDebut, new DateInterval('PT'.$this->duree.'M'));
     }
 
-    public function getDateHeureDebut(): ?\DateTimeInterface {
+    public function getDateHeureDebut(): ?\DateTime {
         return $this->dateHeureDebut;
     }
 
-    public function setDateHeureDebut(\DateTimeInterface $dateHeureDebut): self {
+    public function setDateHeureDebut(\DateTime $dateHeureDebut): self {
         $this->dateHeureDebut = $dateHeureDebut;
         return $this;
     }
@@ -129,11 +129,11 @@ class Sortie
         return $this;
     }
 
-    public function getDateLimiteInscription(): ?\DateTimeInterface {
+    public function getDateLimiteInscription(): ?\DateTime {
         return $this->dateLimiteInscription;
     }
 
-    public function setDateLimiteInscription(\DateTimeInterface $dateLimiteInscription): self {
+    public function setDateLimiteInscription(\DateTime $dateLimiteInscription): self {
         $this->dateLimiteInscription = $dateLimiteInscription;
         return $this;
     }

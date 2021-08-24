@@ -39,15 +39,17 @@ class VilleController extends AbstractController
     public function ajouter (Request $request, EntityManagerInterface $entityManager): Response
     {
         $ville = new Ville();
+
         $formVille = $this->createForm(VilleType::class, $ville, []);
         $formVille->handleRequest($request);
         if ($formVille->isSubmitted() && $formVille->isValid()) {
             $entityManager->persist($ville);
             $entityManager->flush();
-            return $this->render('ville/index.html.twig', [
-                'controller_name' => 'VilleController',
-            ]);
+
+            $this->addFlash('success', 'La ville a bien été ajoutée !');
+           return $this->redirectToRoute('lieu_create');
         }
-        return $this->render('ville/ajouter.html.twig', ['formVille' => $formVille->createView()]);
+        return $this->render('ville/ajouter.html.twig', [
+            'formVille' => $formVille->createView()]);
     }
 }

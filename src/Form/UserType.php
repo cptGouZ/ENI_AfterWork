@@ -15,9 +15,17 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Security;
 
 class UserType extends AbstractType
 {
+
+    private $security = null;
+
+    public function __construct(Security $security){
+        $this->security = $security;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
@@ -27,6 +35,7 @@ class UserType extends AbstractType
                 'label'=> 'Pseudo :',
                 'trim' => true ,
                 'required' => true,
+                'disabled' => $options['is_view'],
             ]);
 
 
@@ -36,6 +45,7 @@ class UserType extends AbstractType
                     'label'=> 'Prénom :',
                     'trim' => true ,
                     'required' => true,
+                    'disabled' => $options['is_view'],
                 ]);
 
         //NOM
@@ -44,6 +54,7 @@ class UserType extends AbstractType
                     'label'=> 'Nom :',
                     'trim' => true ,
                     'required' => true,
+                    'disabled' => $options['is_view'],
                 ]) ;
 
         //TELEPHONE
@@ -52,6 +63,7 @@ class UserType extends AbstractType
                     'label'=> 'Téléphone :',
                     'trim' => true ,
                     'required' => true,
+                    'disabled' => $options['is_view'],
                 ]);
 
         //EMAIL
@@ -60,6 +72,7 @@ class UserType extends AbstractType
                     'label' => 'Email :',
                     'trim' => true ,
                     'required' => true,
+                    'disabled' => $options['is_view'],
                 ]);
 
         //PASSWORD
@@ -70,35 +83,31 @@ class UserType extends AbstractType
                     'required' => true ,
                     'first_options' =>['label' => 'Mot de passe :'],
                     'second_options' =>['label' => 'Confirmation Mot de passe :'],
+                    'disabled' => $options['is_view'],
 
                 ]);
 
         //CAMPUS
-           $builder
-                ->add('campus' , EntityType::class, [
+            $builder
+                ->add('campus' , TextType::class, [
                     'label'=> 'Campus :',
-                    'required' => true,
-                    'class' => Campus::class,
-                    'choice_label' => function($campus) {
-                    return $campus->getNom() ;
-                    }
-                ]) ;
+                    'trim' => true ,
+                    'data' => $this->security->getUser()->getCampus()->getNom(),
+                    'disabled' => true ,
+                ]);
 
         //BOUTON ENREGISTER
              $builder->add('submit', SubmitType::class, [
                  'label' => 'Enregistrer',
                 ]);
 
-        //BOUTON ANNULER
-             $builder->add('annuler', SubmitType::class, [
-                 'label' => 'Annuler',
-                ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'is_view' => false,
         ]);
     }
 }

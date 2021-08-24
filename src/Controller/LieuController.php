@@ -2,10 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\Lieu;
+use App\Form\LieuType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
+/**
+ * @Route("/lieu", name="lieu_")
+ */
 class LieuController extends AbstractController
 {
 
@@ -17,41 +25,41 @@ class LieuController extends AbstractController
     public function create (Request $request , EntityManagerInterface $entityManager) {
 
         //Création d'une instance sortie
-        $sortie = new Sortie() ;
+        $lieu = new Lieu() ;
 
         //Création formulaire de sortie
-        $formCreateSortie = $this->createForm(SortieType::class) ;
+        $formLieu = $this->createForm('App\Form\LieuType', $lieu) ;
 
         //Récupération des données du navigateur et les transmettre au form
-        $formCreateSortie->handleRequest($request) ;
+        $formLieu->handleRequest($request) ;
 
         //Vérification des données du form
-        if ($formCreateSortie->isSubmitted() && $formCreateSortie->isValid()){
+        if ($formLieu->isSubmitted() && $formLieu->isValid()){
 
             //Enregistrer la sortie en BDD
-            $entityManager->persist($sortie);
+            $entityManager->persist($lieu);
             $entityManager->flush();
 
             //Message de success
-            $this->addFlash('success', 'Youhou une nouvelle sortie a bien été créée !');
+            $this->addFlash('success', 'Un nouveau lieu est disponible !');
 
             //Redirection sur le controller
-            return $this->redirectToRoute('sortie_');
+            return $this->redirectToRoute('lieu_create');
 
         }
 
-        return $this->render('sortie/create.html.twig', [
-            'formCreateSortie' => $formCreateSortie->createView()
+        return $this->render('lieu/create.html.twig', [
+            'formLieu' => $formLieu->createView()
         ]);
 
     }
-    /**
-     * @Route("/lieu", name="lieu")
-     */
-    public function index(): Response
-    {
-        return $this->render('lieu/index.html.twig', [
-            'controller_name' => 'LieuController',
-        ]);
-    }
+//    /**
+//     * @Route("/lieu", name="lieu")
+//     */
+//    public function index(): Response
+//    {
+//        return $this->render('lieu/index.html.twig', [
+//            'controller_name' => 'LieuController',
+//        ]);
+//    }
 }

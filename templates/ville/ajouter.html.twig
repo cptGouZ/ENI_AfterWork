@@ -2,7 +2,21 @@
 
 {% block body %}
 
+<h2>Ajouter une ville</h2>
 
     {% form_theme formVille 'bootstrap_5_horizontal_layout.html.twig' %}
-    {{ form(formVille) }}
+    {{ form_start(formVille) }}
+
+<div class="container border border-dark">
+    <div class="mb-3 text-center">
+        {{ form_row(formVille.nom) }}
+        {{ form_row(formVille.codePostal) }}
+        {{ form_widget(formVille.submit) }}
+         <a href="{{ url('sortie_index') }}" class="btn btn-secondary">Annuler</a>
+    </div>
+</div>
+
+    {{ form_end(formVille) }}
+
+
 {% endblock %}

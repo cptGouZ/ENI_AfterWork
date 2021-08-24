@@ -7,10 +7,13 @@ use App\Entity\Lieu;
 use App\Entity\Sortie;
 use App\Entity\User;
 use App\Enums\SortieSearchOptions;
+use App\Entity\Ville;
 use App\Form\SortieSearchType;
 use App\Form\SortieType;
 use DateTime;
+use App\Repository\EtatRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -60,24 +63,33 @@ class SortieController extends AbstractController
         $sortie = new Sortie() ;
 
         //Création formulaire de sortie
-        $formCreateSortie = $this->createForm(SortieType::class) ;
+        $formCreateSortie = $this->createForm('App\Form\SortieType', $sortie) ;
 
         //Récupération des données du navigateur et les transmettre au form
         $formCreateSortie->handleRequest($request) ;
+
+        $sortie->setOrganisateur($userConnect);
+        $sortie->setCampus($userConnect->getCampus());
+        $etat = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'created']);
+        $sortie->setEtat($etat);
 
         //Vérification des données du form
         if ($formCreateSortie->isSubmitted() && $formCreateSortie->isValid()){
 
             //Enregistrer la sortie en BDD
             $entityManager->persist($sortie);
+
             $entityManager->flush();
 
             //Message de success
             $this->addFlash('success', 'Youhou une nouvelle sortie a bien été créée !');
 
             //Redirection sur le controller
-            return $this->redirectToRoute('sortie_');
+            return $this->redirectToRoute('sortie_create');
+
         }
+
+
         return $this->render('sortie/create.html.twig', [
             'formCreateSortie' => $formCreateSortie->createView()
         ]);

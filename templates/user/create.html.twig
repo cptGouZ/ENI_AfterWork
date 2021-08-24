@@ -4,10 +4,13 @@
 
 {% block body %}
 
+    <h2>Modifier mon profil</h2>
+
     {% form_theme formUser 'bootstrap_4_horizontal_layout.html.twig' %}
 
     {{ form_start(formUser) }}
 
+    <div class="container border border-dark">
         <div class="mb-3">
             {{ form_label(formUser.pseudo) }}
             {{ form_widget(formUser.pseudo) }}
@@ -49,8 +52,9 @@
         </div>
 
         <div class="mb-3">
-            {{ form_widget(formUser.annuler) }}
+            <a href="{{ url('sortie_index') }}" class="btn btn-secondary">Annuler</a>
         </div>
+    </div>
 
     {{ form_end(formUser) }}
 

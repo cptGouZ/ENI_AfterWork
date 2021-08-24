@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} : Ajouter un lieu {% endblock title %}
+
+{% block body %}
+
+    <h2>Ajouter un nouveau Lieu</h2>
+
+    {{ form_start(formLieu) }}
+
+<div class="container border border-dark">
+    <div class="mb-3">
+        {{ form_label(formLieu.nom) }}
+        {{ form_widget(formLieu.nom) }}
+        {{ form_errors(formLieu.nom) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(formLieu.rue) }}
+        {{ form_widget(formLieu.rue) }}
+        {{ form_errors(formLieu.rue) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(formLieu.ville) }}
+        {{ form_widget(formLieu.ville) }}
+        {{ form_errors(formLieu.ville) }}
+    </div>
+
+        {% form_theme formLieu 'bootstrap_4_horizontal_layout.html.twig' %}
+    <div class="row">
+        <div class="col">
+                {{ form_widget(formLieu.submit) }}
+                <a href="{{ url('sortie_index') }}" class="btn btn-primary">Annuler</a>
+                <a href="{{ url('ville_ajouter') }}" class="btn btn-secondary">Ajouter une ville</a>
+        </div>
+    </div>
+</div>
+    {{ form_end(formLieu) }}
+{%  endblock body %}

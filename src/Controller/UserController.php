@@ -85,4 +85,26 @@ class UserController extends AbstractController
             'user' => $userConnect,
         ]);
     }
+
+    /**
+     * @Route(path="view" , name="view" , methods={"GET" , "POST"})
+     */
+    public function view(Request $request , EntityManagerInterface $entityManager)
+    {
+        /**@var  User $userConnect */
+
+        $userConnect = $this->getUser() ;
+
+        // Création du formulaire
+        $formUser = $this->createForm('App\Form\UserType', $userConnect,array('is_view' => true));
+
+        // Récupérer les données envoyées par le navigateur et les transmettre au formulaire
+        $formUser->handleRequest($request);
+
+
+        return $this->render('user/view.html.twig', [
+            'formUser' => $formUser->createView(),
+            'user' => $userConnect,
+        ]);
+    }
 }

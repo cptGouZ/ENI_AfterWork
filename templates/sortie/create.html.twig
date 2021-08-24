@@ -4,7 +4,7 @@
 
 {% block body %}
 
-    <h2>Créer une sortie</h2><h5>Organisteur : {{ app.user.prenom }} {{ app.user.nom  }}</h5><br>
+    <h2>Créer une sortie</h2><h5>Organisateur : {{ app.user.prenom }} {{ app.user.nom  }}</h5><br>
 
     {% form_theme formCreateSortie 'bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -19,19 +19,19 @@
                     {{ form_errors(formCreateSortie.nom) }}
                 </div>
                 <div class="mb-3">
-                    {{ form_label(formCreateSortie.dateHeureDebut) }}
-                    {{ form_widget(formCreateSortie.dateHeureDebut) }}
-                    {{ form_errors(formCreateSortie.dateHeureDebut) }}
+                    {{ form_label(formCreateSortie.dateheuredebut) }}
+                    {{ form_widget(formCreateSortie.dateheuredebut) }}
+                    {{ form_errors(formCreateSortie.dateheuredebut) }}
                 </div>
                 <div class="mb-3">
-                    {{ form_label(formCreateSortie.dateLimiteInscription) }}
-                    {{ form_widget(formCreateSortie.dateLimiteInscription) }}
-                    {{ form_errors(formCreateSortie.dateLimiteInscription) }}
+                    {{ form_label(formCreateSortie.datelimiteinscription) }}
+                    {{ form_widget(formCreateSortie.datelimiteinscription) }}
+                    {{ form_errors(formCreateSortie.datelimiteinscription) }}
                 </div>
                 <div class="mb-3">
-                    {{ form_label(formCreateSortie.nbInscriptionMax) }}
-                    {{ form_widget(formCreateSortie.nbInscriptionMax) }}
-                    {{ form_errors(formCreateSortie.nbInscriptionMax) }}
+                    {{ form_label(formCreateSortie.nbinscriptionmax) }}
+                    {{ form_widget(formCreateSortie.nbinscriptionmax) }}
+                    {{ form_errors(formCreateSortie.nbinscriptionmax) }}
                 </div>
                 <div class="mb-3">
                     {{ form_label(formCreateSortie.duree) }}
@@ -39,9 +39,9 @@
                     {{ form_errors(formCreateSortie.duree) }}
                 </div>
                 <div class="mb-3">
-                    {{ form_label(formCreateSortie.infosSortie) }}
-                    {{ form_widget(formCreateSortie.infosSortie) }}
-                    {{ form_errors(formCreateSortie.infosSortie) }}
+                    {{ form_label(formCreateSortie.infossortie) }}
+                    {{ form_widget(formCreateSortie.infossortie) }}
+                    {{ form_errors(formCreateSortie.infossortie) }}
                 </div>
              </div>
 
@@ -59,28 +59,23 @@
                 <div class="mb-3">
                     {{ form_label(formCreateSortie.lieu) }}
                     {{ form_widget(formCreateSortie.lieu) }}
-                    {{ form_errors(formCreateSortie.lieu) }}
-                </div>
-                <div class="mb-3">
-                    {{ form_label(formCreateSortie.rue) }}
-                    {{ form_widget(formCreateSortie.rue) }}
-                    {{ form_errors(formCreateSortie.rue) }}
+                    {{ form_errors(formCreateSortie.lieu) }}<br>
+                    <a href="{{ url('lieu_create') }}" class="btn-primary btn">Ajouter un Lieu</a>
                 </div>
 
-                <div class="mb-3">
-                    {{ form_label(formCreateSortie.cpo) }}
-                    {{ form_widget(formCreateSortie.cpo) }}
-                    {{ form_errors(formCreateSortie.cpo) }}
-                </div>
-            </div>
         </div>
         <div class="row text-center">
             <div class="col ">
                 {{ form_widget(formCreateSortie.submit) }}
                 {{ form_widget(formCreateSortie.publier) }}
-                {{ form_widget(formCreateSortie.annuler) }}
+                <a href="{{ url('sortie_index') }}" class="btn btn-secondary">Annuler</a>
             </div>
         </div>
     </div>
 
+    {{ form_end(formCreateSortie) }}
 {% endblock body %}
+
+
+{% block javascripts %}
+{% endblock javascripts %}
