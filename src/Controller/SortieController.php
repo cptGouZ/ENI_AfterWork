@@ -138,7 +138,7 @@ class SortieController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @Route(path="/{id}/inscrire", requirements={"id"="\d+"}, name="inscrire")
      */
-    public function inscrire(Request $request, EntityManagerInterface $entityManager): Response{
+    public function inscrire(Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer): Response{
         /** @var User $user */
         /** @var Sortie $sortie */
 
@@ -152,14 +152,18 @@ class SortieController extends AbstractController
 
         //Contrôles back
         if($sortie == null){
-            $this->addFlash('danger', 'Cette sortie n\'existe pas');
-            return $this->redirectToRoute('sortie_json_refresh');
+            //$this->addFlash('danger', 'Cette sortie n\'existe pas');
+            $serialized = $serializer->serialize(['hasError'=>'Cette sortie n\'existe pas'], 'json');
+            return new JsonResponse($serialized);
+            //return $this->redirectToRoute('sortie_json_refresh');
         }
         if(in_array($user, $sortie->getInscrits()->getValues())){
             $this->addFlash('danger','Tu es déjà inscrit à cette sortie !');
             return $this->redirectToRoute('sortie_json_refresh');
         }
         if(count($sortie->getInscrits()) >= $sortie->getNbInscriptionMax()) {
+            $serialized = $serializer->serialize(['hasError'=>'Cette sortie n\'existe pas'], 'json');
+            return new JsonResponse($serialized);
             $this->addFlash('danger','Désolé mais il n\'y a plus de place');
             return $this->redirectToRoute('sortie_json_refresh');
         }

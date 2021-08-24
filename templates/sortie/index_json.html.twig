@@ -3,6 +3,8 @@
 {% block title %}Hello SortieController!{% endblock %}
 
 {% block body %}
+    <div id="app_flash"></div>
+
     Date du jour : {{ "now"|date("d/m/Y") }} <br>
     Participant : {{ app.user.pseudo | capitalize }} <br>
 
@@ -44,44 +46,6 @@
             </tr>
         </thead>
         <tbody>
-{#            {% for sortie in sorties %}#}
-{#                <tr>#}
-{#                    <td>{{ sortie.nom }}</td>#}
-{#                    <td>{{ sortie.datelimiteinscription | date("d/m/Y h:i") }}</td>#}
-{#                    <td>{{ sortie.dateheuredebut | date("d/m/Y") }}</td>#}
-{#                    <td>{{ sortie.inscrits | length }}/{{ sortie.nbinscriptionmax }}</td>#}
-{#                    <td>{{ sortie.getStatut() }}</td>#}
-{#                    <td>{{ app.user in sortie.inscrits ? 'oui' : 'non'}}</td>#}
-{#                    <td>{{ sortie.organisateur.prenom | capitalize }}{{ sortie.organisateur.nom | capitalize }}</td>#}
-{#                    <td>#}
-{#                        #}{# Je suis participant #}
-{#                        {% if sortie.organisateur != app.user %}#}
-{#                            <a href="http://google.com">Afficher</a>#}
-{#                            {% if sortie.getStatut() == constant('App\\Enums\\SortieStatus::OUVERTE') %}#}
-{#                                #}{# S'inscrire #}
-{#                                {% if app.user not in sortie.inscrits %}#}
-{#                                    <a href="{{ path('sortie_inscrire', {'id': sortie.id}) }}">S'inscrire</a>#}
-{#                                {% endif %}#}
-{#                                #}{# Se désinscrire #}
-{#                                {% if app.user in sortie.inscrits %}#}
-{#                                    <a href="{{ path('sortie_desinscrire', {'id': sortie.id}) }}">Se désinscrire</a>#}
-{#                                {% endif %}#}
-{#                            {% endif %}#}
-{#                        {% endif %}#}
-
-{#                        #}{# Je suis organisateur : Modifier, Publier, Annuler #}
-{#                        {% if sortie.organisateur == app.user %}#}
-{#                            <a href="{{ path('sortie_publier', {'id': sortie.id}) }}">Publier</a>#}
-{#                            <a href="http://google.com">Modifier</a>#}
-{#                            <a href="{{ path('sortie_annuler', {'id': sortie.id}) }}">Annuler</a>#}
-{#                        {% endif %}#}
-{#                    </td>#}
-{#                </tr>#}
-{#            {% else %}#}
-{#                <tr>#}
-{#                    <td colspan="8" style="text-align: center">Aucune sortie ne correspond à ces filtres</td>#}
-{#                </tr>#}
-{#            {% endfor %}#}
         </tbody>
     </table>
 {% endblock %}
@@ -119,7 +83,14 @@
                 mode: "same-origin",
                 dataType: "json"
             })
-                .then(response => response.json())
+                .then(
+                    function(response) {
+                        if(response.ok) {
+                            return response.json();
+                        }
+                    throw new Error('Something went wrong.');
+                })
+                //.then(response => response.json())
                 .then(response => {
                     updateView(JSON.parse(response), event);
                 })
