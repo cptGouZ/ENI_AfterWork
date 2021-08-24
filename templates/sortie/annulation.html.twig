@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} : Annuler une sortie {% endblock title %}
+
+{% block body %}
+
+<h2>Annuler une sortie</h2><h5>Organisateur : {{ app.user.prenom }} {{ app.user.nom  }}</h5><br>
+    {% form_theme formAnnulationSortie 'bootstrap_4_horizontal_layout.html.twig' %}
+    Nom : {{ sortie.nom }}<br>
+    Date de la sortie : {{ sortie.dateHeureDebut | date}}<br>
+    Campus : {{ sortie.campus.nom }}<br>
+    Lieu : {{ sortie.lieu.rue }}<br>
+    {{ form_start(formAnnulationSortie) }}
+        <div class="container border border-dark">
+            <div class="row ">
+                <div class="col">
+                    <div class="mb-3">
+                        {{ form_label(formAnnulationSortie.motif) }}
+                        {{ form_widget(formAnnulationSortie.motif) }}
+                        {{ form_errors(formAnnulationSortie.motif) }}
+                    </div>
+                </div>
+            </div>
+            <div class="row text-center">
+                <div class="col ">
+                    {{ form_widget(formAnnulationSortie.submit) }}
+                </div>
+            </div>
+        </div>
+    {{ form_end(formAnnulationSortie) }}
+{% endblock %}
