@@ -30,19 +30,19 @@ class SortieRepository extends ServiceEntityRepository
         ;
 
         //Filtre sur le campus
-        if( !empty( $options[SortieSearchOptions::CAMPUS] ) ) {
+        if( $options[SortieSearchOptions::CAMPUS] ?? false ) {
             $query->andWhere('s.campus = :campus')
                     ->setParameter('campus', $options[SortieSearchOptions::CAMPUS]);
         }
 
         //Filtre sur le nom de la sortie
-        if( !empty( $options[SortieSearchOptions::NOM_CONTIENT] ) ) {
+        if( $options[SortieSearchOptions::NOM_CONTIENT] ?? false ) {
             $query->andWhere('s.nom LIKE :nom')
                 ->setParameter('nom', '%'.$options[SortieSearchOptions::NOM_CONTIENT].'%');
         }
 
         //Filtre sur lesquels je suis organisateur
-        if( !empty( $options[SortieSearchOptions::MES_SORTIES] ) ) {
+        if( $options[SortieSearchOptions::MES_SORTIES] ?? false ) {
             $query->andWhere('s.organisateur < :user')
                 ->setParameter('user', $user);
         }
@@ -63,7 +63,7 @@ class SortieRepository extends ServiceEntityRepository
                     ->andWhere( 'u = :user' )
                         ->setParameter('user', $user)
                     ->getQuery()->getResult();
-                if(!empty($sortiesInscrit)) {
+                if( $sortiesInscrit ?? false ) {
                     $query->andWhere('s NOT IN (:sortiesInscrits)')
                         ->setParameter('sortiesInscrits', $sortiesInscrit);
                 }
@@ -76,19 +76,19 @@ class SortieRepository extends ServiceEntityRepository
         }
 
         //Filtre sur une date de début de période
-        if( !empty( $options[SortieSearchOptions::DATE_DEBUT] ) ) {
-            $dateDebut=new DateTime('now');
-            date_timestamp_set($dateDebut, date_timestamp_get($options[SortieSearchOptions::DATE_DEBUT]));
+        if( $options[SortieSearchOptions::DATE_DEBUT] ?? false ) {
+            //$dateDebut=new DateTime('now');
+            //date_timestamp_set($dateDebut, date_timestamp_get($options[SortieSearchOptions::DATE_DEBUT]));
             $query->andWhere('s.dateHeureDebut > :dateDebutPeriode')
-                ->setParameter('dateDebutPeriode', $dateDebut);
+                ->setParameter('dateDebutPeriode', $options[SortieSearchOptions::DATE_DEBUT]);
         }
 
         //Filtre sur une date de fin de période
-        if( !empty( $options[SortieSearchOptions::DATE_FIN] ) ) {
-            $dateFin=new DateTime('now');
-            date_timestamp_set($dateFin, date_timestamp_get($options[SortieSearchOptions::DATE_FIN]));
+        if( $options[SortieSearchOptions::DATE_FIN] ?? false ) {
+            //$dateFin=new DateTime('now');
+            //date_timestamp_set($dateFin, date_timestamp_get($options[SortieSearchOptions::DATE_FIN]));
             $query->andWhere('s.dateHeureDebut < :dateFinPeriode')
-                ->setParameter('dateFinPeriode', $dateFin);
+                ->setParameter('dateFinPeriode', $options[SortieSearchOptions::DATE_FIN]);
         }
         //dd($query->getQuery()->getSQL());
         return $query->getQuery()->getResult();

@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Etat;
-use App\Entity\Lieu;
 use App\Entity\Sortie;
 use App\Entity\User;
 use App\Enums\SortieSearchOptions;
@@ -15,16 +14,23 @@ use App\Repository\EtatRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
+
 /**
  * @Route("/sortie", name="sortie_")
  */
 class SortieController extends AbstractController
 {
     /**
-     * @Route(path="", name="index", methods={"GET", "POST"})
+     * @Route(path="", name="index1", methods={"GET", "POST"})
      */
     public function index(Request $request, EntityManagerInterface $entityManager): Response {
         /** @var User $user */
@@ -39,6 +45,33 @@ class SortieController extends AbstractController
             foreach(SortieSearchOptions::getConstants() as $option){
                 $searchOptions[$option] = $formSortieSearch->get($option)->getData();
             }
+        }
+        $sorties = $repoSortie->getBySearch($user, $searchOptions);
+        return $this->render('sortie/index.html.twig', [
+            'formSortieSearch' => $formSortieSearch->createView(),
+            'sorties' => $sorties,
+        ]);
+    }
+
+    /**
+     * @Route(path="/json", name="index", methods={"GET", "POST"})
+     */
+    public function indexJson(Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer)
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $repoSortie = $entityManager->getRepository(Sortie::class);
+
+        $formSortieSearch = $this->createForm(SortieSearchType::class,null,[]);
+        $formSortieSearch->handleRequest($request);
+        $searchOptions =[];
+
+        if($request->getContent() !=null){
+            $searchOptions = $request->toArray();
+            $sorties = $repoSortie->getBySearch($user, $searchOptions);
+
+            $serialized = $serializer->serialize($sorties, 'json', ['groups' => ['sorties']]);
+            return new JsonResponse($serialized);
         }
         $sorties = $repoSortie->getBySearch($user, $searchOptions);
         return $this->render('sortie/index.html.twig', [

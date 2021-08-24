@@ -23,7 +23,7 @@
                     {{ form_row(formSortieSearch.inscrit_oui) }}
                     {{ form_row(formSortieSearch.inscrit_non) }}
                     {{ form_row(formSortieSearch.sorties_passees) }}
-                    {{ form_row(formSortieSearch.submit) }}
+{#                    {{ form_row(formSortieSearch.submit) }}#}
                 </div>
             </div>
         {{ form_end(formSortieSearch) }}
@@ -44,44 +44,107 @@
             </tr>
         </thead>
         <tbody>
-            {% for sortie in sorties %}
-                <tr>
-                    <td>{{ sortie.nom }}</td>
-                    <td>{{ sortie.datelimiteinscription | date("d/m/Y h:i") }}</td>
-                    <td>{{ sortie.dateheuredebut | date("d/m/Y") }}</td>
-                    <td>{{ sortie.inscrits | length }}/{{ sortie.nbinscriptionmax }}</td>
-                    <td>{{ sortie.getStatut() }}</td>
-                    <td>{{ app.user in sortie.inscrits ? 'oui' : 'non'}}</td>
-                    <td>{{ sortie.organisateur.prenom | capitalize }}{{ sortie.organisateur.nom | capitalize }}</td>
-                    <td>
-                        {# Je suis participant #}
-                        {% if sortie.organisateur != app.user %}
-                            <a href="http://google.com">Afficher</a>
-                            {% if sortie.getStatut() == constant('App\\Enums\\SortieStatus::OUVERTE') %}
-                                {# S'inscrire #}
-                                {% if app.user not in sortie.inscrits %}
-                                    <a href="{{ path('sortie_inscrire', {'id': sortie.id}) }}">S'inscrire</a>
-                                {% endif %}
-                                {# Se désinscrire #}
-                                {% if app.user in sortie.inscrits %}
-                                    <a href="{{ path('sortie_desinscrire', {'id': sortie.id}) }}">Se désinscrire</a>
-                                {% endif %}
-                            {% endif %}
-                        {% endif %}
+{#            {% for sortie in sorties %}#}
+{#                <tr>#}
+{#                    <td>{{ sortie.nom }}</td>#}
+{#                    <td>{{ sortie.datelimiteinscription | date("d/m/Y h:i") }}</td>#}
+{#                    <td>{{ sortie.dateheuredebut | date("d/m/Y") }}</td>#}
+{#                    <td>{{ sortie.inscrits | length }}/{{ sortie.nbinscriptionmax }}</td>#}
+{#                    <td>{{ sortie.getStatut() }}</td>#}
+{#                    <td>{{ app.user in sortie.inscrits ? 'oui' : 'non'}}</td>#}
+{#                    <td>{{ sortie.organisateur.prenom | capitalize }}{{ sortie.organisateur.nom | capitalize }}</td>#}
+{#                    <td>#}
+{#                        #}{# Je suis participant #}
+{#                        {% if sortie.organisateur != app.user %}#}
+{#                            <a href="http://google.com">Afficher</a>#}
+{#                            {% if sortie.getStatut() == constant('App\\Enums\\SortieStatus::OUVERTE') %}#}
+{#                                #}{# S'inscrire #}
+{#                                {% if app.user not in sortie.inscrits %}#}
+{#                                    <a href="{{ path('sortie_inscrire', {'id': sortie.id}) }}">S'inscrire</a>#}
+{#                                {% endif %}#}
+{#                                #}{# Se désinscrire #}
+{#                                {% if app.user in sortie.inscrits %}#}
+{#                                    <a href="{{ path('sortie_desinscrire', {'id': sortie.id}) }}">Se désinscrire</a>#}
+{#                                {% endif %}#}
+{#                            {% endif %}#}
+{#                        {% endif %}#}
 
-                        {# Je suis organisateur : Modifier, Publier, Annuler #}
-                        {% if sortie.organisateur == app.user %}
-                            <a href="{{ path('sortie_publier', {'id': sortie.id}) }}">Publier</a>
-                            <a href="http://google.com">Modifier</a>
-                            <a href="{{ path('sortie_annuler', {'id': sortie.id}) }}">Annuler</a>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="8" style="text-align: center">Aucune sortie ne correspond à ces filtres</td>
-                </tr>
-            {% endfor %}
+{#                        #}{# Je suis organisateur : Modifier, Publier, Annuler #}
+{#                        {% if sortie.organisateur == app.user %}#}
+{#                            <a href="{{ path('sortie_publier', {'id': sortie.id}) }}">Publier</a>#}
+{#                            <a href="http://google.com">Modifier</a>#}
+{#                            <a href="{{ path('sortie_annuler', {'id': sortie.id}) }}">Annuler</a>#}
+{#                        {% endif %}#}
+{#                    </td>#}
+{#                </tr>#}
+{#            {% else %}#}
+{#                <tr>#}
+{#                    <td colspan="8" style="text-align: center">Aucune sortie ne correspond à ces filtres</td>#}
+{#                </tr>#}
+{#            {% endfor %}#}
         </tbody>
     </table>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+
+        window.addEventListener('load', ()=>{
+            document.getElementById("sortie_search_inscrit_oui").addEventListener('change', updateSearch);
+            document.getElementById("sortie_search_inscrit_non").addEventListener('change', updateSearch);
+            document.getElementById("sortie_search_mes_sorties").addEventListener('change', updateSearch);
+            document.getElementById("sortie_search_sorties_passees").addEventListener('change', updateSearch);
+            document.getElementById("sortie_search_date_debut").addEventListener('change', updateSearch);
+            document.getElementById("sortie_search_nom_contient").addEventListener('change', updateSearch);
+            document.getElementById("sortie_search_campus").addEventListener('change', updateSearch);
+        })
+
+        function updateSearch(event) {
+            //Récupération des valeurs de recherche
+            let optionElements = {
+                inscrit_oui: document.getElementById("sortie_search_inscrit_oui").checked,
+                inscrit_non: document.getElementById("sortie_search_inscrit_non").checked,
+                mes_sorties: document.getElementById("sortie_search_mes_sorties").checked,
+                date_debut: document.getElementById("sortie_search_date_debut").value,
+                date_fin: document.getElementById("sortie_search_date_fin").value,
+                sorties_passees: document.getElementById("sortie_search_sorties_passees").checked,
+                nom_contient: document.getElementById("sortie_search_nom_contient").value,
+                campus: document.getElementById("sortie_search_campus").value,
+            };
+
+            fetch("http://localhost:8000/sortie/json", {
+                method: "POST",
+                body: JSON.stringify(optionElements),
+                mode: "same-origin",
+                dataType: "json"
+            })
+                .then(response => response.json())
+                .then(response => {
+                    updateView(JSON.parse(response));
+                })
+                .catch(error => {
+                    alert("Erreur : " + error)
+                })
+        }
+
+        function updateView(results){
+            console.log(results);
+            let tbody = document.querySelector("tbody");
+            tbody.innerHTML="";
+            for (const element of results) {
+                let trEl = document.createElement('tr');
+                trEl.innerHTML =
+                    "<td>" + element.nom + "</td>" +
+                    "<td>" + new Date(element.dateLimiteInscription).toLocaleDateString() + "</td>" +
+                    "<td>" + new Date(element.dateHeureDebut).toLocaleDateString() + "</td>" +
+                    "<td>" + element.inscrits.length + "/" + element.nbInscriptionMax + "</td>" +
+                    "<td>" + element.etat.libelle + "</td>" +
+                    "<td>" + (element.pseudo === "{{ app.user.pseudo }}" ? 'X' : '') + "</td>" +
+                    "<td>" + element.organisateur.pseudo + "</td>" +
+                    "<td>" + "actions" + "</td>";
+                tbody.append(trEl);
+            }
+        }
+
+    </script>
 {% endblock %}

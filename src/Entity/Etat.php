@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\EtatRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=EtatRepository::class)
@@ -21,6 +22,7 @@ class Etat
     private $id;
 
     /**
+     * @Groups ("sorties")
      * @ORM\Column(name="libelle", type="string", length=20, nullable=true)
      */
     private $libelle;

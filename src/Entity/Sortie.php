@@ -9,8 +9,8 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=SortieRepository::class)
@@ -20,6 +20,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class Sortie
 {
     /**
+     * @Groups ("sorties")
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -27,54 +28,64 @@ class Sortie
     private $id;
 
     /**
+     * @Groups ("sorties")
      * @ORM\Column(name="nom", type="string", length=30)
      */
     private $nom;
 
     /**
+     * @Groups ("sorties")
      * @ORM\Column(name="date_heure_debut", type="datetime")
      */
     private $dateHeureDebut;
 
     /**
+     * @Groups ("sorties")
      * @ORM\Column(name="duree", type="integer")
      */
     private $duree;
 
     /**
+     * @Groups ("sorties")
      * @ORM\Column(name="date_limite_inscription", type="datetime")
      */
     private $dateLimiteInscription;
 
     /**
+     * @Groups ("sorties")
      * @ORM\Column(name="nb_inscription_max", type="integer")
      */
     private $nbInscriptionMax;
 
     /**
+     * @Groups ("sorties")
      * @ORM\Column(name="infos_sortie", type="text", nullable=true)
      */
     private $infosSortie;
 
     /**
+     * @Groups ("sorties")
      * @ORM\ManyToOne(targetEntity=Etat::class)
      * @ORM\JoinColumn(name="id_etat", nullable=false)
      */
     private Etat $etat;
 
     /**
+     * @Groups ("sorties")
      * @ORM\ManyToOne(targetEntity=Campus::class)
      * @ORM\JoinColumn(name="id_campus", nullable=false)
      */
     private $campus;
 
     /**
+     * @Groups ("sorties")
      * @ORM\ManyToOne(targetEntity=Lieu::class)
      * @ORM\JoinColumn(name="id_lieu", nullable=false)
      */
     private $lieu;
 
     /**
+     * @Groups ("sorties")
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="sorties")
      * @ORM\JoinTable(name="users_sorties",
      *     joinColumns={ @ORM\JoinColumn(name="id_sortie", referencedColumnName="id") },
@@ -84,6 +95,7 @@ class Sortie
     private $inscrits;
 
     /**
+     * @Groups ("sorties")
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="sortiesOrganises")
      * @ORM\JoinColumn(name="organisateur", nullable=false)
      */

@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\LieuRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=LieuRepository::class)
@@ -13,19 +14,19 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class Lieu
 {
-    /**
+    /** @Groups ("sorties")
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;
 
-    /**
+    /** @Groups ("sorties")
      * @ORM\Column(name="nom", type="string", length=50)
      */
     private $nom;
 
-    /**
+    /** @Groups ("sorties")
      * @ORM\Column(name="rue", type="string", length=100, nullable=true)
      */
     private $rue;
