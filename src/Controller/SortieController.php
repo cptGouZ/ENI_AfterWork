@@ -29,8 +29,9 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class SortieController extends AbstractController
 {
+    private $searchOptions = [];
     /**
-     * @Route(path="", name="index1", methods={"GET", "POST"})
+     * @Route(path="", name="index", methods={"GET", "POST"})
      */
     public function index(Request $request, EntityManagerInterface $entityManager): Response {
         /** @var User $user */
@@ -54,30 +55,33 @@ class SortieController extends AbstractController
     }
 
     /**
-     * @Route(path="/json", name="index", methods={"GET", "POST"})
+     * @Route(path="/json", name="json_index", methods={"GET"})
      */
-    public function indexJson(Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer)
+    public function indexJson(Request $request, EntityManagerInterface $entityManager){
+        $formSortieSearch = $this->createForm(SortieSearchType::class,null,[]);
+        return $this->render('sortie/index_json.html.twig', [
+            'formSortieSearch' => $formSortieSearch->createView()
+        ]);
+    }
+
+    /**
+     * @Route(path="/json_refresh", name="json_refresh", methods={"GET", "POST"})
+     */
+    public function jsonRefresh(Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer)
     {
         /** @var User $user */
         $user = $this->getUser();
         $repoSortie = $entityManager->getRepository(Sortie::class);
 
-        $formSortieSearch = $this->createForm(SortieSearchType::class,null,[]);
-        $formSortieSearch->handleRequest($request);
-        $searchOptions =[];
-
-        if($request->getContent() !=null){
-            $searchOptions = $request->toArray();
-            $sorties = $repoSortie->getBySearch($user, $searchOptions);
-
-            $serialized = $serializer->serialize($sorties, 'json', ['groups' => ['sorties']]);
-            return new JsonResponse($serialized);
+        //Si l'on est en POST on met à jour le tableau de recherche
+        if($request->getContent()){
+            $this->searchOptions = $request->toArray();
         }
-        $sorties = $repoSortie->getBySearch($user, $searchOptions);
-        return $this->render('sortie/index.html.twig', [
-            'formSortieSearch' => $formSortieSearch->createView(),
-            'sorties' => $sorties,
-        ]);
+
+        //On récupère les données et on sérialize
+        $sorties = $repoSortie->getBySearch($user, $this->searchOptions);
+        $serialized = $serializer->serialize($sorties, 'json', ['groups' => ['sorties']]);
+        return new JsonResponse($serialized);
     }
 
 
@@ -149,19 +153,19 @@ class SortieController extends AbstractController
         //Contrôles back
         if($sortie == null){
             $this->addFlash('danger', 'Cette sortie n\'existe pas');
-            return $this->redirectToRoute('sortie_index');
+            return $this->redirectToRoute('sortie_json_refresh');
         }
         if(in_array($user, $sortie->getInscrits()->getValues())){
             $this->addFlash('danger','Tu es déjà inscrit à cette sortie !');
-            return $this->redirectToRoute('sortie_index');
+            return $this->redirectToRoute('sortie_json_refresh');
         }
         if(count($sortie->getInscrits()) >= $sortie->getNbInscriptionMax()) {
             $this->addFlash('danger','Désolé mais il n\'y a plus de place');
-            return $this->redirectToRoute('sortie_index');
+            return $this->redirectToRoute('sortie_json_refresh');
         }
         if(date_diff($sortie->getDateLimiteInscription(), new DateTime('now'))->invert === 0 ) {
             $this->addFlash('danger','Désolé mais les inscriptions sont fermées');
-            return $this->redirectToRoute('sortie_index');
+            return $this->redirectToRoute('sortie_json_refresh');
         }
 
         //Enregistrement et redirection
@@ -169,7 +173,8 @@ class SortieController extends AbstractController
         $entityManager->persist($sortie);
         $entityManager->flush($sortie);
         $this->addFlash('success','Vous êtes maintenant inscrit à la sortie');
-        return $this->redirectToRoute('sortie_index');
+        return $this->redirectToRoute('sortie_json_refresh');
+        //return $this->redirectToRoute('sortie_index');
     }
 
     /**
@@ -193,11 +198,11 @@ class SortieController extends AbstractController
         //Contrôles back
         if($sortie == null){
             $this->addFlash('danger', 'Cette sortie n\'existe pas');
-            return $this->redirectToRoute('sortie_index');
+            return $this->redirectToRoute('sortie_json_refresh');
         }
         if(!in_array($user, $sortie->getInscrits()->getValues())){
             $this->addFlash('danger','Tu n\'est pas connu à dans cette sortie !');
-            return $this->redirectToRoute('sortie_index');
+            return $this->redirectToRoute('sortie_json_refresh');
         }
 
         //Enregistrement et redirection
@@ -205,7 +210,8 @@ class SortieController extends AbstractController
         $entityManager->persist($sortie);
         $entityManager->flush($sortie);
         $this->addFlash('success','Vous êtes maintenant désinscrit de la sortie');
-        return $this->redirectToRoute('sortie_index');
+        //return $this->redirectToRoute('sortie_index');
+        return $this->redirectToRoute('sortie_json_refresh');
     }
 
     /**

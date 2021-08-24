@@ -101,6 +101,11 @@ class Sortie
      */
     private $organisateur;
 
+    /**
+     * @Groups("sorties")
+     */
+    private $statut;
+
     public function __construct()
     {
         $this->inscrits = new ArrayCollection();
@@ -174,6 +179,7 @@ class Sortie
 
     public function setEtat(?Etat $etat): self {
         $this->etat = $etat;
+        $this->setStatut();
         return $this;
     }
 
@@ -232,6 +238,12 @@ class Sortie
     }
 
     public function getStatut() :string {
+        $this->setStatut();
+        return $this->statut;
+    }
+
+
+    private function setStatut() :void {
         $statut = 'toto';
 
         $statut = $this->etat->getLibelle() === 'created' ? SortieStatus::CREEE : $statut;
@@ -267,6 +279,6 @@ class Sortie
         ){
             $statut = SortieStatus::ANNULEE;
         }
-        return $statut;
+        $this->statut = $statut;
     }
 }

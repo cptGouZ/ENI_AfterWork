@@ -39,7 +39,6 @@ class VilleController extends AbstractController
     public function ajouter (Request $request, EntityManagerInterface $entityManager): Response
     {
         $ville = new Ville();
-
         $formVille = $this->createForm(VilleType::class, $ville, []);
         $formVille->handleRequest($request);
         if ($formVille->isSubmitted() && $formVille->isValid()) {

@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
+     * @Groups ("sorties")
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(name="id" , type="integer")
