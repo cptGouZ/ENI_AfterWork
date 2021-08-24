@@ -6,22 +6,14 @@ use App\Entity\Etat;
 use App\Entity\Sortie;
 use App\Entity\User;
 use App\Enums\SortieSearchOptions;
-use App\Entity\Ville;
 use App\Form\SortieSearchType;
-use App\Form\SortieType;
 use DateTime;
-use App\Repository\EtatRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -30,44 +22,22 @@ use Symfony\Component\Serializer\SerializerInterface;
 class SortieController extends AbstractController
 {
     private $searchOptions = [];
+
+
     /**
-     * @Route(path="", name="index", methods={"GET", "POST"})
+     * @Route(path="", name="index", methods={"GET"})
      */
-    public function index(Request $request, EntityManagerInterface $entityManager): Response {
-        /** @var User $user */
-        $user = $this->getUser();
-        $repoSortie = $entityManager->getRepository(Sortie::class);
-        $searchOptions = [];
-
+    public function index(Request $request, EntityManagerInterface $entityManager){
         $formSortieSearch = $this->createForm(SortieSearchType::class,null,[]);
-        $formSortieSearch->handleRequest($request);
-
-        if($formSortieSearch->isSubmitted() && $formSortieSearch->isValid()){
-            foreach(SortieSearchOptions::getConstants() as $option){
-                $searchOptions[$option] = $formSortieSearch->get($option)->getData();
-            }
-        }
-        $sorties = $repoSortie->getBySearch($user, $searchOptions);
         return $this->render('sortie/index.html.twig', [
-            'formSortieSearch' => $formSortieSearch->createView(),
-            'sorties' => $sorties,
-        ]);
-    }
-
-    /**
-     * @Route(path="/json", name="json_index", methods={"GET"})
-     */
-    public function indexJson(Request $request, EntityManagerInterface $entityManager){
-        $formSortieSearch = $this->createForm(SortieSearchType::class,null,[]);
-        return $this->render('sortie/index_json.html.twig', [
             'formSortieSearch' => $formSortieSearch->createView()
         ]);
     }
 
     /**
-     * @Route(path="/json_refresh", name="json_refresh", methods={"GET", "POST"})
+     * @Route(path="/refresh", name="refresh", methods={"GET", "POST"})
      */
-    public function jsonRefresh(Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer)
+    public function refresh(Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer)
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -87,13 +57,15 @@ class SortieController extends AbstractController
 
     /**
      * @Route (path="/create" , name="create" , methods={"GET", "POST"})
+     * @Route (path="/create_published" , name="create_published" , methods={"GET", "POST"})
      * @param Request $request
      * @param EntityManagerInterface $entityManager
      */
     public function create (Request $request , EntityManagerInterface $entityManager): Response {
 
-        /**@var  User $userConnect */
 
+
+        /**@var  User $userConnect */
         $userConnect = $this->getUser();
 
         //Création d'une instance sortie
@@ -107,12 +79,19 @@ class SortieController extends AbstractController
 
         $sortie->setOrganisateur($userConnect);
         $sortie->setCampus($userConnect->getCampus());
-        $etat = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'created']);
-        $sortie->setEtat($etat);
+
+        if(str_contains($request->getUri(), 'published')){
+            $etat = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'published']);
+            $sortie->setEtat($etat);
+        }
+        else{
+            $etat = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'created']);
+            $sortie->setEtat($etat);
+        }
+
 
         //Vérification des données du form
         if ($formCreateSortie->isSubmitted() && $formCreateSortie->isValid()){
-
             //Enregistrer la sortie en BDD
             $entityManager->persist($sortie);
 
@@ -158,35 +137,35 @@ class SortieController extends AbstractController
             //return $this->redirectToRoute('sortie_json_refresh');
         }
         if(in_array($user, $sortie->getInscrits()->getValues())){
-            $this->addFlash('danger','Tu es déjà inscrit à cette sortie !');
-            return $this->redirectToRoute('sortie_json_refresh');
+            $serialized = $serializer->serialize(['hasError'=>'Tu es déjà inscrit à cette sortie !'], 'json');
+            return new JsonResponse($serialized);
         }
         if(count($sortie->getInscrits()) >= $sortie->getNbInscriptionMax()) {
-            $serialized = $serializer->serialize(['hasError'=>'Cette sortie n\'existe pas'], 'json');
+            $serialized = $serializer->serialize(['hasError'=>'Désolé mais il n\'y a plus de place'], 'json');
             return new JsonResponse($serialized);
-            $this->addFlash('danger','Désolé mais il n\'y a plus de place');
-            return $this->redirectToRoute('sortie_json_refresh');
         }
         if(date_diff($sortie->getDateLimiteInscription(), new DateTime('now'))->invert === 0 ) {
-            $this->addFlash('danger','Désolé mais les inscriptions sont fermées');
-            return $this->redirectToRoute('sortie_json_refresh');
+            $serialized = $serializer->serialize(['hasError'=>'Désolé mais les inscriptions sont fermées'], 'json');
+            return new JsonResponse($serialized);
         }
 
         //Enregistrement et redirection
         $sortie->addInscrit($user);
         $entityManager->persist($sortie);
         $entityManager->flush($sortie);
-        $this->addFlash('success','Vous êtes maintenant inscrit à la sortie');
-        return $this->redirectToRoute('sortie_json_refresh');
+        //$this->addFlash('success','Vous êtes maintenant inscrit à la sortie');
+        return $this->redirectToRoute('sortie_refresh', [
+            'request' => $request
+        ], 307);
         //return $this->redirectToRoute('sortie_index');
     }
 
     /**
      * @param Request $request
      * @param EntityManagerInterface $entityManager
-     * @Route(path="/{id}/desinscrire", requirements={"id"="\d+"}, name="desinscrire")
+     * @Route(path="/{id}/desinscrire", requirements={"id"="\d+"}, name="desinscrire", methods={"POST"})
      */
-    public function desinscrire(Request $request, EntityManagerInterface $entityManager): Response{
+    public function desinscrire(Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer): Response{
         //Déclaration du type des variables
         /** @var User $user */
         /** @var Sortie $sortie */
@@ -201,28 +180,29 @@ class SortieController extends AbstractController
 
         //Contrôles back
         if($sortie == null){
-            $this->addFlash('danger', 'Cette sortie n\'existe pas');
-            return $this->redirectToRoute('sortie_json_refresh');
+            $serialized = $serializer->serialize(['hasError'=>'Cette sortie n\'existe pas'], 'json');
+            return new JsonResponse($serialized);
         }
         if(!in_array($user, $sortie->getInscrits()->getValues())){
-            $this->addFlash('danger','Tu n\'est pas connu à dans cette sortie !');
-            return $this->redirectToRoute('sortie_json_refresh');
+            $serialized = $serializer->serialize(['hasError'=>'Tu n\'est pas connu à dans cette sortie !'], 'json');
+            return new JsonResponse($serialized);
         }
 
         //Enregistrement et redirection
         $sortie->removeInscrit($user);
         $entityManager->persist($sortie);
         $entityManager->flush($sortie);
-        $this->addFlash('success','Vous êtes maintenant désinscrit de la sortie');
+        //$this->addFlash('success','Vous êtes maintenant désinscrit de la sortie');
         //return $this->redirectToRoute('sortie_index');
-        return $this->redirectToRoute('sortie_json_refresh');
+        return $this->redirectToRoute('sortie_refresh',[
+            'request' => $request
+        ], 307);
     }
 
     /**
-     * @Route(path="/{id}/publier", requirements={"id"="\d+"}, name="publier")
-     * @Route(path="/{id}/annuler", requirements={"id"="\d+"}, name="annuler")
+     * @Route(path="/{id}/publier", requirements={"id"="\d+"}, name="publier", methods={"POST"})
      */
-    public function publier_annuler(Request $request, EntityManagerInterface $entityManager){
+    public function publier(Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer){
         //Déclaration du type des variables
         /** @var User $user */
         /** @var Sortie $sortie */
@@ -238,21 +218,57 @@ class SortieController extends AbstractController
 
         //Contrôles back
         if($sortie == null){
-            $this->addFlash('danger', 'Cette sortie n\'existe pas');
-            return $this->redirectToRoute('sortie_index');
+            $serialized = $serializer->serialize(['hasError'=>'Cette sortie n\'existe pas'], 'json');
+            return new JsonResponse($serialized);
         }
         if($user !== $sortie->getOrganisateur() && !in_array('ROLE_ADMIN', $user->getRoles())){
-            $this->addFlash('danger','Tu n\'est pas maître de cette sortie !');
-            return $this->redirectToRoute('sortie_index');
+            $serialized = $serializer->serialize(['hasError'=>'Tu n\'est pas maître de cette sortie !'], 'json');
+            return new JsonResponse($serialized);
         }
-        if (str_contains($request->getUri(), 'annuler')){
+
+        //traitement de la publication
+        $etat = $etatRepo->findOneBy(['libelle'=>'published']);
+        $this->addFlash('success','Vive l\'apéro !');
+        $sortie->setEtat($etat);
+
+        //Enregistrement et redirection
+        $entityManager->persist($sortie);
+        $entityManager->flush($sortie);
+        return $this->redirectToRoute('sortie_index');
+    }
+
+    /**
+     * @Route(path="/{id}/annuler", requirements={"id"="\d+"}, name="annuler")
+     */
+    public function annuler(Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer){
+        //Déclaration du type des variables
+        /** @var User $user */
+        /** @var Sortie $sortie */
+
+        //Récupération des repository
+        $sortieRepo = $entityManager->getRepository(Sortie::class);
+        $etatRepo = $entityManager->getRepository(Etat::class);
+
+        //Récupération des paramètres utiles à la méthode
+        $idSortie = $request->get('id');
+        $user = $this->getUser();
+        $sortie = $sortieRepo->find($idSortie);
+
+        //Contrôles back
+        if($sortie == null){
+            $serialized = $serializer->serialize(['hasError'=>'Cette sortie n\'existe pas'], 'json');
+            return new JsonResponse($serialized);
+        }
+        if($user !== $sortie->getOrganisateur() && !in_array('ROLE_ADMIN', $user->getRoles())){
+            $serialized = $serializer->serialize(['hasError'=>'Tu n\'est pas maître de cette sortie !'], 'json');
+            return new JsonResponse($serialized);
+        }
+
+        //TODO création d'un formulaire d'annulation de sortie
+        if (false){
+            //traitement de la publication
             $etat = $etatRepo->findOneBy(['libelle'=>'cancelled']);
-            $this->addFlash('success','C\'est dommage, la sortie semblait sympas');
-            $sortie->setEtat($etat);
-        }
-        if (str_contains($request->getUri(), 'publier')){
-            $etat = $etatRepo->findOneBy(['libelle'=>'published']);
-            $this->addFlash('success','Vive l\'apéro !');
+            $this->addFlash('success','Dommage la sortie semblait sympa !');
             $sortie->setEtat($etat);
         }
 

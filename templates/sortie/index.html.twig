@@ -3,80 +3,230 @@
 {% block title %}Hello SortieController!{% endblock %}
 
 {% block body %}
+
+
     Date du jour : {{ "now"|date("d/m/Y") }} <br>
-    Participant : {{ app.user.prenom | capitalize  }} {{ app.user.nom | capitalize }} <br>
+    Participant : {{ app.user.pseudo | capitalize }} <br>
+
+    {# Recherche de sortie #}
     <div class="search">
         <h2>Filtrer les sorties</h2>
         {% form_theme formSortieSearch 'bootstrap_5_horizontal_layout.html.twig' %}
         {{ form_start(formSortieSearch) }}
-        <div class="row justify-content-center">
-            <div class="col-4">
-                {{ form_row(formSortieSearch.campus) }}
-                {{ form_row(formSortieSearch.nom_sortie) }}
-                {{ form_row(formSortieSearch.date_debut) }}
-                {{ form_row(formSortieSearch.date_fin) }}
+            <div class="row justify-content-center">
+                <div class="col-7">
+                    {{ form_row(formSortieSearch.campus) }}
+                    {{ form_row(formSortieSearch.nom_contient) }}
+                    {{ form_row(formSortieSearch.date_debut) }}
+                    {{ form_row(formSortieSearch.date_fin) }}
+                </div>
+                <div class="col-4">
+                    {{ form_row(formSortieSearch.mes_sorties) }}
+                    {{ form_row(formSortieSearch.inscrit_oui) }}
+                    {{ form_row(formSortieSearch.inscrit_non) }}
+                    {{ form_row(formSortieSearch.sorties_passees) }}
+{#                    {{ form_row(formSortieSearch.submit) }}#}
+                </div>
             </div>
-            <div class="col-3">
-                {{ form_row(formSortieSearch.mes_sorties) }}
-                {{ form_row(formSortieSearch.inscrit_oui) }}
-                {{ form_row(formSortieSearch.inscrit_non) }}
-                {{ form_row(formSortieSearch.sorties_passees) }}
-                {{ form_row(formSortieSearch.submit) }}
-            </div>
-        </div>
         {{ form_end(formSortieSearch) }}
     </div>
+
+    <div role alert id="app_flash" hidden></div>
+
+    {# Affichage du tableau de résultats #}
     <table class="table">
         <thead>
-        <tr>
-            <th scope="col">Nom de la sortie</th>
-            <th scope="col">Date limite d'inscription</th>
-            <th scope="col">Date de la sortie</th>
-            <th scope="col">Nb inscrits/Nb places</th>
-            <th scope="col">Etat</th>
-            <th scope="col">Inscrit</th>
-            <th scope="col">Organistateur</th>
-            <th scope="col">Action</th>
-        </tr>
+            <tr>
+                <th scope="col">Nom de la sortie</th>
+                <th scope="col">Date limite d'inscription</th>
+                <th scope="col">Date de la sortie</th>
+                <th scope="col">Nb inscrits/Nb places</th>
+                <th scope="col">Etat</th>
+                <th scope="col">Inscrit</th>
+                <th scope="col">Organistateur</th>
+                <th scope="col">Action</th>
+            </tr>
         </thead>
         <tbody>
-        {% for sortie in sorties %}
-            <tr>
-                <td>{{ sortie.nom }}</td>
-                <td>{{ sortie.datelimiteinscription | date("d/m/Y h:i") }}</td>
-                <td>{{ sortie.dateheuredebut | date("d/m/Y") }}</td>
-                <td>{{ sortie.inscrits | length }}/{{ sortie.nbinscriptionmax }}</td>
-                <td>{{ sortie.getStatut() }}</td>
-                <td>{{ app.user in sortie.inscrits ? 'oui' : 'non'}}</td>
-                <td>{{ sortie.organisateur.prenom | capitalize }}{{ sortie.organisateur.nom | capitalize }}</td>
-                <td>
-                    {# Je suis participant #}
-                    {% if sortie.organisateur != app.user %}
-                        <a href="http://google.com">Afficher</a>
-                        {% if sortie.getStatut() == constant('App\\Enums\\SortieStatus::OUVERTE') %}
-                            {# S'inscrire #}
-                            {% if app.user not in sortie.inscrits %}
-                                <a href="{{ path('sortie_inscrire', {'id': sortie.id}) }}">S'inscrire</a>
-                            {% endif %}
-                            {# Se désinscrire #}
-                            {% if app.user in sortie.inscrits %}
-                                <a href="{{ path('sortie_desinscrire', {'id': sortie.id}) }}">Se désinscrire</a>
-                            {% endif %}
-                        {% endif %}
-                    {% endif %}
-
-                    {# Je suis organisateur : Modifier, Publier, Annuler #}
-                    {% if sortie.organisateur == app.user %}
-                        <a href="http://google.com">Publier</a>
-                        <a href="http://google.com">Modifier</a>
-                    {% endif %}
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8" style="text-align: center">Aucune sortie ne correspond à ces filtres</td>
-            </tr>
-        {% endfor %}
         </tbody>
     </table>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+
+        window.addEventListener('load', ()=>{
+            document.getElementById("sortie_search_inscrit_oui").addEventListener('change', updateSearch);
+            document.getElementById("sortie_search_inscrit_non").addEventListener('change', updateSearch);
+            document.getElementById("sortie_search_mes_sorties").addEventListener('change', updateSearch);
+            document.getElementById("sortie_search_sorties_passees").addEventListener('change', updateSearch);
+            document.getElementById("sortie_search_date_debut").addEventListener('change', updateSearch);
+            document.getElementById("sortie_search_nom_contient").addEventListener('change', updateSearch);
+            document.getElementById("sortie_search_campus").addEventListener('change', updateSearch);
+            updateSearch(null);
+        })
+
+        function getFilters(){
+            //Récupération des valeurs de recherche
+            return {
+                inscrit_oui: document.getElementById("sortie_search_inscrit_oui").checked,
+                inscrit_non: document.getElementById("sortie_search_inscrit_non").checked,
+                mes_sorties: document.getElementById("sortie_search_mes_sorties").checked,
+                date_debut: document.getElementById("sortie_search_date_debut").value,
+                date_fin: document.getElementById("sortie_search_date_fin").value,
+                sorties_passees: document.getElementById("sortie_search_sorties_passees").checked,
+                nom_contient: document.getElementById("sortie_search_nom_contient").value,
+                campus: document.getElementById("sortie_search_campus").value,
+            };
+        }
+
+        function updateSearch(event, route) {
+
+
+            fetch(route===undefined ? '{{ path('sortie_refresh') }}' : route, {
+                method: "POST",
+                body: JSON.stringify(getFilters()),
+                mode: "same-origin",
+                dataType: "json"
+            })
+                .then(response => response.json())
+                .then(response => {
+                    let $div_msg = document.getElementById("app_flash");
+                    //gestion de l'affichage des messages
+                    $div_msg.hidden=true;
+                    let $results = JSON.parse(response);
+                    if ($results.hasError === undefined) {
+                        updateView($results, event);
+                    }else{
+                        $div_msg.className="alert alert-danger";
+                        $div_msg.innerText = $results.hasError;
+                        $div_msg.hidden=false;
+                    }
+                })
+                .catch(error => {
+                    alert("Erreur : " + error)
+                })
+        }
+
+        function suisJeInscrit(sortie, userid){
+            return sortie.inscrits.find(users => users.id === userid) !==undefined;
+        }
+
+        function updateView(results, event){
+            //event.preventDefault();
+            console.log(results);
+            let tbody = document.querySelector("tbody");
+            tbody.innerHTML="";
+            for (const sortie of results) {
+                let trEl = document.createElement('tr');
+                //Nom de la sortie
+                let nomEl = document.createElement('td');
+                nomEl.innerText = sortie.nom;
+                trEl.append(nomEl);
+                //Date limite d'inscription
+                let dateInscriptionEl = document.createElement('td');
+                dateInscriptionEl.innerText = new Date(sortie.dateLimiteInscription).toLocaleDateString();
+                trEl.append(dateInscriptionEl);
+                //Date de sortie
+                let dateSortieEl = document.createElement('td');
+                dateSortieEl.innerText = new Date(sortie.dateHeureDebut).toLocaleDateString();
+                trEl.append(dateSortieEl);
+                //Nombre d'inscrit
+                let nbInscritEl = document.createElement('td');
+                nbInscritEl.innerText = sortie.inscrits.length + "/" + sortie.nbInscriptionMax;
+                trEl.append(nbInscritEl);
+                //Statut sortie
+                let statutEl = document.createElement('td');
+                statutEl.innerText = sortie.statut;
+                trEl.append(statutEl);
+                //Suis-je inscrit
+                let inscritEl = document.createElement('td');
+                inscritEl.innerText = suisJeInscrit(sortie, {{ app.user.id }}) ? 'oui' : 'non'
+                trEl.append(inscritEl);
+                //Organisateur
+                let organisateurEl = document.createElement('td');
+                organisateurEl.innerText = sortie.organisateur.pseudo;
+                trEl.append(organisateurEl);
+
+                //Liens
+                let liensEl = document.createElement('td');
+                trEl.append(liensEl);
+
+
+
+                    //Je ne suis pas organisateur
+                    if (sortie.organisateur.id !== {{ app.user.id }}){
+                        //Afficher
+                        let afficherEl = document.createElement('a');
+                        afficherEl.innerText = "Afficher";
+                        afficherEl.href = "http://google.com";
+                        afficherEl.className = "btn btn-primary";
+                        liensEl.append(afficherEl);
+
+                        if(sortie.statut === 'Ouverte'){
+                            let url_inscrire = '{{ path("sortie_inscrire", {'id': '0'}) }}'.replace("0", sortie.id);
+                            let url_desinscrire = '{{ path("sortie_desinscrire", {'id': '0'}) }}'.replace("0", sortie.id);
+                            let inscrireDesinscrireEl = document.createElement('button');
+                            inscrireDesinscrireEl.className = "btn btn-success";
+                            //S'inscrire
+                            if( !suisJeInscrit(sortie, {{ app.user.id }}) ) {
+                                inscrireDesinscrireEl.innerText="S'inscrire";
+                                inscrireDesinscrireEl.addEventListener('click', function(event){
+                                    updateSearch(event, url_inscrire);
+                                })
+                            }
+                            //Se désinscrire
+                            else{
+                                inscrireDesinscrireEl.innerText="Désinscrire";
+                                inscrireDesinscrireEl.addEventListener('click', function(event){
+                                    updateSearch(event, url_desinscrire);
+                                })
+                            }
+                            liensEl.append(inscrireDesinscrireEl);
+                        }
+                    }
+                    //Je suis l'organisateur
+                    else{
+                        {#  let url_modifier = '{{ path("sortie_modifier", {'id': '0'}) }}'.replace("0", sortie.id); #}
+                        let url_modifier = 'www.google.fr'
+                        let url_publier = '{{ path("sortie_publier", {'id': '0'}) }}'.replace("0", sortie.id);
+                        let url_annuler = '{{ path("sortie_annuler", {'id': '0'}) }}'.replace("0", sortie.id);
+
+                        if(sortie.statut === "Créée") {
+                            let modifierEl = document.createElement('button');
+                            modifierEl.className = "btn btn-warning";
+                            modifierEl.innerText = "Modifier"
+                            modifierEl.addEventListener('click', function (event) {
+                                updateSearch(event, url_modifier);
+                            })
+                            liensEl.append(modifierEl);
+
+                            let publierEl = document.createElement('button');
+                            publierEl.className = "btn btn-warning";
+                            publierEl.innerText = "Publier"
+                            publierEl.addEventListener('click', function (event) {
+                                updateSearch(event, url_publier);
+                            })
+                            liensEl.append(modifierEl);
+                            liensEl.append(publierEl);
+                        }
+
+                        let annulerEl = document.createElement('a');
+                        annulerEl.className = "btn btn-danger";
+                        annulerEl.innerText = "Annuler";
+                        annulerEl.href = url_annuler;
+                        liensEl.append(annulerEl);
+                    }
+
+
+
+
+                    {#                            <a href="{{ path('sortie_publier', {'id': sortie.id}) }}">Publier</a>#}
+                    {#                            <a href="http://google.com">Modifier</a>#}
+                    {#                            <a href="{{ path('sortie_annuler', {'id': sortie.id}) }}">Annuler</a>#}
+                tbody.append(trEl);
+            }
+        }
+
+    </script>
 {% endblock %}

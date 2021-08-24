@@ -67,7 +67,7 @@
         <div class="row text-center">
             <div class="col ">
                 {{ form_widget(formCreateSortie.submit) }}
-                {{ form_widget(formCreateSortie.publier) }}
+                {{ form_widget(formCreateSortie.publier, {"attr" : {'formaction' : path('sortie_create_published') }}) }}
                 <a href="{{ url('sortie_index') }}" class="btn btn-secondary">Annuler</a>
             </div>
         </div>

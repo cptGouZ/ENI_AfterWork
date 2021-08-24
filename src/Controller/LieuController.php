@@ -58,7 +58,7 @@ class LieuController extends AbstractController
 //     */
 //    public function index(): Response
 //    {
-//        return $this->render('lieu/index.html.twig', [
+//        return $this->render('lieu/index_old.html.twig', [
 //            'controller_name' => 'LieuController',
 //        ]);
 //    }

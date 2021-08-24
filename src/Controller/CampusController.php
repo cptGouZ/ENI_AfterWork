@@ -13,7 +13,7 @@ class CampusController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('campus/index_json.html.twig', [
+        return $this->render('campus/index.html.twig', [
             'controller_name' => 'CampusController',
         ]);
     }

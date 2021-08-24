@@ -113,6 +113,8 @@ class SortieType extends AbstractType
             //BOUTON PUBLIER
             ->add('publier', SubmitType::class, [
                  'label' => 'Publier la sortie',
+//                'attr' => ['formaction' => $this->],
+//                'attr' => ['formaction' => 'http://localhost:8000/sortie/create_published']
             ]);
     }
 

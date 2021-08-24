@@ -39,8 +39,7 @@ class SortieSearchType extends AbstractType
                 'data' => new DateTime('now'),
             ])
             ->add(SortieSearchOptions::DATE_FIN, DateType::class, [
-
-                'label' => 'et',
+                'label' => 'et le :',
                 'widget' => 'single_text',
                 'data' => date_add(new DateTime('now'), new \DateInterval('P1M') ),
             ])
@@ -55,9 +54,6 @@ class SortieSearchType extends AbstractType
             ])
             ->add(SortieSearchOptions::SORTIES_PASSEES, CheckboxType::class, [
                 'label' => 'Sorties passées'
-            ])
-            ->add('submit', SubmitType::class, [
-                'label' => 'Rechercher',
             ]);
     }
 
