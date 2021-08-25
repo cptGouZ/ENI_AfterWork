@@ -43,7 +43,7 @@ class SortieRepository extends ServiceEntityRepository
 
         //Filtre sur lesquels je suis organisateur
         if( $options[SortieSearchOptions::MES_SORTIES] ?? false ) {
-            $query->andWhere('s.organisateur < :user')
+            $query->andWhere('s.organisateur = :user')
                 ->setParameter('user', $user);
         }
 

@@ -152,7 +152,7 @@ class AppFixtures extends Fixture
             $sorties[$i] = new Sortie();
             $sorties[$i]->setNom($faker->name);
             $sorties[$i]->setCampus($campus[rand(0, count($campus)-1)]);
-            $sorties[$i]->setDateHeureDebut($faker->dateTimeInInterval('-3months', '+15days'));
+            $sorties[$i]->setDateHeureDebut($faker->dateTimeInInterval('-3days', '+20days'));
             $dateLimiteInscription = date_format($sorties[$i]->getDateHeureDebut(),  'Y/m/d h:i');
             $sorties[$i]->setDateLimiteInscription( date_sub(new DateTime($dateLimiteInscription), new DateInterval('PT90M')) );
             $sorties[$i]->setDuree(rand(10, 90));

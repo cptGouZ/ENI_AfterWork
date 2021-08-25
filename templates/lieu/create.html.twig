@@ -5,7 +5,7 @@
 {% block body %}
 
     <h2>Ajouter un nouveau Lieu</h2>
-
+    {% form_theme formLieu 'bootstrap_4_horizontal_layout.html.twig' %}
     {{ form_start(formLieu) }}
 
 <div class="container border border-dark">
@@ -27,7 +27,7 @@
         {{ form_errors(formLieu.ville) }}
     </div>
 
-        {% form_theme formLieu 'bootstrap_4_horizontal_layout.html.twig' %}
+
     <div class="row">
         <div class="col">
                 {{ form_widget(formLieu.submit) }}

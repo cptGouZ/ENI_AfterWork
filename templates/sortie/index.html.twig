@@ -158,34 +158,34 @@
                         afficherEl.className = "btn btn-primary";
                         liensEl.append(afficherEl);
 
-                        if(sortie.statut === 'Ouverte'){
-                            let url_inscrire = '{{ path("sortie_inscrire", {'id': '0'}) }}'.replace("0", sortie.id);
-                            let url_desinscrire = '{{ path("sortie_desinscrire", {'id': '0'}) }}'.replace("0", sortie.id);
-                            let inscrireDesinscrireEl = document.createElement('button');
-                            inscrireDesinscrireEl.className = "btn btn-success";
-                            //S'inscrire
-                            if( !suisJeInscrit(sortie, {{ app.user.id }}) ) {
-                                if( sortie.inscrits.length < sortie.nbInscriptionMax){
-                                    inscrireDesinscrireEl.innerText="S'inscrire";
-                                    inscrireDesinscrireEl.addEventListener('click', function(event){
-                                        updateSearch(event, url_inscrire);
-                                    })
-                                    liensEl.append(inscrireDesinscrireEl);
-                                }
-                            }
-                            //Se désinscrire
-                            else{
-                                inscrireDesinscrireEl.innerText="Se désinscrire";
+                    }
+                    if(sortie.statut === 'Ouverte'){
+                        let url_inscrire = '{{ path("sortie_inscrire", {'id': '0'}) }}'.replace("0", sortie.id);
+                        let url_desinscrire = '{{ path("sortie_desinscrire", {'id': '0'}) }}'.replace("0", sortie.id);
+                        let inscrireDesinscrireEl = document.createElement('button');
+                        inscrireDesinscrireEl.className = "btn btn-success";
+                        //S'inscrire
+                        if( !suisJeInscrit(sortie, {{ app.user.id }}) ) {
+                            if( sortie.inscrits.length < sortie.nbInscriptionMax){
+                                inscrireDesinscrireEl.innerText="S'inscrire";
                                 inscrireDesinscrireEl.addEventListener('click', function(event){
-                                    updateSearch(event, url_desinscrire);
+                                    updateSearch(event, url_inscrire);
                                 })
                                 liensEl.append(inscrireDesinscrireEl);
                             }
                         }
+                        //Se désinscrire
+                        else{
+                            inscrireDesinscrireEl.innerText="Se désinscrire";
+                            inscrireDesinscrireEl.addEventListener('click', function(event){
+                                updateSearch(event, url_desinscrire);
+                            })
+                            liensEl.append(inscrireDesinscrireEl);
+                        }
                     }
 
                     //Je suis l'organisateur
-                    else{
+                    if (sortie.organisateur.id === {{ app.user.id }}){
                         let url_modifier = '{{ path("sortie_update", {'id': '0'}) }}'.replace("0", sortie.id);
                         let url_publier = '{{ path("sortie_publier", {'id': '0'}) }}'.replace("0", sortie.id);
                         let url_annuler = '{{ path("sortie_annuler", {'id': '0'}) }}'.replace("0", sortie.id);

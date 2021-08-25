@@ -32,6 +32,9 @@ class SortieType extends AbstractType
             //NOM
             ->add('nom', TextType::class, [
                 'label'=> 'Nom de la sortie :',
+                'label_attr' => [
+                    'class' => 'col-sm-12',
+                ],
                 'trim' => true ,
                 'required' => true,
             ] )
@@ -39,6 +42,9 @@ class SortieType extends AbstractType
             //DATE HEURE SORTIE
             ->add('dateheuredebut' , DateTimeType::class,[
                 'label'=> 'Date et Heure de la sortie :',
+                'label_attr' => [
+                    'class' => 'col-sm-12',
+                ],
                 'trim' => true ,
                 'required' => true,
                 'widget' => 'single_text',
@@ -48,6 +54,9 @@ class SortieType extends AbstractType
             //DUREE
             ->add('duree', IntegerType::class , [
                 'label' => 'Durée (min) : ',
+                'label_attr' => [
+                    'class' => 'col-sm-12',
+                ],
                 'trim' => true ,
                 'required' => true ,
             ])
@@ -55,6 +64,9 @@ class SortieType extends AbstractType
             //DATE LIMITE INSCRIPTION
             ->add('datelimiteinscription', DateTimeType::class,[
                 'label'=> 'Date Limite d\'inscription :',
+                'label_attr' => [
+                    'class' => 'col-sm-12',
+                ],
                 'trim' => true ,
                 'required' => true,
                 'widget' => 'single_text',
@@ -64,6 +76,9 @@ class SortieType extends AbstractType
             //NOMBRE INSCRIT
             ->add('nbinscriptionmax', IntegerType::class,[
                 'label' => 'Nombre de place :',
+                'label_attr' => [
+                    'class' => 'col-sm-12',
+                ],
                 'trim' => true ,
                 'required' => true ,
 
@@ -71,6 +86,9 @@ class SortieType extends AbstractType
             ])
             ->add('infossortie' , TextareaType::class ,[
                 'label' => 'Description et infos :',
+                'label_attr' => [
+                    'class' => 'col-sm-12',
+                ],
                 'trim' => true ,
                 'required' => true ,
             ])
@@ -78,6 +96,9 @@ class SortieType extends AbstractType
             //CAMPUS
             ->add('campus' , TextType::class, [
                 'label'=> 'Campus :',
+                'label_attr' => [
+                    'class' => 'col-sm-12',
+                ],
                 'trim' => true ,
                 'data' => $this->security->getUser()->getCampus()->getNom(),
                 'disabled' => true ,
@@ -86,6 +107,9 @@ class SortieType extends AbstractType
             //LIEU
             ->add('lieu' ,EntityType::class,[
                 'label' => 'Lieu : ' ,
+                'label_attr' => [
+                    'class' => 'col-sm-12',
+                ],
                 'class' => Lieu::class ,
                 'choice_label' => function($lieu) {
                     return $lieu->getNom() ;
@@ -95,6 +119,9 @@ class SortieType extends AbstractType
             //VILLE
             ->add('ville', EntityType::class, [
                 'label' => 'Ville :',
+                'label_attr' => [
+                    'class' => 'col-sm-12',
+                ],
                 'class' => Ville::class,
                 'query_builder' => function (VilleRepository $vr) {
                     return $vr->createQueryBuilder('villes')->orderBy('villes.nom', 'ASC');;

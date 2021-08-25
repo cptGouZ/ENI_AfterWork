@@ -26,8 +26,7 @@ class Lieu
      * @ORM\Column(name="nom", type="string", length=50)
      * @Assert\NotBlank(message="Le nom doit être renseigné")
      * @Assert\Regex (
-     *     pattern="/[a-zA-Z]+/",
-     *     match=false,
+     *     pattern="/[\p{L}\p{Ll}\p{Lu}\p{Z}]+/",
      *     message="Le nom ne peut contenir que des lettres"
      * )
      * @Assert\Length (
