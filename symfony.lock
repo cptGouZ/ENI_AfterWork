@@ -1,4 +1,7 @@
 {
+    "composer/ca-bundle": {
+        "version": "1.2.10"
+    },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.2"
     },
@@ -106,8 +109,17 @@
     "fzaninotto/faker": {
         "version": "v1.9.2"
     },
+    "geoip2/geoip2": {
+        "version": "v2.11.0"
+    },
     "laminas/laminas-code": {
         "version": "4.4.2"
+    },
+    "maxmind-db/reader": {
+        "version": "v1.10.1"
+    },
+    "maxmind/web-service-common": {
+        "version": "v0.8.1"
     },
     "monolog/monolog": {
         "version": "2.3.2"

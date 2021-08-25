@@ -56,11 +56,15 @@
                     {{ form_widget(formCreateSortie.ville) }}
                     {{ form_errors(formCreateSortie.ville) }}
                 </div>
-                <div class="mb-3">
+                <div id="choixLieu" class="mb-3">
                     {{ form_label(formCreateSortie.lieu) }}
+                    <div id="lieuChoisi" onselect="test();">
                     {{ form_widget(formCreateSortie.lieu) }}
+                    </div>
                     {{ form_errors(formCreateSortie.lieu) }}<br>
-                    <a href="{{ url('lieu_create') }}" class="btn-primary btn">Ajouter un Lieu</a>
+{#                    <a href="{{ url('lieu_create') }}" class="btn-primary btn">Ajouter un Lieu</a>#}
+
+                    <a  href="#" class="btn-primary btn">Ajouter un Lieu</a>
                 </div>
 
         </div>
@@ -78,4 +82,14 @@
 
 
 {% block javascripts %}
+      <script >
+             function test(){
+              e = document.getElementById("lieuChoisi").value;
+
+                alert(e);
+
+              }
+
+
+   </script>
 {% endblock javascripts %}

@@ -70,3 +70,16 @@ footer {
     padding: 20px 0;
     text-align: center;
 }
+
+
+/**
+GoogleMap
+ */
+#map {
+    height: 100%;
+}
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}

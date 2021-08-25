@@ -109,6 +109,25 @@ class SortieController extends AbstractController
 
     }
 
+
+    /**
+     * @Route(path="/{id}" , requirements={"id"="\d+"}, name="view" , methods={"GET"})
+     */
+    public function view(Request $request , EntityManagerInterface $entityManager)
+    {
+        /**@var  User $userConnect */
+
+        $userConnect = $this->getUser() ;
+        $sortieAAfficher = $entityManager->getRepository(Sortie::class)->findOneBy('id');
+
+
+        return $this->render('sortie/view.html.twig', [
+            'sortie' => $sortieAAfficher,
+            'user' => $userConnect,
+        ]);
+    }
+
+
     /**
      * Inscrit l'utilisateur courant à la sortie et redirige vers la méthode de renvoie des résultats
      * @param Request $request
@@ -282,4 +301,5 @@ class SortieController extends AbstractController
             'formAnnulationSortie' => $formAnnulationSortie->createView()
         ]);
     }
+
 }
