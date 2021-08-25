@@ -91,16 +91,16 @@
             })
                 .then(response => response.json())
                 .then(response => {
-                    let $div_msg = document.getElementById("app_flash");
+                    let div_msg = document.getElementById("app_flash");
                     //gestion de l'affichage des messages
-                    $div_msg.hidden=true;
-                    let $results = JSON.parse(response);
-                    if ($results.hasError === undefined) {
-                        updateView($results, event);
-                    }else{
-                        $div_msg.className="alert alert-danger";
-                        $div_msg.innerText = $results.hasError;
-                        $div_msg.hidden=false;
+                    div_msg.hidden=true;
+                    let results = JSON.parse(response);
+                    console.log(results)
+                    updateView(results.datas, event);
+                    if(results.msgGroup !== undefined && results.msg !== undefined) {
+                        div_msg.className = "alert alert-" + results.msgGroup;
+                        div_msg.innerText = results.msg;
+                        div_msg.hidden = false;
                     }
                 })
                 .catch(error => {
@@ -109,15 +109,19 @@
         }
 
         function suisJeInscrit(sortie, userid){
-            return sortie.inscrits.find(users => users.id === userid) !==undefined;
+            // for(const user of sortie.inscrits){
+            //     if (users.id === userid){
+            //         return true;
+            //     }
+            // }
+            // return false;
+            return sortie.inscrits.find(users => users.id === userid) !== undefined;
         }
 
-        function updateView(results, event){
-            //event.preventDefault();
-            console.log(results);
+        function updateView(sorties, event){
             let tbody = document.querySelector("tbody");
             tbody.innerHTML="";
-            for (const sortie of results) {
+            for (const sortie of sorties) {
                 let trEl = document.createElement('tr');
                 //Nom de la sortie
                 let nomEl = document.createElement('td');
@@ -139,10 +143,10 @@
                 let statutEl = document.createElement('td');
                 statutEl.innerText = sortie.statut;
                 trEl.append(statutEl);
-                //Suis-je inscrit
-                let inscritEl = document.createElement('td');
-                inscritEl.innerText = suisJeInscrit(sortie, {{ app.user.id }}) ? 'oui' : 'non'
-                trEl.append(inscritEl);
+                {#//Suis-je inscrit#}
+                {#let inscritEl = document.createElement('td');#}
+                {#inscritEl.innerText = suisJeInscrit(sortie, {{ app.user.id }}) ? 'oui' : 'non'#}
+                {#trEl.append(inscritEl);#}
                 //Organisateur
                 let organisateurEl = document.createElement('td');
                 organisateurEl.innerText = sortie.organisateur.pseudo;
@@ -158,8 +162,10 @@
                     if (sortie.organisateur.id !== {{ app.user.id }}){
                         //Afficher
                         let afficherEl = document.createElement('a');
+                        {#let url_afficher = '{{ path("sortie_view", {'id': '0'}) }}'.replace("0", sortie.id);#}
+                        let url_afficher = 'www.google.fr'
                         afficherEl.innerText = "Afficher";
-                        afficherEl.href = "http://google.com";
+                        afficherEl.href = url_afficher;
                         afficherEl.className = "btn btn-primary";
                         liensEl.append(afficherEl);
 

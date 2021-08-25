@@ -205,7 +205,7 @@ class Sortie
      */
     public function getInscrits(): Collection
     {
-        return $this->inscrits;
+        return new ArrayCollection($this->inscrits->getValues());
     }
 
     public function addInscrit(User $inscrit): self
@@ -220,7 +220,6 @@ class Sortie
     public function removeInscrit(User $inscrit): self
     {
         $this->inscrits->removeElement($inscrit);
-
         return $this;
     }
 
