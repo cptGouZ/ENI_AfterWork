@@ -104,21 +104,15 @@
                     }
                 })
                 .catch(error => {
-                    alert("Erreur : " + error)
+                    alert("Erreur : " + error);
                 })
         }
 
         function suisJeInscrit(sortie, userid){
-            // for(const user of sortie.inscrits){
-            //     if (users.id === userid){
-            //         return true;
-            //     }
-            // }
-            // return false;
             return sortie.inscrits.find(users => users.id === userid) !== undefined;
         }
 
-        function updateView(sorties, event){
+        function updateView(sorties){
             let tbody = document.querySelector("tbody");
             tbody.innerHTML="";
             for (const sortie of sorties) {
@@ -143,10 +137,10 @@
                 let statutEl = document.createElement('td');
                 statutEl.innerText = sortie.statut;
                 trEl.append(statutEl);
-                {#//Suis-je inscrit#}
-                {#let inscritEl = document.createElement('td');#}
-                {#inscritEl.innerText = suisJeInscrit(sortie, {{ app.user.id }}) ? 'oui' : 'non'#}
-                {#trEl.append(inscritEl);#}
+                //Suis-je inscrit
+                let inscritEl = document.createElement('td');
+                inscritEl.innerText = suisJeInscrit(sortie, {{ app.user.id }}) ? 'oui' : 'non';
+                trEl.append(inscritEl);
                 //Organisateur
                 let organisateurEl = document.createElement('td');
                 organisateurEl.innerText = sortie.organisateur.pseudo;
@@ -156,14 +150,12 @@
                 let liensEl = document.createElement('td');
                 trEl.append(liensEl);
 
-
-
                     //Je ne suis pas organisateur
                     if (sortie.organisateur.id !== {{ app.user.id }}){
                         //Afficher
                         let afficherEl = document.createElement('a');
                         {#let url_afficher = '{{ path("sortie_view", {'id': '0'}) }}'.replace("0", sortie.id);#}
-                        let url_afficher = 'www.google.fr'
+                        let url_afficher = 'www.google.fr';
                         afficherEl.innerText = "Afficher";
                         afficherEl.href = url_afficher;
                         afficherEl.className = "btn btn-primary";
@@ -176,40 +168,42 @@
                             inscrireDesinscrireEl.className = "btn btn-success";
                             //S'inscrire
                             if( !suisJeInscrit(sortie, {{ app.user.id }}) ) {
-                                inscrireDesinscrireEl.innerText="S'inscrire";
-                                inscrireDesinscrireEl.addEventListener('click', function(event){
-                                    updateSearch(event, url_inscrire);
-                                })
+                                if( sortie.inscrits.length < sortie.nbInscriptionMax){
+                                    inscrireDesinscrireEl.innerText="S'inscrire";
+                                    inscrireDesinscrireEl.addEventListener('click', function(event){
+                                        updateSearch(event, url_inscrire);
+                                    })
+                                    liensEl.append(inscrireDesinscrireEl);
+                                }
                             }
                             //Se désinscrire
                             else{
-                                inscrireDesinscrireEl.innerText="Désinscrire";
+                                inscrireDesinscrireEl.innerText="Se désinscrire";
                                 inscrireDesinscrireEl.addEventListener('click', function(event){
                                     updateSearch(event, url_desinscrire);
                                 })
+                                liensEl.append(inscrireDesinscrireEl);
                             }
-                            liensEl.append(inscrireDesinscrireEl);
                         }
                     }
+
                     //Je suis l'organisateur
                     else{
                         {#  let url_modifier = '{{ path("sortie_modifier", {'id': '0'}) }}'.replace("0", sortie.id); #}
-                        let url_modifier = 'www.google.fr'
+                        let url_modifier = '{{ path("sortie_update", {'id': '0'}) }}'.replace("0", sortie.id);
                         let url_publier = '{{ path("sortie_publier", {'id': '0'}) }}'.replace("0", sortie.id);
                         let url_annuler = '{{ path("sortie_annuler", {'id': '0'}) }}'.replace("0", sortie.id);
 
                         if(sortie.statut === "Créée") {
-                            let modifierEl = document.createElement('button');
+                            let modifierEl = document.createElement('a');
                             modifierEl.className = "btn btn-warning";
-                            modifierEl.innerText = "Modifier"
-                            modifierEl.addEventListener('click', function (event) {
-                                updateSearch(event, url_modifier);
-                            })
+                            modifierEl.innerText = "Modifier";
+                            modifierEl.href = url_modifier;
                             liensEl.append(modifierEl);
 
                             let publierEl = document.createElement('button');
                             publierEl.className = "btn btn-warning";
-                            publierEl.innerText = "Publier"
+                            publierEl.innerText = "Publier";
                             publierEl.addEventListener('click', function (event) {
                                 updateSearch(event, url_publier);
                             })
@@ -217,19 +211,14 @@
                             liensEl.append(publierEl);
                         }
 
-                        let annulerEl = document.createElement('a');
-                        annulerEl.className = "btn btn-danger";
-                        annulerEl.innerText = "Annuler";
-                        annulerEl.href = url_annuler;
-                        liensEl.append(annulerEl);
+                        if(sortie.statut === "Créée" || sortie.statut === "Ouverte") {
+                            let annulerEl = document.createElement('a');
+                            annulerEl.className = "btn btn-danger";
+                            annulerEl.innerText = "Annuler";
+                            annulerEl.href = url_annuler;
+                            liensEl.append(annulerEl);
+                        }
                     }
-
-
-
-
-                    {#                            <a href="{{ path('sortie_publier', {'id': sortie.id}) }}">Publier</a>#}
-                    {#                            <a href="http://google.com">Modifier</a>#}
-                    {#                            <a href="{{ path('sortie_annuler', {'id': sortie.id}) }}">Annuler</a>#}
                 tbody.append(trEl);
             }
         }

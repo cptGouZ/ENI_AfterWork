@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Entity\Etat;
 use App\Entity\Sortie;
 use App\Entity\User;
+use App\Enums\SortieStatus;
 use App\Form\SortieAnnulationType;
 use App\Form\SortieSearchType;
+use App\Form\SortieType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -272,12 +274,65 @@ class SortieController extends AbstractController
         }
 
         return $this->render('sortie/create.html.twig', [
+            'action' => 'Créer',
             'formCreateSortie' => $formCreateSortie->createView()
         ]);
 
     }
 
+    /**
+     * @Route (path="/{id}/update", name="update", requirements={"id"="\d+"}, methods={"GET", "POST"})
+     * @Route (path="/{id}/update_published" , name="update_published", requirements={"id"="\d+"}, methods={"GET", "POST"})
+     */
+    public function update(Request $request, EntityManagerInterface $entityManager): Response {
+        //Déclaration du type des variables
+        /** @var User $user */
+        /** @var Sortie $sortie */
 
+        //Récupération des repository
+        $sortieRepo = $entityManager->getRepository(Sortie::class);
+
+        //Récupération des paramètres utiles à la méthode
+        $user = $this->getUser();
+        $idSortie = $request->get('id');
+        $sortie = $sortieRepo->find($idSortie);
+
+        //Création du formulaire
+        $formSortie = $this->createForm(SortieType::class, $sortie);
+        $formSortie->handleRequest($request);
+
+        //Validation du formulaire
+        if( $formSortie->isSubmitted() && $formSortie->isValid() ){
+            //Contrôles coté back
+            if($sortie == null){
+                $this->addFlash('danger', 'Cette sortie n\'existe pas');
+                $this->redirectToRoute('sortie_index');
+            }
+            if($sortie->getOrganisateur() != $user){
+                $this->addFlash('danger', 'Désolé mais tu n\'es pas l\'auteur de cette sortie');
+                $this->redirectToRoute('sortie_index');
+            }
+            if($sortie->getEtat()->getLibelle() != SortieStatus::CREEE){
+                $this->addFlash('danger', 'Désolé mais cette sortie est déjà publiée ou passée. Veuillez l\'annuler et en créer une nouvelle');
+                $this->redirectToRoute('sortie_index');
+            }
+
+            //Modification de l'état en published si on enregistre et que l'on publie en meme temps
+            if(str_contains($request->getUri(), 'published')){
+                $etat = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'published']);
+                $sortie->setEtat($etat);
+            }
+
+            //Enregistrement
+            $entityManager->persist($sortie);
+            $entityManager->flush();
+        }
+
+        return $this->render('sortie/create.html.twig', [
+            'action' => 'Modifier',
+            'formCreateSortie' => $formSortie->createView()
+        ]);
+    }
 
 
 
