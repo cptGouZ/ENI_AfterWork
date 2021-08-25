@@ -74,7 +74,9 @@
                 {% if action == 'Créer' %}
                     {{ form_widget(formCreateSortie.publier, {"attr" : {'formaction' : path('sortie_create_published') }}) }}
                 {% else %}
-                    {{ form_widget(formCreateSortie.publier, {"attr" : {'formaction' : path('sortie_update_published') }}) }}
+                    {% if not sortie is null  %}
+                        {{ form_widget(formCreateSortie.publier, {"attr" : {'formaction' : path('sortie_update_published', {'id': sortie.id}) }}) }}
+                    {% endif %}
                 {% endif %}
                 <a href="{{ url('sortie_index') }}" class="btn btn-secondary">Annuler</a>
             </div>

@@ -163,7 +163,7 @@ class SortieController extends AbstractController
         /**@var  User $userConnect */
 
         $userConnect = $this->getUser() ;
-        $sortieAAfficher = $entityManager->getRepository(Sortie::class)->findOneBy($request->get('id'));
+        $sortieAAfficher = $entityManager->getRepository(Sortie::class)->findOneBy(['id'=>$request->get('id')]);
 
 
         return $this->render('sortie/view.html.twig', [
@@ -220,6 +220,7 @@ class SortieController extends AbstractController
 
         return $this->render('sortie/create.html.twig', [
             'formCreateSortie' => $formCreateSortie->createView(),
+            'sortie' => null,
             'action' => 'Créer'
         ]);
 
@@ -274,6 +275,7 @@ class SortieController extends AbstractController
         }
 
         return $this->render('sortie/create.html.twig', [
+            'sortie' => $sortie,
             'action' => 'Modifier',
             'formCreateSortie' => $formSortie->createView()
         ]);

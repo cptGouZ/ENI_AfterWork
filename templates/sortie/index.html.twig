@@ -152,8 +152,7 @@
                     if (sortie.organisateur.id !== {{ app.user.id }}){
                         //Afficher
                         let afficherEl = document.createElement('a');
-                        {#let url_afficher = '{{ path("sortie_view", {'id': '0'}) }}'.replace("0", sortie.id);#}
-                        let url_afficher = 'www.google.fr';
+                        let url_afficher = '{{ path("sortie_view", {'id': '0'}) }}'.replace("0", sortie.id);
                         afficherEl.innerText = "Afficher";
                         afficherEl.href = url_afficher;
                         afficherEl.className = "btn btn-primary";
