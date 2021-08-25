@@ -6,6 +6,7 @@ use App\Repository\LieuRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=LieuRepository::class)
@@ -23,11 +24,26 @@ class Lieu
 
     /** @Groups ("sorties")
      * @ORM\Column(name="nom", type="string", length=50)
+     * @Assert\NotBlank(message="Le nom doit être renseigné")
+     * @Assert\Regex (
+     *     pattern="/[a-zA-Z]+/",
+     *     match=false,
+     *     message="Le nom ne peut contenir que des lettres"
+     * )
+     * @Assert\Length (
+     *      min=5, minMessage="5 charactères minimum",
+     *      max=50, maxMessage="50 charactères maximum"
+     * )
      */
     private $nom;
 
     /** @Groups ("sorties")
      * @ORM\Column(name="rue", type="string", length=100, nullable=true)
+     * @Assert\NotBlank(message="La rue doit être renseigné")
+     * @Assert\Length (
+     *      min=5, minMessage="5 charactères minimum",
+     *      max=20, maxMessage="100 charactères maximum"
+     * )
      */
     private $rue;
 

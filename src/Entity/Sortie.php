@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=SortieRepository::class)
@@ -30,30 +31,43 @@ class Sortie
     /**
      * @Groups ("sorties")
      * @ORM\Column(name="nom", type="string", length=30)
+     * @Assert\NotBlank(message="La rue doit être renseigné")
+     * @Assert\Length (
+     *      min=5, minMessage="5 charactères minimum",
+     *      max=30, maxMessage="30 charactères maximum"
+     * )
      */
     private $nom;
 
     /**
      * @Groups ("sorties")
      * @ORM\Column(name="date_heure_debut", type="datetime")
+     * @Assert\NotBlank (message="La date limite d'inscription doit être renseignée")
+     * @Assert\DateTime (message="Le format Date Heure n'est pas le bon")
      */
     private $dateHeureDebut;
 
     /**
      * @Groups ("sorties")
      * @ORM\Column(name="duree", type="integer")
+     * @Assert\NotBlank(message="La valeur doit être renseignée")
+     * @Assert\Positive(message="La valeur doit être positive")
      */
     private $duree;
 
     /**
      * @Groups ("sorties")
      * @ORM\Column(name="date_limite_inscription", type="datetime")
+     * @Assert\NotBlank (message="La date limite d'inscription doit être renseignée")
+     * @Assert\DateTime (message="Le format Date Heure n'est pas le bon")
      */
     private $dateLimiteInscription;
 
     /**
      * @Groups ("sorties")
      * @ORM\Column(name="nb_inscription_max", type="integer")
+     * @Assert\NotBlank(message="La valeur doit être renseignée")
+     * @Assert\Positive(message="La valeur doit être positive")
      */
     private $nbInscriptionMax;
 

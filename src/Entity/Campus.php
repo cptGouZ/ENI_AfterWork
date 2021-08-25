@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CampusRepository::class)
@@ -23,7 +24,17 @@ class Campus
     private $id;
 
     /**
-     * @ORM\Column(name="nom" , type="string", length=150)
+     * @ORM\Column(name="nom" , type="string", length=50)
+     * @Assert\Regex (
+     *     pattern="/[a-zA-Z]+/",
+     *     match=false,
+     *     message="Le nom ne peut contenir que des lettres"
+     * )
+     * @Assert\NotBlank(message="Le nom doit être renseigné")
+     * @Assert\Length (
+     *      min=5, minMessage="5 charactères minimum",
+     *      max=50, maxMessage="50 charactères maximum"
+     * )
      */
     private $nom;
 

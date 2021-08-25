@@ -30,12 +30,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @Groups ("sorties")
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank (message="Quel est ton pseudo ?")
+     * @Assert\Length (
+     *     min=5, minMessage="Il manque des caractères !"
+     *     min=50, maxMessage="Houlà c'est trop long !"
+     * )
      */
     private $pseudo;
 
     /**
-     * @ORM\Column(name="email" , type="string", length=180, unique=true)
+     * @ORM\Column(name="email" , type="string", length=100, unique=true)
+     * @Assert\NotBlank (message="Veuillez renseigner le mot de passe")
+     * @Assert\Length (
+     *     min=5, minMessage="Il manque des caractères !"
+     *     min=100, maxMessage="Houlà c'est trop long !"
+     * )
+     * @Assert\Email(
+     *     mode="loose",
+     *     message="Le format de l'adresse mail est invalide",
+     * )
      */
     private $email;
 
@@ -49,21 +63,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(name="password" , type="string")
      * @Assert\NotBlank
      * @Assert\NotCompromisedPassword()
+     * @SecurityAssert\UserPassword(
+     *     message = "Mauvais mot de passe"
+     * )
      */
     private $password;
 
     /**
-     * @ORM\Column(name="nom" , type="string", length=150)
+     * @ORM\Column(name="nom" , type="string", length=50)
+     * @Assert\NotBlank (message="Quel est ton nom ?")
+     * @Assert\Length (
+     *     min=5, minMessage="Il manque des caractères !"
+     *     min=50, maxMessage="Houlà c'est trop long !"
+     * )
      */
     private $nom;
 
     /**
-     * @ORM\Column(name="prenom" , type="string", length=150)
+     * @ORM\Column(name="prenom" , type="string", length=50)
+     * @Assert\NotBlank (message="Quel est ton prenom ?")
+     * @Assert\Length (
+     *     min=5, minMessage="Il manque des caractères !"
+     *     min=50, maxMessage="Houlà c'est trop long !"
+     * )
      */
     private $prenom;
 
     /**
      * @ORM\Column(name="telephone" , type="string", length=20)
+     * @Assert\NotBlank (message="Quel est ton pseudo ?")
+     * @Assert\Positive (message="Il me faut des chiffres !")
      */
     private $telephone;
 

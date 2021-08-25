@@ -81,8 +81,6 @@
         }
 
         function updateSearch(event, route) {
-
-
             fetch(route===undefined ? '{{ path('sortie_refresh') }}' : route, {
                 method: "POST",
                 body: JSON.stringify(getFilters()),
@@ -189,8 +187,7 @@
 
                     //Je suis l'organisateur
                     else{
-                        {#  let url_modifier = '{{ path("sortie_modifier", {'id': '0'}) }}'.replace("0", sortie.id); #}
-                        let url_modifier = '{{ path("sortie_update", {'id': '0'}) }}'.replace("0", sortie.id);
+                        let url_modifier = '{{ path("sortie_modifier", {'id': '0'}) }}'.replace("0", sortie.id);
                         let url_publier = '{{ path("sortie_publier", {'id': '0'}) }}'.replace("0", sortie.id);
                         let url_annuler = '{{ path("sortie_annuler", {'id': '0'}) }}'.replace("0", sortie.id);
 
