@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Security;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -33,7 +34,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=50)
      * @Assert\NotBlank (message="Quel est ton pseudo ?")
      * @Assert\Length (
-     *     min=5, minMessage="Il manque des caractères !"
+     *     min=5, minMessage="Il manque des caractères !",
      *     min=50, maxMessage="Houlà c'est trop long !"
      * )
      */
@@ -43,7 +44,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(name="email" , type="string", length=100, unique=true)
      * @Assert\NotBlank (message="Veuillez renseigner le mot de passe")
      * @Assert\Length (
-     *     min=5, minMessage="Il manque des caractères !"
+     *     min=5, minMessage="Il manque des caractères !",
      *     min=100, maxMessage="Houlà c'est trop long !"
      * )
      * @Assert\Email(
@@ -63,9 +64,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(name="password" , type="string")
      * @Assert\NotBlank
      * @Assert\NotCompromisedPassword()
-     * @SecurityAssert\UserPassword(
-     *     message = "Mauvais mot de passe"
-     * )
      */
     private $password;
 
@@ -73,7 +71,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(name="nom" , type="string", length=50)
      * @Assert\NotBlank (message="Quel est ton nom ?")
      * @Assert\Length (
-     *     min=5, minMessage="Il manque des caractères !"
+     *     min=5, minMessage="Il manque des caractères !",
      *     min=50, maxMessage="Houlà c'est trop long !"
      * )
      */
@@ -83,7 +81,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(name="prenom" , type="string", length=50)
      * @Assert\NotBlank (message="Quel est ton prenom ?")
      * @Assert\Length (
-     *     min=5, minMessage="Il manque des caractères !"
+     *     min=5, minMessage="Il manque des caractères !",
      *     min=50, maxMessage="Houlà c'est trop long !"
      * )
      */

@@ -43,7 +43,7 @@ class Sortie
      * @Groups ("sorties")
      * @ORM\Column(name="date_heure_debut", type="datetime")
      * @Assert\NotBlank (message="La date limite d'inscription doit être renseignée")
-     * @Assert\DateTime (message="Le format Date Heure n'est pas le bon")
+     * Assert\DateTime (message="Le format Date Heure n'est pas le bon")
      */
     private $dateHeureDebut;
 
@@ -59,7 +59,7 @@ class Sortie
      * @Groups ("sorties")
      * @ORM\Column(name="date_limite_inscription", type="datetime")
      * @Assert\NotBlank (message="La date limite d'inscription doit être renseignée")
-     * @Assert\DateTime (message="Le format Date Heure n'est pas le bon")
+     * Assert\DateTime (message="Le format Date Heure n'est pas le bon")
      */
     private $dateLimiteInscription;
 
