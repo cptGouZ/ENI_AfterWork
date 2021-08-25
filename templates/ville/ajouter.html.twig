@@ -4,14 +4,15 @@
 
 <h2>Ajouter une ville</h2>
 
-    {% form_theme formVille 'bootstrap_5_horizontal_layout.html.twig' %}
+    {% form_theme formUser 'bootstrap_4_horizontal_layout.html.twig' %}
+
     {{ form_start(formVille) }}
 
 <div class="container border border-dark">
     <div class="mb-3 text-center">
-        {{ form_row(formVille.nom) }}
-        {{ form_row(formVille.codePostal) }}
-        {{ form_widget(formVille.submit) }}
+        {{ form_widget(formVille.nom, {'attr': {'class': 'bg-light'}}) }}
+        {{ form_widget(formVille.codePostal, {'attr': {'class': 'bg-light'}}) }}
+        {{ form_widget(formVille.submit, {'attr': {'class': 'bg-light'}}) }}
          <a href="{{ url('sortie_index') }}" class="btn btn-secondary">Annuler</a>
     </div>
 </div>

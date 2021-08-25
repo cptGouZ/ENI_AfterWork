@@ -15,7 +15,7 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
-             return $this->redirectToRoute('user_modify');
+             return $this->redirectToRoute('user_view');
         }
 
         // Récupération des erreurs de traitement de connexion

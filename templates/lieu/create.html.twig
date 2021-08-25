@@ -11,19 +11,19 @@
 <div class="container border border-dark">
     <div class="mb-3">
         {{ form_label(formLieu.nom) }}
-        {{ form_widget(formLieu.nom) }}
+        {{ form_widget(formLieu.nom, {'attr': {'class': 'bg-light'}}) }}
         {{ form_errors(formLieu.nom) }}
     </div>
 
     <div class="mb-3">
         {{ form_label(formLieu.rue) }}
-        {{ form_widget(formLieu.rue) }}
+        {{ form_widget(formLieu.rue, {'attr': {'class': 'bg-light'}}) }}
         {{ form_errors(formLieu.rue) }}
     </div>
 
     <div class="mb-3">
         {{ form_label(formLieu.ville) }}
-        {{ form_widget(formLieu.ville) }}
+        {{ form_widget(formLieu.ville, {'attr': {'class': 'bg-light'}}) }}
         {{ form_errors(formLieu.ville) }}
     </div>
 

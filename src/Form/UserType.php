@@ -83,6 +83,7 @@ class UserType extends AbstractType
                     'required' => true ,
                     'first_options' =>['label' => 'Mot de passe :'],
                     'second_options' =>['label' => 'Confirmation Mot de passe :'],
+                    'attr' => ['class' => 'bg-light'],
                     'disabled' => $options['is_view'],
 
                 ]);

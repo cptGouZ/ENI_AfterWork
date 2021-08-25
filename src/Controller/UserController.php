@@ -37,7 +37,7 @@ class UserController extends AbstractController
             $entityManager->flush();
 
             // Ajout d'un message de confirmation
-            $this->addFlash('success', 'Category successfully added !');
+            $this->addFlash('success', 'Votre profil a bien été enregistré !');
 
             // Redirection sur le controlleur
             return $this->redirectToRoute('app_login');
@@ -74,7 +74,7 @@ class UserController extends AbstractController
             $entityManager->flush();
 
             // Ajout d'un message de confirmation
-            $this->addFlash('success', 'Category successfully added !');
+            $this->addFlash('success', 'Votre profil a bien été enregistré !');
 
             // Redirection sur le controlleur
             return $this->redirectToRoute('app_login');

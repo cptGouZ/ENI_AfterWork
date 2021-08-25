@@ -15,32 +15,32 @@
              <div class="col">
                 <div class="mb-3">
                     {{ form_label(formCreateSortie.nom) }}
-                    {{ form_widget(formCreateSortie.nom) }}
+                    {{ form_widget(formCreateSortie.nom, {'attr': {'class': 'bg-light'}}) }}
                     {{ form_errors(formCreateSortie.nom) }}
                 </div>
                 <div class="mb-3">
                     {{ form_label(formCreateSortie.dateheuredebut) }}
-                    {{ form_widget(formCreateSortie.dateheuredebut) }}
+                    {{ form_widget(formCreateSortie.dateheuredebut, {'attr': {'class': 'bg-light'}}) }}
                     {{ form_errors(formCreateSortie.dateheuredebut) }}
                 </div>
                 <div class="mb-3">
                     {{ form_label(formCreateSortie.datelimiteinscription) }}
-                    {{ form_widget(formCreateSortie.datelimiteinscription) }}
+                    {{ form_widget(formCreateSortie.datelimiteinscription, {'attr': {'class': 'bg-light'}}) }}
                     {{ form_errors(formCreateSortie.datelimiteinscription) }}
                 </div>
                 <div class="mb-3">
                     {{ form_label(formCreateSortie.nbinscriptionmax) }}
-                    {{ form_widget(formCreateSortie.nbinscriptionmax) }}
+                    {{ form_widget(formCreateSortie.nbinscriptionmax, {'attr': {'class': 'bg-light'}}) }}
                     {{ form_errors(formCreateSortie.nbinscriptionmax) }}
                 </div>
                 <div class="mb-3">
                     {{ form_label(formCreateSortie.duree) }}
-                    {{ form_widget(formCreateSortie.duree) }}
+                    {{ form_widget(formCreateSortie.duree, {'attr': {'class': 'bg-light'}}) }}
                     {{ form_errors(formCreateSortie.duree) }}
                 </div>
                 <div class="mb-3">
                     {{ form_label(formCreateSortie.infossortie) }}
-                    {{ form_widget(formCreateSortie.infossortie) }}
+                    {{ form_widget(formCreateSortie.infossortie, {'attr': {'class': 'bg-light'}}) }}
                     {{ form_errors(formCreateSortie.infossortie) }}
                 </div>
              </div>
@@ -48,18 +48,18 @@
             <div class="col">
                 <div class="mb-3">
                     {{ form_label(formCreateSortie.campus) }}
-                    {{ form_widget(formCreateSortie.campus) }}
+                    {{ form_widget(formCreateSortie.campus, {'attr': {'class': 'bg-light'}}) }}
                     {{ form_errors(formCreateSortie.campus) }}
                 </div>
                 <div class="mb-3">
                     {{ form_label(formCreateSortie.ville) }}
-                    {{ form_widget(formCreateSortie.ville) }}
+                    {{ form_widget(formCreateSortie.ville, {'attr': {'class': 'bg-light'}}) }}
                     {{ form_errors(formCreateSortie.ville) }}
                 </div>
                 <div id="choixLieu" class="mb-3">
                     {{ form_label(formCreateSortie.lieu) }}
                     <div id="lieuChoisi" onselect="test();">
-                    {{ form_widget(formCreateSortie.lieu) }}
+                    {{ form_widget(formCreateSortie.lieu, {'attr': {'class': 'bg-light'}}) }}
                     </div>
                     {{ form_errors(formCreateSortie.lieu) }}<br>
 {#                    <a href="{{ url('lieu_create') }}" class="btn-primary btn">Ajouter un Lieu</a>#}
