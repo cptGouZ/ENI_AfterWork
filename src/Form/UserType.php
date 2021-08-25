@@ -87,7 +87,7 @@ class UserType extends AbstractType
 
                 ]);
 
-        //CAMPUS
+            //CAMPUS
             $builder
                 ->add('campus' , TextType::class, [
                     'label'=> 'Campus :',

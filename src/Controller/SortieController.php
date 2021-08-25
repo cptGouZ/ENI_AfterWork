@@ -208,7 +208,6 @@ class SortieController extends AbstractController
         if ($formCreateSortie->isSubmitted() && $formCreateSortie->isValid()){
             //Enregistrer la sortie en BDD
             $entityManager->persist($sortie);
-
             $entityManager->flush();
 
             //Message de success

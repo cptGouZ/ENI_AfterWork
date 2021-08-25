@@ -59,7 +59,8 @@ class AppFixtures extends Fixture
 
         // USERS
         $users[] = Array() ;
-        for ($i = 0; $i < 20; $i++) {
+
+        /*for ($i = 0; $i < 20; $i++) {
             $users[$i] = new User();
             $users[$i]->setPseudo($faker->name);
             $users[$i]->setNom($faker->lastName);
@@ -72,17 +73,64 @@ class AppFixtures extends Fixture
             $users[$i]->setActif($faker->boolean);
             $users[$i]->setCampus($campus[rand(0,count($campus)-1)]);
             $manager->persist($users[$i]);
-        }
+        }*/
+
+        $users[0] = new User();
+        $users[0]->setNom("Ruiz");
+        $users[0]->setPrenom("Alexandre");
+        $users[0]->setPseudo("Zoto");
+        $users[0]->setCampus($campus[0]);
+        $users[0]->setEmail('alex.ruiz@sortie.fr');
+        $users[0]->setTelephone('0123456789');
+        $users[0]->setAdministrateur(false);
+        $users[0]->setActif(true);
+        $users[0]->setPassword(
+            $this->passwordHasher->hashPassword( $users[0],'0000' )
+        );
+        $manager->persist($users[0]);
+
+        $users[1] = new User();
+        $users[1]->setNom("Gazeau");
+        $users[1]->setPrenom("Julien");
+        $users[1]->setPseudo("GouZ");
+        $users[1]->setCampus($campus[0]);
+        $users[1]->setEmail('julien.gazeau@sortie.fr');
+        $users[1]->setTelephone('9876543210');
+        $users[1]->setAdministrateur(false);
+        $users[1]->setActif(true);
+        $users[1]->setPassword(
+            $this->passwordHasher->hashPassword( $users[1],'0000' )
+        );
+        $manager->persist($users[1]);
+
         $manager->flush();
 
         // VILLES
+
+//        for ($i = 0; $i < 10; $i++) {
+//            $villes[$i] = new Ville();
+//            $villes[$i]->setNom($faker->city);
+//            $villes[$i]->setCodePostal($faker->numerify('#####'));
+//            $manager->persist($villes[$i]);
+//        }
+
         $villes = Array();
-        for ($i = 0; $i < 10; $i++) {
-            $villes[$i] = new Ville();
-            $villes[$i]->setNom($faker->city);
-            $villes[$i]->setCodePostal($faker->numerify('#####'));
-            $manager->persist($villes[$i]);
-        }
+
+        $villes[0] = new Ville();
+        $villes[0]->setNom('Saint-Herblain');
+        $villes[0]->setCodePostal('44800');
+        $manager->persist($villes[0]);
+
+        $villes[1] = new Ville();
+        $villes[1]->setNom('Quimper');
+        $villes[1]->setCodePostal('29000');
+        $manager->persist($villes[1]);
+
+        $villes[2] = new Ville();
+        $villes[2]->setNom('Niort');
+        $villes[2]->setCodePostal('79000');
+        $manager->persist($villes[2]);
+
         $manager->flush();
 
         // LIEUX

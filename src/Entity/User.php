@@ -34,8 +34,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=50)
      * @Assert\NotBlank (message="Quel est ton pseudo ?")
      * @Assert\Length (
-     *     min=5, minMessage="Il manque des caractères !",
-     *     min=50, maxMessage="Houlà c'est trop long !"
+     *     max=50, maxMessage="Houlà c'est trop long !"
      * )
      */
     private $pseudo;
@@ -44,8 +43,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(name="email" , type="string", length=100, unique=true)
      * @Assert\NotBlank (message="Veuillez renseigner le mot de passe")
      * @Assert\Length (
-     *     min=5, minMessage="Il manque des caractères !",
-     *     min=100, maxMessage="Houlà c'est trop long !"
+     *     max=100, maxMessage="Houlà c'est trop long !"
      * )
      * @Assert\Email(
      *     mode="loose",
@@ -63,7 +61,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      * @ORM\Column(name="password" , type="string")
      * @Assert\NotBlank
-     * @Assert\NotCompromisedPassword()
+     * Assert\NotCompromisedPassword()
      */
     private $password;
 
@@ -71,8 +69,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(name="nom" , type="string", length=50)
      * @Assert\NotBlank (message="Quel est ton nom ?")
      * @Assert\Length (
-     *     min=5, minMessage="Il manque des caractères !",
-     *     min=50, maxMessage="Houlà c'est trop long !"
+     *     max=50, maxMessage="Houlà c'est trop long !"
      * )
      */
     private $nom;
@@ -81,8 +78,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(name="prenom" , type="string", length=50)
      * @Assert\NotBlank (message="Quel est ton prenom ?")
      * @Assert\Length (
-     *     min=5, minMessage="Il manque des caractères !",
-     *     min=50, maxMessage="Houlà c'est trop long !"
+     *     max=50, maxMessage="Houlà c'est trop long !"
      * )
      */
     private $prenom;
