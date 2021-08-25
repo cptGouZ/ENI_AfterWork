@@ -48,77 +48,6 @@ class SortieController extends AbstractController
 
 
     /**
-     * @Route (path="/create" , name="create" , methods={"GET", "POST"})
-     * @Route (path="/create_published" , name="create_published" , methods={"GET", "POST"})
-     * @param Request $request
-     * @param EntityManagerInterface $entityManager
-     */
-    public function create (Request $request , EntityManagerInterface $entityManager): Response {
-
-        /**@var  User $userConnect */
-        $userConnect = $this->getUser();
-
-        //Création d'une instance sortie
-        $sortie = new Sortie() ;
-
-        //Création formulaire de sortie
-        $formCreateSortie = $this->createForm('App\Form\SortieType', $sortie) ;
-
-        //Récupération des données du navigateur et les transmettre au form
-        $formCreateSortie->handleRequest($request) ;
-
-        $sortie->setOrganisateur($userConnect);
-        $sortie->setCampus($userConnect->getCampus());
-
-        if(str_contains($request->getUri(), 'published')){
-            $etat = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'published']);
-            $sortie->setEtat($etat);
-        }
-        else{
-            $etat = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'created']);
-            $sortie->setEtat($etat);
-        }
-
-        //Vérification des données du form
-        if ($formCreateSortie->isSubmitted() && $formCreateSortie->isValid()){
-            //Enregistrer la sortie en BDD
-            $entityManager->persist($sortie);
-
-            $entityManager->flush();
-
-            //Message de success
-            $this->addFlash('success', 'Youhou une nouvelle sortie a bien été créée !');
-
-            //Redirection sur le controller
-            return $this->redirectToRoute('sortie_create');
-        }
-
-        return $this->render('sortie/create.html.twig', [
-            'formCreateSortie' => $formCreateSortie->createView()
-        ]);
-
-    }
-
-
-    /**
-     * @Route(path="/{id}" , requirements={"id"="\d+"}, name="view" , methods={"GET"})
-     */
-    public function view(Request $request , EntityManagerInterface $entityManager)
-    {
-        /**@var  User $userConnect */
-
-        $userConnect = $this->getUser() ;
-        $sortieAAfficher = $entityManager->getRepository(Sortie::class)->findOneBy('id');
-
-
-        return $this->render('sortie/view.html.twig', [
-            'sortie' => $sortieAAfficher,
-            'user' => $userConnect,
-        ]);
-    }
-
-
-    /**
      * Inscrit l'utilisateur courant à la sortie et redirige vers la méthode de renvoie des résultats
      * @param Request $request
      * @param EntityManagerInterface $entityManager
@@ -226,6 +155,22 @@ class SortieController extends AbstractController
         return $sorties;
     }
 
+    /**
+     * @Route(path="/{id}" , requirements={"id"="\d+"}, name="view" , methods={"GET"})
+     */
+    public function view(Request $request , EntityManagerInterface $entityManager)
+    {
+        /**@var  User $userConnect */
+
+        $userConnect = $this->getUser() ;
+        $sortieAAfficher = $entityManager->getRepository(Sortie::class)->findOneBy($request->get('id'));
+
+
+        return $this->render('sortie/view.html.twig', [
+            'sortie' => $sortieAAfficher,
+            'user' => $userConnect,
+        ]);
+    }
 
     /**
      * @Route (path="/create" , name="create" , methods={"GET", "POST"})
@@ -274,7 +219,6 @@ class SortieController extends AbstractController
         }
 
         return $this->render('sortie/create.html.twig', [
-            'action' => 'Créer',
             'formCreateSortie' => $formCreateSortie->createView()
         ]);
 
