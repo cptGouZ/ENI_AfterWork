@@ -4,27 +4,29 @@
 
 {% block body %}
 
-    <h2>Modifier mon profil</h2>
+    <h2 class="text-center">Modifier mon profil</h2>
 
     {% form_theme formUser 'bootstrap_4_layout.html.twig' %}
     {{ form_start(formUser) }}
-        <div class="border border-dark">
-            <div class="row ">
-                <div class="col">
-                    <div class="mb-3"> {{ form_row(formUser.pseudo) }} </div>
-                    <div class="mb-3"> {{ form_row(formUser.prenom) }} </div>
-                    <div class="mb-3"> {{ form_row(formUser.nom) }} </div>
-                    <div class="mb-3"> {{ form_row(formUser.telephone) }} </div>
+        <div class="row justify-content-center">
+            <div class="col col-7 justify-content-center border rounded-3 border-3 border-primary p-2">
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3"> {{ form_row(formUser.pseudo) }} </div>
+                        <div class="mb-3"> {{ form_row(formUser.prenom) }} </div>
+                        <div class="mb-3"> {{ form_row(formUser.nom) }} </div>
+                        <div class="mb-3"> {{ form_row(formUser.telephone) }} </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-3"> {{ form_row(formUser.email) }} </div>
+                        <div class="mb-3"> {{ form_row(formUser.campus) }} </div>
+                        <div class="mb-3"> {{ form_row(formUser.password) }} </div>
+                    </div>
                 </div>
-                <div class="col">
-                    <div class="mb-3"> {{ form_row(formUser.email) }} </div>
-                    <div class="mb-3"> {{ form_row(formUser.campus) }} </div>
-                    <div class="mb-3"> {{ form_row(formUser.password) }} </div>
+                <div class="mb-3 text-center">
+                    {{ form_widget(formUser.submit) }}
+                    <a href="{{ url('sortie_index') }}" class="btn btn-outline-info mx-4">Retour</a>
                 </div>
-            </div>
-            <div class="mb-3 text-center">
-                {{ form_widget(formUser.submit) }}
-                <a href="{{ url('sortie_index') }}" class="btn btn-outline-info mx-4">Retour</a>
             </div>
         </div>
     {{ form_end(formUser) }}

@@ -17,26 +17,33 @@ class LieuType extends AbstractType
     {
         $builder
             ->add('nom', TextType::class, [
+                'attr' => [ 'class'=> 'bg-light' ],
+                'label_attr' => [ 'class' => 'col-sm-12' ],
                 'label' => 'Lieu : ',
             ])
 
             //RUE
             ->add('rue', TextType::class, [
+                'attr' => [ 'class'=> 'bg-light' ],
+                'label_attr' => [ 'class' => 'col-sm-12' ],
                 'label' => 'Rue : ',
             ])
 
             //VILLE
             ->add('ville', EntityType::class, [
-            'label' => 'Ville : ',
-            'class' => Ville::class,
-            'choice_label' => function ($ville) {
-                return $ville->getNom();
-            },
+                'attr' => [ 'class'=> 'bg-light' ],
+                'label_attr' => [ 'class' => 'col-sm-12' ],
+                'label' => 'Ville : ',
+                'class' => Ville::class,
+                'choice_label' => function ($ville) {
+                    return $ville->getNom();
+                },
             ])
 
             //BOUTON ENREGISTER
             ->add('submit', SubmitType::class, [
-            'label' => 'Enregistrer',
+                'attr' => [ 'class'=> 'btn btn-outline-success mx-3' ],
+                'label' => 'Enregistrer',
             ]);
 
 

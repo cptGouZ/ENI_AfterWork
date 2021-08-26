@@ -20,17 +20,22 @@ class VilleType extends AbstractType
         $builder
             //NOM
             ->add('nom', TextType::class, [
+                'attr' => [ 'class'=> 'bg-light' ],
+                'label_attr' => [ 'class' => 'col-sm-12' ],
                 'label' => 'Ville',
             ])
 
             //CODE POSTAL
             ->add('codePostal', TextType::class, [
+                'attr' => [ 'class'=> 'bg-light' ],
+                'label_attr' => [ 'class' => 'col-sm-12' ],
                 'label' => 'Code Postal',
 
             ])
 
             //BOUTON ENREGISTER
             ->add('submit', SubmitType::class, [
+                'attr' => [ 'class'=> 'mx-3 btn btn-outline-success' ],
                 'label' => 'Enregistrer',
             ]);
     }

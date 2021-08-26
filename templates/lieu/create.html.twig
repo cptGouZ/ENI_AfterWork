@@ -4,37 +4,22 @@
 
 {% block body %}
 
-    <h2>Ajouter un nouveau Lieu</h2>
-    {% form_theme formLieu 'bootstrap_4_horizontal_layout.html.twig' %}
+    <h2 class="text-center">Ajouter un nouveau Lieu</h2>
+    {% form_theme formLieu 'bootstrap_4_layout.html.twig' %}
     {{ form_start(formLieu) }}
-
-<div class="container border border-dark">
-    <div class="mb-3">
-        {{ form_label(formLieu.nom) }}
-        {{ form_widget(formLieu.nom, {'attr': {'class': 'bg-light'}}) }}
-        {{ form_errors(formLieu.nom) }}
-    </div>
-
-    <div class="mb-3">
-        {{ form_label(formLieu.rue) }}
-        {{ form_widget(formLieu.rue, {'attr': {'class': 'bg-light'}}) }}
-        {{ form_errors(formLieu.rue) }}
-    </div>
-
-    <div class="mb-3">
-        {{ form_label(formLieu.ville) }}
-        {{ form_widget(formLieu.ville, {'attr': {'class': 'bg-light'}}) }}
-        {{ form_errors(formLieu.ville) }}
-    </div>
-
-
-    <div class="row">
-        <div class="col">
-                {{ form_widget(formLieu.submit) }}
-                <a href="{{ url('sortie_index') }}" class="btn btn-primary">Annuler</a>
-                <a href="{{ url('ville_ajouter') }}" class="btn btn-secondary">Ajouter une ville</a>
+    <div class="row justify-content-center">
+        <div class="col col-7 justify-content-center border rounded-3 border-3 border-primary p-2">
+            <div class="mb-3">{{ form_row(formLieu.nom) }}</div>
+            <div class="mb-3">{{ form_row(formLieu.rue) }}</div>
+            <div class="mb-3">{{ form_row(formLieu.ville) }}</div>
+            <div class="row text-center">
+                <div class="col">
+                    {{ form_widget(formLieu.submit) }}
+                    <a href="{{ url('ville_ajouter') }}" class="btn btn-outline-light mx-3">Ajouter une ville</a>
+                    <a href="{{ url('sortie_index') }}" class="btn btn-outline-info mx-3">Retour</a>
+                </div>
+            </div>
         </div>
     </div>
-</div>
     {{ form_end(formLieu) }}
 {%  endblock body %}

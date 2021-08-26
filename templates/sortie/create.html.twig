@@ -4,39 +4,42 @@
 
 {% block body %}
 
-    <h2>{{action}} une sortie</h2><h5>Organisateur : {{ app.user.prenom }} {{ app.user.nom  }}</h5><br>
+    <h5 class="text-end">Organisateur : {{ app.user.prenom }} {{ app.user.nom  }}</h5><br>
+    <h2 class="text-center">{{action}} une sortie</h2>
 
-    {% form_theme formCreateSortie 'bootstrap_4_horizontal_layout.html.twig' %}
+    {% form_theme formCreateSortie 'bootstrap_4_layout.html.twig' %}
 
     {{ form_start(formCreateSortie) }}
 
-    <div class="container border border-dark">
-        <div class="row ">
-             <div class="col">
-                <div class="mb-3">{{ form_row(formCreateSortie.nom) }}</div>
-                <div class="mb-3">{{ form_row(formCreateSortie.dateheuredebut) }}</div>
-                <div class="mb-3">{{ form_row(formCreateSortie.datelimiteinscription) }}</div>
-                <div class="mb-3">{{ form_row(formCreateSortie.nbinscriptionmax) }}</div>
-                <div class="mb-3">{{ form_row(formCreateSortie.duree) }}</div>
-             </div>
-            <div class="col">
-                <div class="mb-3">{{ form_row(formCreateSortie.infossortie) }}</div>
-                <div class="mb-3">{{ form_row(formCreateSortie.campus) }}</div>
-                <div class="mb-3">{{ form_row(formCreateSortie.ville) }}</div>
-                <div class="mb-3">{{ form_row(formCreateSortie.lieu) }}</div>
-                <div class="mb-3"><a href="{{ url('lieu_create') }}" class="btn-primary btn">Ajouter un Lieu</a></div>
-        </div>
-        <div class="row text-center">
-            <div class="col ">
-                {{ form_widget(formCreateSortie.submit) }}
-                {% if action == 'Créer' %}
-                    {{ form_widget(formCreateSortie.publier, {"attr" : {'formaction' : path('sortie_create_published') }}) }}
-                {% else %}
-                    {% if not sortie is null  %}
-                        {{ form_widget(formCreateSortie.publier, {"attr" : {'formaction' : path('sortie_update_published', {'id': sortie.id}) }}) }}
+    <div class="row justify-content-center">
+        <div class="col col-7 justify-content-center border rounded-3 border-3 border-primary p-2">
+            <div class="row ">
+                 <div class="col">
+                    <div class="mb-3">{{ form_row(formCreateSortie.nom) }}</div>
+                    <div class="mb-3">{{ form_row(formCreateSortie.dateheuredebut) }}</div>
+                    <div class="mb-3">{{ form_row(formCreateSortie.datelimiteinscription) }}</div>
+                    <div class="mb-3">{{ form_row(formCreateSortie.nbinscriptionmax) }}</div>
+                    <div class="mb-3">{{ form_row(formCreateSortie.duree) }}</div>
+                 </div>
+                <div class="col">
+                    <div class="mb-3">{{ form_row(formCreateSortie.infossortie) }}</div>
+                    <div class="mb-3">{{ form_row(formCreateSortie.campus) }}</div>
+                    <div class="mb-3">{{ form_row(formCreateSortie.ville) }}</div>
+                    <div class="mb-3">{{ form_row(formCreateSortie.lieu) }}</div>
+                    <div class="mb-3"><a href="{{ url('lieu_create') }}" class="btn-outline-light btn">Ajouter un Lieu</a></div>
+            </div>
+            <div class="row text-center">
+                <div class="col ">
+                    {{ form_widget(formCreateSortie.submit) }}
+                    {% if action == 'Créer' %}
+                        {{ form_widget(formCreateSortie.publier, {"attr" : {'formaction' : path('sortie_create_published') }}) }}
+                    {% else %}
+                        {% if not sortie is null  %}
+                            {{ form_widget(formCreateSortie.publier, {"attr" : {'formaction' : path('sortie_update_published', {'id': sortie.id}) }}) }}
+                        {% endif %}
                     {% endif %}
-                {% endif %}
-                <a href="{{ url('sortie_index') }}" class="btn btn-outline-info mx-3">Retour</a>
+                    <a href="{{ url('sortie_index') }}" class="btn btn-outline-info mx-3">Retour</a>
+                </div>
             </div>
         </div>
     </div>

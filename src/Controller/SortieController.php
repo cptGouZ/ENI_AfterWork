@@ -87,7 +87,7 @@ class SortieController extends AbstractController
             $sortie->addInscrit($user);
             $entityManager->persist($sortie);
             $entityManager->flush($sortie);
-            $sorties = $this->getSorties($request, $entityManager, 'success', 'Bienvenu à cette sortie');
+            $sorties = $this->getSorties($request, $entityManager, 'success', 'Bienvenue à cette sortie');
         }
         $serialized = $serializer->serialize($sorties, 'json', ['groups' => ['sorties']]);
         return new JsonResponse($serialized);
