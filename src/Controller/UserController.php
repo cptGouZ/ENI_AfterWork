@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     /**
-     * @Route(path="create" , name="create" , methods={"GET" , "POST"})
+     * @Route(path="/create" , name="create" , methods={"GET" , "POST"})
      */
     public function create(Request $request , EntityManagerInterface $entityManager)
     {
@@ -47,12 +47,13 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/create.html.twig', [
+            'action' => 'Créer un',
             'formUser' => $formUser->createView(),
         ]);
     }
 
     /**
-     * @Route(path="modify" , name="modify" , methods={"GET" , "POST"})
+     * @Route(path="/modify" , name="modify" , methods={"GET" , "POST"})
      */
     public function modify(Request $request , EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordEncoder)
     {
@@ -84,6 +85,7 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/create.html.twig', [
+            'action' => 'Modifier mon',
             'formUser' => $formUser->createView(),
             'user' => $userConnect,
         ]);
