@@ -88,13 +88,14 @@
     </div>
 
     <div class="row">
-        <div class="col-4">
+        <div class="col-6">
         <table class="table table-info  ">
             <h5>Liste des participants</h5>
             <thead>
                 <tr>
                     <th scope="col">Pseudo</th>
                     <th scope="col">Nom</th>
+                    <th scope="col">Profil</th>
                 </tr>
             </thead>
 
@@ -103,6 +104,7 @@
                         <tr>
                             <td >{{ inscrit.pseudo }}</td>
                             <td >{{ inscrit.nom }}</td>
+                            <td><a href="{{ url('user_view_id', {'id': inscrit.id }) }}" class="btn btn-secondary">Afficher profil</a></td>
                         </tr>
                 {% endfor %}
             </tbody>

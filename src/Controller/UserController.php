@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Sortie;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -12,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @IsGranted("IS_AUTHENTICATED_FULLY")
- * @Route("/user/" , name="user_")
+ * @Route("/user" , name="user_")
  *
  */
 class UserController extends AbstractController
@@ -89,13 +90,18 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route(path="view" , name="view" , methods={"GET" , "POST"})
+     * @Route(path="" , name="view" , methods={"GET" , "POST"})
+     * @Route(path="/{id}", requirements={"id"="\d+"} , name="view_id" , methods={"GET" , "POST"})
      */
     public function view(Request $request , EntityManagerInterface $entityManager)
     {
         /**@var  User $userConnect */
 
-        $userConnect = $this->getUser() ;
+        if ($request->get( 'id' )){
+            $userConnect = $entityManager->getRepository(User::class)->findOneBy(['id' => $request->get( 'id' )]);
+        }else{
+            $userConnect = $this->getUser() ;
+        }
 
         // Création du formulaire
         $formUser = $this->createForm('App\Form\UserType', $userConnect,array('is_view' => true));
