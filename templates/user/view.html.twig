@@ -4,7 +4,11 @@
 
 {% block body %}
 
+    {% if user.id == app.user.id %}
     <h2 class="text-center">Mon profil</h2>
+    {%  else %}
+    <h2 class="text-center">Profil participant</h2>
+    {% endif %}
 
     {% form_theme formUser 'bootstrap_4_layout.html.twig' %}
 
@@ -24,7 +28,9 @@
                 </div>
             </div>
             <div class="mb-3 text-center">
-                <a href="{{ url('user_modify') }}" class="btn btn-outline-success">Modifier Profil</a>
+                {% if user.id == app.user.id %}
+                    <a href="{{ url('user_modify') }}" class="btn btn-outline-success">Modifier Profil</a>
+                {% endif %}
                 <a href="{{ url('sortie_index') }}" class="btn btn-outline-info mx-4">Retour</a>
             </div>
         </div>

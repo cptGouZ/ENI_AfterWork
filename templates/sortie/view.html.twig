@@ -4,116 +4,139 @@
 
 {% block body %}
 
-    <h2>Sortie</h2><h5>Organisateur : {{ sortie.organisateur.prenom }} {{ sortie.organisateur.nom  }}</h5><br>
+    <h2>Sortie</h2>
+    <h5>Organisateur : {{ sortie.organisateur.prenom }} {{ sortie.organisateur.nom  }}</h5><br>
 
-<div class="container border border-dark">
-    <div class="row ">
-        <div class="col">
-            <div class="row mb-3">
-                    <tr>
-                        <label class="col-sm-4 col-form-label">Nom de la sortie :</label>
-                        <input class="col-sm form-control" type="text" readonly minlength="4" maxlength="8" size="10" value="{{ sortie.nom }}">
-                    </tr>
-            </div>
-            <div class="row mb-3">
-                    <tr>
-                        <label class="col-sm-4 col-form-label">Date et heure de la sortie :</label>
-                        <input class="col-sm form-control" type="text" readonly minlength="4" maxlength="8" size="10" value="{{ sortie.dateHeureDebut | date("m/d/Y H:i")}}">
-                    </tr>
-            </div>
-            <div class="row mb-3">
-                <tr>
-                    <label class="col-sm-4 col-form-label">Date limite d'inscription :</label>
-                    <input class="col-sm form-control" type="text" readonly minlength="4" maxlength="8" size="10" value="{{ sortie.dateLimiteInscription | date("m/d/Y H:i") }}">
-                </tr>
-            </div>
-            <div class="row mb-3">
-                <tr>
-                    <label class="col-sm-4 col-form-label">Nombre de places :</label>
-                    <input class="col-sm form-control" type="text" readonly minlength="4" maxlength="8" size="10" value="{{ sortie.nbInscriptionMax }}">
-                </tr>
-            </div>
-            <div class="row mb-3">
-                <tr>
-                    <label class="col-sm-4 col-form-label">Durée (min) :</label>
-                    <input class="col-sm form-control" type="text" readonly minlength="4" maxlength="8" size="10" value="{{ sortie.duree }}">
-                </tr>
-            </div>
-            <div class="row mb-3">
-                <tr>
-                    <label class="col-sm-4 col-form-label">Description et infos :</label>
-                    <textarea class="col-sm form-control" readonly rows="5" >{{ sortie.infosSortie }}></textarea>
-                </tr>
-            </div>
-        </div>
-
-        <div class="col">
-            <div class="row mb-3">
-                    <tr>
-                        <label class="col-sm-4 col-form-label">Campus :</label>
-                        <input class="col-sm form-control" type="text" readonly minlength="4" maxlength="8" size="10" value="{{ sortie.campus.nom }}">
-                    </tr>
-            </div>
-            <div class="row mb-3">
-                    <tr>
-                        <label class="col-sm-4 col-form-label">Lieu :</label>
-                        <input class="col-sm form-control" type="text" readonly minlength="4" maxlength="8" size="10" value="{{ sortie.lieu.nom}}">
-                    </tr>
-            </div>
-            <div class="row mb-3">
-                <tr>
-                    <label class="col-sm-4 col-form-label">Rue :</label>
-                    <input class="col-sm form-control" type="text" readonly minlength="4" maxlength="8" size="10" value="{{ sortie.lieu.rue }}">
-                </tr>
-            </div>
-            <div class="row mb-3">
-                <tr>
-                    <label class="col-sm-4 col-form-label">Code Postal :</label>
-                    <input class="col-sm form-control" type="text" readonly minlength="4" maxlength="8" size="10" value="{{ sortie.lieu.ville.codePostal }}">
-                </tr>
-            </div>
-            <div class="row mb-3">
-                <tr>
-                    <label class="col-sm-4 col-form-label">Latitude :</label>
-                    <input class="col-sm form-control" type="text" readonly minlength="4" maxlength="8" size="10" value="{{ sortie.lieu.latitude }}">
-                </tr>
-            </div>
-            <div class="row mb-3">
-                <tr>
-                    <label class="col-sm-4 col-form-label">Longitude :</label>
-                    <input class="col-sm form-control" type="text" readonly minlength="4" maxlength="8" size="10" value="{{ sortie.lieu.longitude }}">
-                </tr>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-6">
-        <table class="table table-info  ">
-            <h5>Liste des participants</h5>
-            <thead>
-                <tr>
-                    <th scope="col">Pseudo</th>
-                    <th scope="col">Nom</th>
-                    <th scope="col">Profil</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                {% for inscrit in sortie.inscrits %}
+<div class="row justify-content-center">
+    <div class="col-8 justify-content-center border rounded-3 border-3 border-primary p-2">
+        <div class="row ">
+            <div class="col">
+                <div class="row mb-3">
                         <tr>
-                            <td >{{ inscrit.pseudo }}</td>
-                            <td >{{ inscrit.nom }}</td>
-                            <td><a href="{{ url('user_view_id', {'id': inscrit.id }) }}" class="btn btn-secondary">Afficher profil</a></td>
+                            <label class="col-sm-4 col-form-label">Nom de la sortie :</label>
+                            <input class="col-sm form-control bg-secondary text-white" type="text" readonly minlength="4" maxlength="8" size="10" value="{{ sortie.nom }}">
                         </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </div>
+                <div class="row mb-3">
+                        <tr>
+                            <label class="col-sm-4 col-form-label">Date et heure de la sortie :</label>
+                            <input class="col-sm form-control bg-secondary text-white" type="text" readonly minlength="4" maxlength="8" size="10" value="{{ sortie.dateHeureDebut | date("m/d/Y H:i")}}">
+                        </tr>
+                </div>
+                <div class="row mb-3">
+                    <tr>
+                        <label class="col-sm-4 col-form-label">Date limite d'inscription :</label>
+                        <input class="col-sm form-control bg-secondary text-white" type="text" readonly minlength="4" maxlength="8" size="10" value="{{ sortie.dateLimiteInscription | date("m/d/Y H:i") }}">
+                    </tr>
+                </div>
+                <div class="row mb-3">
+                    <tr>
+                        <label class="col-sm-4 col-form-label">Nombre de places :</label>
+                        <input class="col-sm form-control bg-secondary text-white" type="text" readonly minlength="4" maxlength="8" size="10" value="{{ sortie.nbInscriptionMax }}">
+                    </tr>
+                </div>
+                <div class="row mb-3">
+                    <tr>
+                        <label class="col-sm-4 col-form-label">Durée (min) :</label>
+                        <input class="col-sm form-control bg-secondary text-white" type="text" readonly minlength="4" maxlength="8" size="10" value="{{ sortie.duree }}">
+                    </tr>
+                </div>
+                <div class="row mb-3">
+                    <tr>
+                        <label class="col-sm-4 col-form-label">Description et infos :</label>
+                        <textarea class="col-sm form-control bg-secondary text-white" readonly rows="5" >{{ sortie.infosSortie }}></textarea>
+                    </tr>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="row mb-3">
+                        <tr>
+                            <label class="col-sm-4 col-form-label">Campus :</label>
+                            <input class="col-sm form-control bg-secondary text-white" type="text" readonly minlength="4" maxlength="8" size="10" value="{{ sortie.campus.nom }}">
+                        </tr>
+                </div>
+                <div class="row mb-3">
+                        <tr>
+                            <label class="col-sm-4 col-form-label">Lieu :</label>
+                            <input class="col-sm form-control bg-secondary text-white" type="text" readonly minlength="4" maxlength="8" size="10" value="{{ sortie.lieu.nom}}">
+                        </tr>
+                </div>
+                <div class="row mb-3">
+                    <tr>
+                        <label class="col-sm-4 col-form-label">Rue :</label>
+                        <input class="col-sm form-control bg-secondary text-white" type="text" readonly minlength="4" maxlength="8" size="10" value="{{ sortie.lieu.rue }}">
+                    </tr>
+                </div>
+                <div class="row mb-3">
+                    <tr>
+                        <label class="col-sm-4 col-form-label">Code Postal :</label>
+                        <input class="col-sm form-control bg-secondary text-white" type="text" readonly minlength="4" maxlength="8" size="10" value="{{ sortie.lieu.ville.codePostal }}">
+                    </tr>
+                </div>
+                <div class="row mb-3">
+                    <tr>
+                        <label class="col-sm-4 col-form-label">Latitude :</label>
+                        <input class="col-sm form-control bg-secondary text-white" type="text" readonly minlength="4" maxlength="8" size="10" value="{{ sortie.lieu.latitude }}">
+                    </tr>
+                </div>
+                <div class="row mb-3">
+                    <tr>
+                        <label class="col-sm-4 col-form-label">Longitude :</label>
+                        <input class="col-sm form-control bg-secondary text-white" type="text" readonly minlength="4" maxlength="8" size="10" value="{{ sortie.lieu.longitude }}">
+                    </tr>
+                </div>
+                <div class="row mb-3">
+                    <tr>
+                        <label class="col-sm-4 col-form-label">Statut :</label>
+                        <input class="col-sm form-control bg-secondary text-white" type="text" readonly minlength="4" maxlength="8" size="10" value="{{ sortie.statut }}">
+                    </tr>
+                </div>
+
+                {% if sortie.etat.libelle == 'cancelled' %}
+                    <div class="row mb-3">
+                        <tr>
+                            <label class="col-sm-4 col-form-label">Motif annulation :</label>
+                            <input class="col-sm form-control bg-secondary text-white" type="text" readonly minlength="4" maxlength="8" size="10" value="{{ sortie.motifannulation }}">
+                        </tr>
+                    </div>
+                {% endif %}
+
+
+
+                <div class="text-end">
+                    <a href="{{ url('sortie_index') }}" class="btn btn-outline-info mx-4">Retour</a>
+                </div>
+            </div>
+
         </div>
+
+        <div class="row">
+            <div class="col-12">
+            <table class="table table-info  ">
+                <h5>Liste des participants</h5>
+                <thead>
+                    <tr>
+                        <th scope="col">Pseudo</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Profil</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for inscrit in sortie.inscrits %}
+                            <tr>
+                                <td >{{ inscrit.pseudo }}</td>
+                                <td >{{ inscrit.nom }}</td>
+                                <td><a href="{{ url('user_view_id', {'id': inscrit.id }) }}" class="btn btn-secondary">Afficher profil</a></td>
+                            </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            </div>
+        </div>
+
     </div>
-
-
-
 </div>
 
 {% endblock body %}
