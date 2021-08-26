@@ -44,3 +44,37 @@
 
     {{ form_end(formCreateSortie) }}
 {% endblock body %}
+{% block javascripts %}
+        <script>
+            const sortie_lieu = document.getElementById("sortie_lieu");
+            const sortie_ville = document.getElementById("sortie_ville");
+            window.addEventListener('load', ()=>{
+                sortie_lieu.innerText="";
+                updateLieux()
+                sortie_ville.addEventListener('change', updateLieux);
+            });
+
+            function updateLieux() {
+                const url = '{{ path('ville_lieux', {'id': 0})}}'.replace('0', sortie_ville.value);
+                fetch(url, {
+                    method: "GET",
+                    mode: "same-origin",
+                    dataType: "json"
+                })
+                    .then(response => response.json())
+                    .then(response => {
+                        sortie_lieu.innerText="";
+                        let results = JSON.parse(response);
+                        for(const lieu of results){
+                            let optEl = document.createElement('option');
+                            optEl.value = lieu.id;
+                            optEl.innerText = lieu.nom;
+                            sortie_lieu.append(optEl);
+                        }
+                    })
+                    .catch(error => {
+                        alert("Erreur : " + error);
+                    })
+            }
+        </script>
+{% endblock %}

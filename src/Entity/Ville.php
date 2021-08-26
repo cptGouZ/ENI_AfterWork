@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -17,6 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Ville
 {
     /**
+     * @Groups("lieux")
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -24,6 +26,7 @@ class Ville
     private $id;
 
     /**
+     * @Groups("lieux")
      * @ORM\Column(name="nom", type="string", length=50)
      * @Assert\NotBlank(message="Le nom de la ville doit être renseigné.")
      * @Assert\Length(
