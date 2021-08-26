@@ -152,18 +152,15 @@
                 //Liens
                 let liensEl = document.createElement('td');
                 trEl.append(liensEl);
+                    //Afficher
+                    let afficherEl = document.createElement('a');
+                    let url_afficher = '{{ path("sortie_view", {'id': '0'}) }}'.replace("0", sortie.id);
+                    afficherEl.innerText = "Afficher";
+                    afficherEl.href = url_afficher;
+                    afficherEl.className = "btn btn-outline-info btn-sm mx-1";
+                    liensEl.append(afficherEl);
 
-                    //Je ne suis pas organisateur
-                    if (sortie.organisateur.id !== {{ app.user.id }}){
-                        //Afficher
-                        let afficherEl = document.createElement('a');
-                        let url_afficher = '{{ path("sortie_view", {'id': '0'}) }}'.replace("0", sortie.id);
-                        afficherEl.innerText = "Afficher";
-                        afficherEl.href = url_afficher;
-                        afficherEl.className = "btn btn-outline-info btn-sm mx-1";
-                        liensEl.append(afficherEl);
-
-                    }
+                    //Boutons inscription désinscription
                     if(sortie.statut === 'Ouverte'){
                         let url_inscrire = '{{ path("sortie_inscrire", {'id': '0'}) }}'.replace("0", sortie.id);
                         let url_desinscrire = '{{ path("sortie_desinscrire", {'id': '0'}) }}'.replace("0", sortie.id);
@@ -223,6 +220,5 @@
                 tbody.append(trEl);
             }
         }
-
     </script>
 {% endblock %}

@@ -175,10 +175,11 @@ class SortieController extends AbstractController
     }
 
     /**
-     * @Route (path="/create" , name="create" , methods={"GET", "POST"})
-     * @Route (path="/create_published" , name="create_published" , methods={"GET", "POST"})
+     * Méthode pour la création d'une sortie avec publication immédiate ou non
      * @param Request $request
      * @param EntityManagerInterface $entityManager
+     * @Route (path="/create" , name="create" , methods={"GET", "POST"})
+     * @Route (path="/create_published" , name="create_published" , methods={"GET", "POST"})
      */
     public function create (Request $request , EntityManagerInterface $entityManager): Response {
 
@@ -194,9 +195,11 @@ class SortieController extends AbstractController
         //Récupération des données du navigateur et les transmettre au form
         $formCreateSortie->handleRequest($request) ;
 
+        //Valeurs par défaut pour l'organisateur et le campus
         $sortie->setOrganisateur($userConnect);
         $sortie->setCampus($userConnect->getCampus());
 
+        //Si la route contient published, on publie immédiatemment la sortie sinon on la met en statut créée
         if(str_contains($request->getUri(), 'published')){
             $etat = $entityManager->getRepository(Etat::class)->findOneBy(['libelle' => 'published']);
             $sortie->setEtat($etat);
@@ -206,22 +209,18 @@ class SortieController extends AbstractController
             $sortie->setEtat($etat);
         }
 
-        //Vérification des données du form
         if ($formCreateSortie->isSubmitted() && $formCreateSortie->isValid()){
             //Enregistrer la sortie en BDD
             $entityManager->persist($sortie);
             $entityManager->flush();
 
-            //Message de success
+            //Redirection sur le controller avec message de réussite
             $this->addFlash('success', 'Youhou une nouvelle sortie a bien été créée !');
-
-            //Redirection sur le controller
             return $this->redirectToRoute('sortie_create');
         }
 
         return $this->render('sortie/create.html.twig', [
             'formCreateSortie' => $formCreateSortie->createView(),
-            'sortie' => null,
             'action' => 'Créer'
         ]);
 

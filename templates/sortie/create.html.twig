@@ -34,9 +34,7 @@
                     {% if action == 'Créer' %}
                         {{ form_widget(formCreateSortie.publier, {"attr" : {'formaction' : path('sortie_create_published') }}) }}
                     {% else %}
-                        {% if not sortie is null  %}
-                            {{ form_widget(formCreateSortie.publier, {"attr" : {'formaction' : path('sortie_update_published', {'id': sortie.id}) }}) }}
-                        {% endif %}
+                        {{ form_widget(formCreateSortie.publier, {"attr" : {'formaction' : path('sortie_update_published', {'id': sortie.id}) }}) }}
                     {% endif %}
                     <a href="{{ url('sortie_index') }}" class="btn btn-outline-info mx-3">Retour</a>
                 </div>
