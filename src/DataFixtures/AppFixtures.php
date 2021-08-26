@@ -60,27 +60,27 @@ class AppFixtures extends Fixture
         // USERS
         $users[] = Array() ;
 
-        /*for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 4; $i++) {
             $users[$i] = new User();
-            $users[$i]->setPseudo($faker->name);
+            $users[$i]->setPseudo($faker->userName);
             $users[$i]->setNom($faker->lastName);
             $users[$i]->setPrenom($faker->firstName);
             $users[$i]->setTelephone($faker->numerify('##########'));
-            $users[$i]->setEmail($faker->email);
+            $users[$i]->setEmail($faker->firstName.".".$faker->lastName."@eni-afterwork.fr");
             $users[$i]->setPassword($this->passwordHasher->hashPassword(
                              $users[$i],'0000'));
             $users[$i]->setAdministrateur($faker->boolean);
             $users[$i]->setActif($faker->boolean);
             $users[$i]->setCampus($campus[rand(0,count($campus)-1)]);
             $manager->persist($users[$i]);
-        }*/
+        }
 
         $users[0] = new User();
         $users[0]->setNom("Ruiz");
         $users[0]->setPrenom("Alexandre");
         $users[0]->setPseudo("Zoto");
         $users[0]->setCampus($campus[0]);
-        $users[0]->setEmail('alex.ruiz@sortie.fr');
+        $users[0]->setEmail('alex.ruiz@eni-afterwork.fr');
         $users[0]->setTelephone('0123456789');
         $users[0]->setAdministrateur(false);
         $users[0]->setActif(true);
@@ -94,7 +94,7 @@ class AppFixtures extends Fixture
         $users[1]->setPrenom("Julien");
         $users[1]->setPseudo("GouZ");
         $users[1]->setCampus($campus[0]);
-        $users[1]->setEmail('julien.gazeau@sortie.fr');
+        $users[1]->setEmail('julien.gazeau@eni-afterwork.fr');
         $users[1]->setTelephone('9876543210');
         $users[1]->setAdministrateur(false);
         $users[1]->setActif(true);
@@ -148,20 +148,32 @@ class AppFixtures extends Fixture
 
         // SORTIES
         $sorties[] = Array();
-        for ($i = 0; $i < 8; $i++) {
+        for ($i = 0; $i < 4; $i++) {
             $sorties[$i] = new Sortie();
-            $sorties[$i]->setNom($faker->name);
+            switch($i){
+                case 0 : $sorties[$i]->setNom('Karting');
+                    $sorties[$i]->setInfosSortie('Karting pour voir qui est le plus rapide');
+                    break;
+                case 1 : $sorties[$i]->setNom('Pedalo');
+                    $sorties[$i]->setInfosSortie('Tous à l\'eau !');
+                    break;
+                case 2 : $sorties[$i]->setNom('Tennis');
+                    $sorties[$i]->setInfosSortie('La balle ? Qu\'elle balle?');
+                    break;
+                case 3 : $sorties[$i]->setNom('Apéro Berlin');
+                    $sorties[$i]->setInfosSortie('Le mettre de girafe c\'est pour ce soir!' );
+                    break;
+            }
             $sorties[$i]->setCampus($campus[rand(0, count($campus)-1)]);
             $sorties[$i]->setDateHeureDebut($faker->dateTimeInInterval('-3days', '+20days'));
             $dateLimiteInscription = date_format($sorties[$i]->getDateHeureDebut(),  'Y/m/d h:i');
             $sorties[$i]->setDateLimiteInscription( date_sub(new DateTime($dateLimiteInscription), new DateInterval('PT90M')) );
             $sorties[$i]->setDuree(rand(10, 90));
             $sorties[$i]->setEtat($etats[rand(0, count($etats)-1)]);
-            $sorties[$i]->setInfosSortie($faker->text);
             $sorties[$i]->setLieu($lieux[rand(0, count($lieux)-1)]);
             $sorties[$i]->setNbInscriptionMax($faker->numberBetween(5, 12));
             $sorties[$i]->setOrganisateur($users[rand(0, count($users)-1)]);
-            for ($j = 0; $j < rand(5,12); $j++){
+            for ($j = 0; $j < rand(2,5); $j++){
                 $sorties[$i]->addInscrit($users[rand(0, count($users)-1)]);
             }
             $manager->persist($sorties[$i]);

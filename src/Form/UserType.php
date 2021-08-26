@@ -32,10 +32,9 @@ class UserType extends AbstractType
         //PSEUDO
         $builder
             ->add('pseudo' , TextType::class, [
+                'attr' => [ 'class'=> 'bg-light' ],
+                'label_attr' => [ 'class' => 'col-sm-12' ],
                 'label'=> 'Pseudo :',
-                'label_attr' => [
-                    'class' => 'col-sm-12',
-                ],
                 'trim' => true ,
                 'required' => true,
                 'disabled' => $options['is_view'],
@@ -45,10 +44,9 @@ class UserType extends AbstractType
         //PRENOM
             $builder
                 ->add('prenom' , TextType::class, [
+                    'attr' => [ 'class'=> 'bg-light' ],
+                    'label_attr' => [ 'class' => 'col-sm-12' ],
                     'label'=> 'Prénom :',
-                    'label_attr' => [
-                        'class' => 'col-sm-12',
-                    ],
                     'trim' => true ,
                     'required' => true,
                     'disabled' => $options['is_view'],
@@ -57,10 +55,9 @@ class UserType extends AbstractType
         //NOM
             $builder
                 ->add('nom' , TextType::class, [
+                    'attr' => [ 'class'=> 'bg-light' ],
+                    'label_attr' => [ 'class' => 'col-sm-12' ],
                     'label'=> 'Nom :',
-                    'label_attr' => [
-                        'class' => 'col-sm-12',
-                    ],
                     'trim' => true ,
                     'required' => true,
                     'disabled' => $options['is_view'],
@@ -69,10 +66,9 @@ class UserType extends AbstractType
         //TELEPHONE
             $builder
                 ->add('telephone' , TextType::class, [
+                    'attr' => [ 'class'=> 'bg-light' ],
+                    'label_attr' => [ 'class' => 'col-sm-12' ],
                     'label'=> 'Téléphone :',
-                    'label_attr' => [
-                        'class' => 'col-sm-12',
-                    ],
                     'trim' => true ,
                     'required' => true,
                     'disabled' => $options['is_view'],
@@ -81,9 +77,8 @@ class UserType extends AbstractType
         //EMAIL
             $builder
                 ->add('email' , EmailType::class ,[
-                    'label_attr' => [
-                        'class' => 'col-sm-12',
-                    ],
+                    'attr' => [ 'class'=> 'bg-light' ],
+                    'label_attr' => [ 'class' => 'col-sm-12' ],
                     'label' => 'Email :',
                     'trim' => true ,
                     'required' => true,
@@ -96,17 +91,16 @@ class UserType extends AbstractType
                     'type' => PasswordType::class,
                     'invalid_message' => 'Les mots de passe ne sont pas identiques.',
                     'required' => true ,
-                    'first_options' => ['label' => 'Mot de passe :',
-                                        'label_attr' => [
-                                            'class' => 'col-sm-12',
-                                            ],
-                                        ],
-                    'second_options' =>['label' => 'Confirmation Mot de passe :',
-                                        'label_attr' => [
-                                            'class' => 'col-sm-12',
-                                            ],
-                                        ],
-                    'attr' => ['class' => 'bg-light'],
+                    'first_options' => [
+                        'attr' => [ 'class'=> 'bg-light' ],
+                        'label_attr' => [ 'class' => 'col-sm-12' ],
+                        'label' => 'Mot de passe :',
+                        ],
+                    'second_options' =>[
+                        'attr' => [ 'class'=> 'bg-light' ],
+                        'label_attr' => [ 'class' => 'col-sm-12 mt-3' ],
+                        'label' => 'Confirmation Mot de passe :',
+                        ],
                     'disabled' => $options['is_view'],
 
                 ]);
@@ -114,10 +108,9 @@ class UserType extends AbstractType
             //CAMPUS
             $builder
                 ->add('campus' , TextType::class, [
+                    'attr' => [ 'class'=> 'bg-secondary text-white' ],
+                    'label_attr' => [ 'class' => 'col-sm-12' ],
                     'label'=> 'Campus :',
-                    'label_attr' => [
-                        'class' => 'col-sm-12',
-                    ],
                     'trim' => true ,
                     'data' => $this->security->getUser()->getCampus()->getNom(),
                     'disabled' => true ,
@@ -125,6 +118,7 @@ class UserType extends AbstractType
 
         //BOUTON ENREGISTER
              $builder->add('submit', SubmitType::class, [
+                 'attr' => ['class'=>'btn btn-outline-success'],
                  'label' => 'Enregistrer',
                 ]);
 

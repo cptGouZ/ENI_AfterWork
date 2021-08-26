@@ -6,55 +6,27 @@
 
     <h2>Modifier mon profil</h2>
 
-    {% form_theme formUser 'bootstrap_4_horizontal_layout.html.twig' %}
-
+    {% form_theme formUser 'bootstrap_4_layout.html.twig' %}
     {{ form_start(formUser) }}
-
-    <div class="container border border-dark">
-        <div class="mb-3">
-            {{ form_label(formUser.pseudo) }}
-            {{ form_widget(formUser.pseudo, {'attr': {'class': 'bg-light'}}) }}
-            {{ form_errors(formUser.pseudo) }}
+        <div class="border border-dark">
+            <div class="row ">
+                <div class="col">
+                    <div class="mb-3"> {{ form_row(formUser.pseudo) }} </div>
+                    <div class="mb-3"> {{ form_row(formUser.prenom) }} </div>
+                    <div class="mb-3"> {{ form_row(formUser.nom) }} </div>
+                    <div class="mb-3"> {{ form_row(formUser.telephone) }} </div>
+                </div>
+                <div class="col">
+                    <div class="mb-3"> {{ form_row(formUser.email) }} </div>
+                    <div class="mb-3"> {{ form_row(formUser.campus) }} </div>
+                    <div class="mb-3"> {{ form_row(formUser.password) }} </div>
+                </div>
+            </div>
+            <div class="mb-3 text-center">
+                {{ form_widget(formUser.submit) }}
+                <a href="{{ url('sortie_index') }}" class="btn btn-outline-info mx-4">Retour</a>
+            </div>
         </div>
-        <div class="mb-3">
-            {{ form_label(formUser.prenom) }}
-            {{ form_widget(formUser.prenom, {'attr': {'class': 'bg-light'}}) }}
-            {{ form_errors(formUser.prenom) }}
-        </div>
-        <div class="mb-3">
-            {{ form_label(formUser.nom) }}
-            {{ form_widget(formUser.nom, {'attr': {'class': 'bg-light'}}) }}
-            {{ form_errors(formUser.nom) }}
-        </div>
-        <div class="mb-3">
-            {{ form_label(formUser.telephone) }}
-            {{ form_widget(formUser.telephone, {'attr': {'class': 'bg-light'}}) }}
-            {{ form_errors(formUser.telephone) }}
-        </div>
-        <div class="mb-3">
-            {{ form_label(formUser.email) }}
-            {{ form_widget(formUser.email, {'attr': {'class': 'bg-light'}}) }}
-            {{ form_errors(formUser.email) }}
-        </div>
-        <div class="mb-3">
-            {{ form_widget(formUser.password) }}
-            {{ form_errors(formUser.password) }}
-        </div>
-        <div class="mb-3">
-            {{ form_label(formUser.campus) }}
-            {{ form_widget(formUser.campus, {'attr': {'class': 'bg-light'}}) }}
-            {{ form_errors(formUser.campus) }}
-        </div>
-
-        <div class="mb-3">
-            {{ form_widget(formUser.submit) }}
-        </div>
-
-        <div class="mb-3">
-            <a href="{{ url('sortie_index') }}" class="btn btn-secondary">Annuler</a>
-        </div>
-    </div>
-
     {{ form_end(formUser) }}
 
 {% endblock %}
