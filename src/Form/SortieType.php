@@ -31,20 +31,18 @@ class SortieType extends AbstractType
         $builder
             //NOM
             ->add('nom', TextType::class, [
+                'attr' => [ 'class'=> 'bg-light' ],
+                'label_attr' => [ 'class' => 'col-sm-12' ],
                 'label'=> 'Nom de la sortie :',
-                'label_attr' => [
-                    'class' => 'col-sm-12',
-                ],
                 'trim' => true ,
                 'required' => true,
             ] )
 
             //DATE HEURE SORTIE
             ->add('dateheuredebut' , DateTimeType::class,[
+                'attr' => [ 'class'=> 'bg-light' ],
+                'label_attr' => [ 'class' => 'col-sm-12' ],
                 'label'=> 'Date et Heure de la sortie :',
-                'label_attr' => [
-                    'class' => 'col-sm-12',
-                ],
                 'trim' => true ,
                 'required' => true,
                 'widget' => 'single_text',
@@ -53,20 +51,18 @@ class SortieType extends AbstractType
 
             //DUREE
             ->add('duree', IntegerType::class , [
+                'attr' => [ 'class'=> 'bg-light' ],
+                'label_attr' => [ 'class' => 'col-sm-12' ],
                 'label' => 'Durée (min) : ',
-                'label_attr' => [
-                    'class' => 'col-sm-12',
-                ],
                 'trim' => true ,
                 'required' => true ,
             ])
 
             //DATE LIMITE INSCRIPTION
             ->add('datelimiteinscription', DateTimeType::class,[
+                'attr' => [ 'class'=> 'bg-light' ],
+                'label_attr' => [ 'class' => 'col-sm-12' ],
                 'label'=> 'Date Limite d\'inscription :',
-                'label_attr' => [
-                    'class' => 'col-sm-12',
-                ],
                 'trim' => true ,
                 'required' => true,
                 'widget' => 'single_text',
@@ -75,30 +71,27 @@ class SortieType extends AbstractType
 
             //NOMBRE INSCRIT
             ->add('nbinscriptionmax', IntegerType::class,[
+                'attr' => [ 'class'=> 'bg-light' ],
+                'label_attr' => [ 'class' => 'col-sm-12' ],
                 'label' => 'Nombre de place :',
-                'label_attr' => [
-                    'class' => 'col-sm-12',
-                ],
                 'trim' => true ,
                 'required' => true ,
 
             //INFOS
             ])
             ->add('infossortie' , TextareaType::class ,[
+                'attr' => [ 'class'=> 'bg-light' ],
+                'label_attr' => [ 'class' => 'col-sm-12' ],
                 'label' => 'Description et infos :',
-                'label_attr' => [
-                    'class' => 'col-sm-12',
-                ],
                 'trim' => true ,
                 'required' => true ,
             ])
 
             //CAMPUS
             ->add('campus' , TextType::class, [
+                'attr' => [ 'class'=> 'bg-secondary text-white' ],
+                'label_attr' => [ 'class' => 'col-sm-12' ],
                 'label'=> 'Campus :',
-                'label_attr' => [
-                    'class' => 'col-sm-12',
-                ],
                 'trim' => true ,
                 'data' => $this->security->getUser()->getCampus()->getNom(),
                 'disabled' => true ,
@@ -106,10 +99,9 @@ class SortieType extends AbstractType
 
             //LIEU
             ->add('lieu' ,EntityType::class,[
+                'attr' => [ 'class'=> 'bg-light' ],
+                'label_attr' => [ 'class' => 'col-sm-12' ],
                 'label' => 'Lieu : ' ,
-                'label_attr' => [
-                    'class' => 'col-sm-12',
-                ],
                 'class' => Lieu::class ,
                 'choice_label' => function($lieu) {
                     return $lieu->getNom() ;
@@ -118,10 +110,9 @@ class SortieType extends AbstractType
 
             //VILLE
             ->add('ville', EntityType::class, [
+                'attr' => [ 'class'=> 'bg-light' ],
+                'label_attr' => [ 'class' => 'col-sm-12' ],
                 'label' => 'Ville :',
-                'label_attr' => [
-                    'class' => 'col-sm-12',
-                ],
                 'class' => Ville::class,
                 'query_builder' => function (VilleRepository $vr) {
                     return $vr->createQueryBuilder('villes')->orderBy('villes.nom', 'ASC');;
@@ -132,12 +123,14 @@ class SortieType extends AbstractType
 
             //BOUTON ENREGISTER
             ->add('submit', SubmitType::class, [
-                 'label' => 'Enregistrer',
+                'attr' => [ 'class'=> 'mx-3 btn btn-outline-success' ],
+                'label' => 'Enregistrer',
             ])
 
             //BOUTON PUBLIER
             ->add('publier', SubmitType::class, [
-                 'label' => 'Publier la sortie',
+                'attr' => [ 'class'=> 'mx-3 btn btn-outline-success' ],
+                'label' => 'Publier la sortie',
             ]);
     }
 

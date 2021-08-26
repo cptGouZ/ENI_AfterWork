@@ -28,11 +28,14 @@ class UserType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
+        $colorField = 'bg-light';
+        if($options['is_view']){
+            $colorField = 'bg-secondary text-white';
+        }
         //PSEUDO
         $builder
             ->add('pseudo' , TextType::class, [
-                'attr' => [ 'class'=> 'bg-light' ],
+                'attr' => [ 'class'=> $colorField ],
                 'label_attr' => [ 'class' => 'col-sm-12' ],
                 'label'=> 'Pseudo :',
                 'trim' => true ,
@@ -44,7 +47,7 @@ class UserType extends AbstractType
         //PRENOM
             $builder
                 ->add('prenom' , TextType::class, [
-                    'attr' => [ 'class'=> 'bg-light' ],
+                    'attr' => [ 'class'=> $colorField ],
                     'label_attr' => [ 'class' => 'col-sm-12' ],
                     'label'=> 'Prénom :',
                     'trim' => true ,
@@ -55,7 +58,7 @@ class UserType extends AbstractType
         //NOM
             $builder
                 ->add('nom' , TextType::class, [
-                    'attr' => [ 'class'=> 'bg-light' ],
+                    'attr' => [ 'class'=> $colorField ],
                     'label_attr' => [ 'class' => 'col-sm-12' ],
                     'label'=> 'Nom :',
                     'trim' => true ,
@@ -66,7 +69,7 @@ class UserType extends AbstractType
         //TELEPHONE
             $builder
                 ->add('telephone' , TextType::class, [
-                    'attr' => [ 'class'=> 'bg-light' ],
+                    'attr' => [ 'class'=> $colorField ],
                     'label_attr' => [ 'class' => 'col-sm-12' ],
                     'label'=> 'Téléphone :',
                     'trim' => true ,
@@ -77,7 +80,7 @@ class UserType extends AbstractType
         //EMAIL
             $builder
                 ->add('email' , EmailType::class ,[
-                    'attr' => [ 'class'=> 'bg-light' ],
+                    'attr' => [ 'class'=> $colorField ],
                     'label_attr' => [ 'class' => 'col-sm-12' ],
                     'label' => 'Email :',
                     'trim' => true ,
@@ -92,12 +95,12 @@ class UserType extends AbstractType
                     'invalid_message' => 'Les mots de passe ne sont pas identiques.',
                     'required' => true ,
                     'first_options' => [
-                        'attr' => [ 'class'=> 'bg-light' ],
+                        'attr' => [ 'class'=> $colorField ],
                         'label_attr' => [ 'class' => 'col-sm-12' ],
                         'label' => 'Mot de passe :',
                         ],
                     'second_options' =>[
-                        'attr' => [ 'class'=> 'bg-light' ],
+                        'attr' => [ 'class'=> $colorField ],
                         'label_attr' => [ 'class' => 'col-sm-12 mt-3' ],
                         'label' => 'Confirmation Mot de passe :',
                         ],
