@@ -14,14 +14,15 @@ class SortieAnnulationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('motif', TextType::class, [
+            ->add('motifannulation', TextType::class, [
+                'attr' => [ 'class'=> 'bg-light' ],
+                'label_attr' => [ 'class' => 'col-sm-12' ],
                 'label'=>'Motif :',
-                'mapped'=>false,
                 'required'=>true,
             ])
             ->add('submit', SubmitType::class, [
+                'attr' => [ 'class'=> 'mx-3 btn btn-outline-success' ],
                 'label' => 'Annuler la sortie',
-                'attr'=>['class' => 'btn btn-warning'],
             ])
         ;
     }

@@ -79,6 +79,12 @@ class Sortie
 
     /**
      * @Groups ("sorties")
+     * @ORM\Column(name="motif_annulation", type="text", nullable=true)
+     */
+    private $motifAnnulation;
+
+    /**
+     * @Groups ("sorties")
      * @ORM\ManyToOne(targetEntity=Etat::class)
      * @ORM\JoinColumn(name="id_etat", nullable=false)
      */
@@ -184,6 +190,15 @@ class Sortie
 
     public function setInfosSortie(?string $infosSortie): self {
         $this->infosSortie = $infosSortie;
+        return $this;
+    }
+
+    public function getMotifAnnulation(): ?string {
+        return $this->motifAnnulation;
+    }
+
+    public function setMotifAnnulation(?string $motifAnnulation): self {
+        $this->motifAnnulation = $motifAnnulation;
         return $this;
     }
 

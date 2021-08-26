@@ -3,29 +3,27 @@
 {% block title %} {{ parent() }} : Annuler une sortie {% endblock title %}
 
 {% block body %}
-
-<h2>Annuler une sortie</h2><h5>Organisateur : {{ app.user.prenom }} {{ app.user.nom  }}</h5><br>
-    {% form_theme formAnnulationSortie 'bootstrap_4_horizontal_layout.html.twig' %}
-    Nom : {{ sortie.nom }}<br>
-    Date de la sortie : {{ sortie.dateHeureDebut | date}}<br>
-    Campus : {{ sortie.campus.nom }}<br>
-    Lieu : {{ sortie.lieu.rue }}<br>
-    {{ form_start(formAnnulationSortie) }}
-        <div class="container border border-dark">
-            <div class="row ">
-                <div class="col">
-                    <div class="mb-3">
-                        {{ form_label(formAnnulationSortie.motif) }}
-                        {{ form_widget(formAnnulationSortie.motif) }}
-                        {{ form_errors(formAnnulationSortie.motif) }}
+    <h5 class="text-end">Organisateur : {{ app.user.prenom }} {{ app.user.nom  }}</h5>
+    <h2 class="text-center">Annuler une sortie</h2>
+    {% form_theme formAnnulationSortie 'bootstrap_4_layout.html.twig' %}
+    <div class="row justify-content-center">
+        <div class="col col-7 justify-content-center border rounded-3 border-3 border-primary p-2">
+            Nom : {{ sortie.nom }}<br><br>
+            Date de la sortie : {{ sortie.dateHeureDebut | date}}<br><br>
+            Campus : {{ sortie.campus.nom }}<br><br>
+            Lieu : {{ sortie.lieu.rue }}<br><br>
+            {{ form_start(formAnnulationSortie) }}
+                <div class="row ">
+                    <div class="col">
+                        <div class="mb-3">{{ form_row(formAnnulationSortie.motifannulation) }}</div>
                     </div>
                 </div>
-            </div>
-            <div class="row text-center">
-                <div class="col ">
-                    {{ form_widget(formAnnulationSortie.submit) }}
+                <div class="row text-center">
+                    <div class="col ">
+                        {{ form_widget(formAnnulationSortie.submit) }}
+                    </div>
                 </div>
-            </div>
+            {{ form_end(formAnnulationSortie) }}
         </div>
-    {{ form_end(formAnnulationSortie) }}
+    </div>
 {% endblock %}
