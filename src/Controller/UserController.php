@@ -112,6 +112,7 @@ class UserController extends AbstractController
         $formUser->handleRequest($request);
 
 
+
         return $this->render('user/view.html.twig', [
             'formUser' => $formUser->createView(),
             'user' => $userConnect,

@@ -161,7 +161,7 @@ class AppFixtures extends Fixture
                     $sorties[$i]->setInfosSortie('La balle ? Qu\'elle balle?');
                     break;
                 case 3 : $sorties[$i]->setNom('Apéro Berlin');
-                    $sorties[$i]->setInfosSortie('Le mettre de girafe c\'est pour ce soir!' );
+                    $sorties[$i]->setInfosSortie('Le mètre de girafe c\'est pour ce soir!' );
                     break;
             }
             $sorties[$i]->setCampus($campus[rand(0, count($campus)-1)]);

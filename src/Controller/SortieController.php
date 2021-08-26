@@ -190,7 +190,10 @@ class SortieController extends AbstractController
         $sortie = new Sortie() ;
 
         //Création formulaire de sortie
-        $formCreateSortie = $this->createForm('App\Form\SortieType', $sortie) ;
+        $formCreateSortie = $this->createForm('App\Form\SortieType', $sortie,[
+            'dateDebut' => new DateTime('now', new \DateTimeZone('Europe/Paris')),
+            'dateLimite' => new DateTime('now', new \DateTimeZone('Europe/Paris'))
+        ]) ;
 
         //Récupération des données du navigateur et les transmettre au form
         $formCreateSortie->handleRequest($request) ;
@@ -216,7 +219,7 @@ class SortieController extends AbstractController
 
             //Redirection sur le controller avec message de réussite
             $this->addFlash('success', 'Youhou une nouvelle sortie a bien été créée !');
-            return $this->redirectToRoute('sortie_create');
+            return $this->redirectToRoute('sortie_index');
         }
 
         return $this->render('sortie/create.html.twig', [
@@ -244,7 +247,10 @@ class SortieController extends AbstractController
         $sortie = $sortieRepo->find($idSortie);
 
         //Création du formulaire
-        $formSortie = $this->createForm(SortieType::class, $sortie);
+        $formSortie = $this->createForm(SortieType::class, $sortie, [
+            'dateDebut' => $sortie->getDateHeureDebut() ,
+            'dateLimite' => $sortie->getDateLimiteInscription() ,
+        ]);
         $formSortie->handleRequest($request);
 
         //Validation du formulaire
@@ -258,7 +264,7 @@ class SortieController extends AbstractController
                 $this->addFlash('danger', 'Désolé mais tu n\'es pas l\'auteur de cette sortie');
                 $this->redirectToRoute('sortie_index');
             }
-            if($sortie->getEtat()->getLibelle() != SortieStatus::CREEE){
+            if($sortie->getEtat()->getLibelle() != 'created'){
                 $this->addFlash('danger', 'Désolé mais cette sortie est déjà publiée ou passée. Veuillez l\'annuler et en créer une nouvelle');
                 $this->redirectToRoute('sortie_index');
             }
@@ -269,9 +275,13 @@ class SortieController extends AbstractController
                 $sortie->setEtat($etat);
             }
 
+            $this->addFlash('success', 'Super ta sortie a bien été enregistrée !');
+
             //Enregistrement
             $entityManager->persist($sortie);
             $entityManager->flush();
+
+            return $this->redirectToRoute('sortie_index');
         }
 
         return $this->render('sortie/create.html.twig', [

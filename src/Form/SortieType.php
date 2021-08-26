@@ -46,7 +46,7 @@ class SortieType extends AbstractType
                 'trim' => true ,
                 'required' => true,
                 'widget' => 'single_text',
-                'data' => new \DateTime(),
+                'data' => $options['dateDebut'],
             ])
 
             //DUREE
@@ -66,7 +66,7 @@ class SortieType extends AbstractType
                 'trim' => true ,
                 'required' => true,
                 'widget' => 'single_text',
-                'data' => new \DateTime(),
+                'data' => $options['dateLimite'],
             ])
 
             //NOMBRE INSCRIT
@@ -138,6 +138,8 @@ class SortieType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Sortie::class,
+            'dateDebut' => null ,
+            'dateLimite' => null ,
         ]);
     }
 }
