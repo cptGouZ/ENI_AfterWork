@@ -15,14 +15,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Lieu
 {
-    /** @Groups ("sorties")
+    /**
+     * @Groups (groups={"sorties", "lieux"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;
 
-    /** @Groups ("sorties")
+    /**
+     * @Groups (groups={"sorties", "lieux"})
      * @ORM\Column(name="nom", type="string", length=50)
      * @Assert\NotBlank(message="Le nom doit être renseigné")
      * @Assert\Regex (
@@ -36,7 +38,8 @@ class Lieu
      */
     private $nom;
 
-    /** @Groups ("sorties")
+    /**
+     * @Groups (groups={"sorties", "lieux"})
      * @ORM\Column(name="rue", type="string", length=100, nullable=true)
      * @Assert\NotBlank(message="La rue doit être renseigné")
      * @Assert\Length (
@@ -47,11 +50,13 @@ class Lieu
     private $rue;
 
     /**
+     * @Groups (groups={"sorties", "lieux"})
      * @ORM\Column(name="latitude", type="string", length=20, nullable=true)
      */
     private $latitude;
 
     /**
+     * @Groups (groups={"sorties", "lieux"})
      * @ORM\Column(name="longitude", type="string", length=20, nullable=true)
      */
     private $longitude;

@@ -10,9 +10,12 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
+
 /**
  * @IsGranted("IS_AUTHENTICATED_FULLY")
  * @Route(path="/ville", name="ville_")
@@ -52,5 +55,16 @@ class VilleController extends AbstractController
         }
         return $this->render('ville/ajouter.html.twig', [
             'formVille' => $formVille->createView()]);
+    }
+
+    /**
+     * @Route(path="/{id}/lieux", requirements={"id"="\d+"}, name="lieux", methods={"GET"})
+     */
+    public function lieux(Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer): Response{
+        /** @var Ville $ville */
+        $ville = $entityManager->getRepository(Ville::class)->findOneBy(['id' => $request->get('id')]);
+        $lieux = $ville->getLieux() ;
+        $lieuxJson = $serializer->serialize($lieux, 'json',['groups' => ['lieux']]);
+        return new JsonResponse($lieuxJson);
     }
 }
