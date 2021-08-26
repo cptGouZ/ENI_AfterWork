@@ -9,32 +9,36 @@
     Participant : {{ app.user.pseudo | capitalize }} <br>
 
     {# Recherche de sortie #}
-    <div class="search">
+    <div class="row">
         <h2>Filtrer les sorties</h2>
-        {% form_theme formSortieSearch 'bootstrap_5_horizontal_layout.html.twig' %}
-        {{ form_start(formSortieSearch) }}
-            <div class="row justify-content-center">
-                <div class="col-7">
-                    {{ form_row(formSortieSearch.campus) }}
-                    {{ form_row(formSortieSearch.nom_contient) }}
-                    {{ form_row(formSortieSearch.date_debut) }}
-                    {{ form_row(formSortieSearch.date_fin) }}
+        {% form_theme formSortieSearch 'bootstrap_4_layout.html.twig' %}
+            {{ form_start(formSortieSearch) }}
+                <div class="row justify-content-center">
+                    <div class="col-9">
+                        <div class="row">
+                            <div class="col">
+                                {{ form_row(formSortieSearch.campus) }}
+                                {{ form_row(formSortieSearch.nom_contient) }}
+                                {{ form_row(formSortieSearch.date_debut) }}
+                            </div>
+                            <div class="col">
+                                {{ form_row(formSortieSearch.mes_sorties) }}
+                                {{ form_row(formSortieSearch.inscrit_oui) }}
+                                {{ form_row(formSortieSearch.inscrit_non) }}
+                                {{ form_row(formSortieSearch.sorties_passees) }}
+                                {{ form_row(formSortieSearch.date_fin) }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-4">
-                    {{ form_row(formSortieSearch.mes_sorties) }}
-                    {{ form_row(formSortieSearch.inscrit_oui) }}
-                    {{ form_row(formSortieSearch.inscrit_non) }}
-                    {{ form_row(formSortieSearch.sorties_passees) }}
-{#                    {{ form_row(formSortieSearch.submit) }}#}
-                </div>
-            </div>
-        {{ form_end(formSortieSearch) }}
+            {{ form_end(formSortieSearch) }}
+    </div>
+    <div class="row mt-4 justify-content-center text-center">
+        <div role alert id="app_flash" hidden></div>
     </div>
 
-    <div role alert id="app_flash" hidden></div>
-
     {# Affichage du tableau de résultats #}
-    <table class="table">
+    <table class="table mt-2">
         <thead>
             <tr>
                 <th scope="col">Nom de la sortie</th>
@@ -96,7 +100,7 @@
                     console.log(results)
                     updateView(results.datas, event);
                     if(results.msgGroup !== undefined && results.msg !== undefined) {
-                        div_msg.className = "alert alert-" + results.msgGroup;
+                        div_msg.className = "mt-2 col-9 alert alert-" + results.msgGroup;
                         div_msg.innerText = results.msg;
                         div_msg.hidden = false;
                     }
@@ -155,7 +159,7 @@
                         let url_afficher = '{{ path("sortie_view", {'id': '0'}) }}'.replace("0", sortie.id);
                         afficherEl.innerText = "Afficher";
                         afficherEl.href = url_afficher;
-                        afficherEl.className = "btn btn-primary";
+                        afficherEl.className = "btn btn-outline-info btn-sm mx-1";
                         liensEl.append(afficherEl);
 
                     }
@@ -163,7 +167,7 @@
                         let url_inscrire = '{{ path("sortie_inscrire", {'id': '0'}) }}'.replace("0", sortie.id);
                         let url_desinscrire = '{{ path("sortie_desinscrire", {'id': '0'}) }}'.replace("0", sortie.id);
                         let inscrireDesinscrireEl = document.createElement('button');
-                        inscrireDesinscrireEl.className = "btn btn-success";
+                        inscrireDesinscrireEl.className = "btn btn-outline-success btn-sm mx-1";
                         //S'inscrire
                         if( !suisJeInscrit(sortie, {{ app.user.id }}) ) {
                             if( sortie.inscrits.length < sortie.nbInscriptionMax){
@@ -192,13 +196,13 @@
 
                         if(sortie.statut === "Créée") {
                             let modifierEl = document.createElement('a');
-                            modifierEl.className = "btn btn-warning";
+                            modifierEl.className = "btn btn-outline-warning btn-sm mx-1";
                             modifierEl.innerText = "Modifier";
                             modifierEl.href = url_modifier;
                             liensEl.append(modifierEl);
 
                             let publierEl = document.createElement('button');
-                            publierEl.className = "btn btn-warning";
+                            publierEl.className = "btn btn-outline-warning btn-sm mx-1";
                             publierEl.innerText = "Publier";
                             publierEl.addEventListener('click', function (event) {
                                 updateSearch(event, url_publier);
@@ -209,7 +213,7 @@
 
                         if(sortie.statut === "Créée" || sortie.statut === "Ouverte") {
                             let annulerEl = document.createElement('a');
-                            annulerEl.className = "btn btn-danger";
+                            annulerEl.className = "btn btn-outline-danger btn-sm mx-1";
                             annulerEl.innerText = "Annuler";
                             annulerEl.href = url_annuler;
                             liensEl.append(annulerEl);

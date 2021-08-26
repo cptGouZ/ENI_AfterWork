@@ -22,6 +22,8 @@ class SortieSearchType extends AbstractType
     {
         $builder
             ->add(SortieSearchOptions::CAMPUS, EntityType::class, [
+                'attr' => [ 'class'=> 'bg-light' ],
+                'label_attr' => [ 'class' => 'col-sm-12' ],
                 'label' => 'Campus :',
                 'empty_data'=> '',
                 'placeholder' => 'Choix du campus',
@@ -31,28 +33,42 @@ class SortieSearchType extends AbstractType
                 }
             ])
             ->add(SortieSearchOptions::NOM_CONTIENT, TextType::class, [
+                'attr' => [ 'class'=> 'bg-light' ],
+                'label_attr' => [ 'class' => 'col-sm-12' ],
                 'label' => 'Nom de la sortie :',
             ])
             ->add(SortieSearchOptions::DATE_DEBUT, DateType::class, [
+                'attr' => [ 'class'=> 'bg-light' ],
+                'label_attr' => [ 'class' => 'col-sm-12' ],
                 'label' => 'Entre :',
                 'widget' => 'single_text',
                 'data' => new DateTime('now'),
             ])
             ->add(SortieSearchOptions::DATE_FIN, DateType::class, [
+                'attr' => [ 'class'=> 'bg-light' ],
+                'label_attr' => [ 'class' => 'col-sm-12' ],
                 'label' => 'et le :',
                 'widget' => 'single_text',
                 'data' => date_add(new DateTime('now'), new \DateInterval('P1M') ),
             ])
             ->add(SortieSearchOptions::MES_SORTIES, CheckboxType::class, [
+                'attr' => [ 'class'=> 'bg-light mt-3' ],
+                'label_attr' => [ 'class' => 'col-sm-12 mt-3' ],
                 'label' => 'Sorties que j\'organise'
             ])
             ->add(SortieSearchOptions::INSCRIT_OUI, CheckboxType::class, [
+                'attr' => [ 'class'=> 'bg-light' ],
+                'label_attr' => [ 'class' => 'col-sm-12' ],
                 'label' => 'Sorties auxquelles je participe'
             ])
             ->add(SortieSearchOptions::INSCRIT_NON, CheckboxType::class, [
+                'attr' => [ 'class'=> 'bg-light' ],
+                'label_attr' => [ 'class' => 'col-sm-12' ],
                 'label' => 'Sorties auxquelles je ne participe pas encore'
             ])
             ->add(SortieSearchOptions::SORTIES_PASSEES, CheckboxType::class, [
+                'attr' => [ 'class'=> 'bg-light' ],
+                'label_attr' => [ 'class' => 'col-sm-12' ],
                 'label' => 'Sorties passées'
             ]);
     }

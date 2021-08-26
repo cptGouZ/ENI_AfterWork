@@ -27,7 +27,7 @@ class VilleController extends AbstractController
         if($formVilleSearch->isSubmitted() && $formVilleSearch->isSubmitted()){
             $liste = $entityManager->getRepository(Ville::class)->searchVillesByName($formVilleSearch->get('search')->getData());
         }
-        return $this->render('ville/index_old.html.twig', [
+        return $this->render('ville/index.html.twig', [
             'formVilleSearch'=>$formVilleSearch->createView(),
             'liste'=>$liste,
         ]);
