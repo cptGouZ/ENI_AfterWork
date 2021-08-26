@@ -19,30 +19,31 @@
             {# HEADER #}
                 <header>
                     {# TITRE ET LOGO #}
-                    <a class="site-title" href="{{ url('app_logout') }}">
-                        <img class="rounded-pill" src="{{ asset('img/logo_afterwork.jpg') }}" alt="ENI AfterWork"  width="200" height="150"> ENI AfterWork
+                    <a class="site-title text-decoration-none" href="{{ url('app_logout') }}">
+                        <img class="rounded-pill " src="{{ asset('img/logo_afterwork.jpg') }}" alt="ENI AfterWork"  width="200" height="150"> ENI AfterWork
                     </a>
                     <br>
 
                     {# NAVIGATION SITE #}
-                    <nav  class="navbar navbar-expand-lg navbar-dark bg-primary rounded-2" style="background-color: #e3f2fd;">
-                        <ul >
-                            {% if not app.user %}
-                            <li class="nav-item"><a class="nav-link active" href="{{ url('app_logout') }}" title="connexion">Se connecter</a></li>
-                            {% else %}
-                            <li class="nav-item"><a class="nav-link active" href="{{ url('sortie_index') }}" title="profil">Rechercher Sorties</a></li>
-                            <li class="nav-item"><a class="nav-link active" href="{{ url('user_view') }}" title="profil">Mon Profil</a></li>
-                            <li class="nav-item"><a class="nav-link active" href="{{ url('sortie_create') }}" title="createSortie">Créer une sortie</a></li>
-                            <li class="nav-item"><a class="nav-link active" href="{{ url('app_logout') }}" title="deconnexion">Se deconnecter</a></li>
-                            {% endif %}
-                        </ul>
-                    </nav>
-                    <br>
+                        <nav  class="navbar navbar-expand-lg navbar-dark bg-primary rounded-2 " style="background-color: #e3f2fd;">
+                            <ul  >
+                                {% if not app.user %}
+                                <li class="nav-item"><a class="h5 nav-link py-0 text-decoration-none" href="{{ url('app_logout') }}" title="connexion"><h5>Se connecter</h5></a></li>
+                                {% else %}
+                                <li class="nav-item"><a class="h3 nav-link py-0 active text-decoration-none" href="{{ url('sortie_index') }}" title="profil"><h5>Rechercher Sorties</h5></a></li>
+                                <li class="nav-item"><a class="h3 nav-link py-0 active text-decoration-none" href="{{ url('user_view') }}" title="profil"><h5>Mon Profil</h5></a></li>
+                                <li class="nav-item"><a class="h3 nav-link py-0 active text-decoration-none" href="{{ url('sortie_create') }}" title="createSortie"><h5>Créer une sortie</h5></a></li>
+                                <li class="nav-item"><a class="h3 nav-link py-0 active text-decoration-none" href="{{ url('app_logout') }}" title="deconnexion"><h5>Se deconnecter</h5></a></li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                        <br>
                 </header>
             {# APP FLASH #}
                 {%  for group, messages in app.flashes %}
                     {% for message in messages %}
                         <div class="alert alert-{{ group }}" role="alert">
+{#                            <img class="rounded-pill" src="{{ asset('img/testgif.gif') }}" width="150" height="100">#}
                             {{ message }}
                         </div>
                     {% endfor %}
