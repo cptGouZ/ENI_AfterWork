@@ -117,6 +117,7 @@ class SortieType extends AbstractType
                 'query_builder' => function (VilleRepository $vr) {
                     return $vr->createQueryBuilder('villes')->orderBy('villes.nom', 'ASC');;
                 },
+                'placeholder' => 'Choisir sa ville',
                 'choice_label' => 'nom' ,
                 'mapped' => false ,
             ])
