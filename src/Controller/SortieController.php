@@ -11,6 +11,7 @@ use App\Form\SortieSearchType;
 use App\Form\SortieType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
+ * @IsGranted ("IS_AUTHENTICATED_FULLY")
  * @Route("/sortie", name="sortie_")
  */
 class SortieController extends AbstractController

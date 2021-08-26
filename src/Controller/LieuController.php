@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Lieu;
 use App\Form\LieuType;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,12 +13,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 
 /**
+ * @IsGranted("IS_AUTHENTICATED_FULLY")
  * @Route("/lieu", name="lieu_")
  */
 class LieuController extends AbstractController
 {
 
     /**
+     *
      * @Route (path="/create" , name="create" , methods={"GET", "POST"})
      * @param Request $request
      * @param EntityManagerInterface $entityManager
