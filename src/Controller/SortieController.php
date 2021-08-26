@@ -212,6 +212,7 @@ class SortieController extends AbstractController
             $sortie->setEtat($etat);
         }
 
+        //Soumission formulaire
         if ($formCreateSortie->isSubmitted() && $formCreateSortie->isValid()){
             //Enregistrer la sortie en BDD
             $entityManager->persist($sortie);
@@ -226,7 +227,6 @@ class SortieController extends AbstractController
             'formCreateSortie' => $formCreateSortie->createView(),
             'action' => 'Créer'
         ]);
-
     }
 
     /**
