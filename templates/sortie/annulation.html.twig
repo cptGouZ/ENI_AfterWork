@@ -21,9 +21,11 @@
                 <div class="row text-center">
                     <div class="col ">
                         {{ form_widget(formAnnulationSortie.submit) }}
+                        <a href="{{ url('sortie_index') }}" class="btn btn-outline-info mx-3">Retour</a>
                     </div>
                 </div>
             {{ form_end(formAnnulationSortie) }}
+
         </div>
     </div>
 {% endblock %}
