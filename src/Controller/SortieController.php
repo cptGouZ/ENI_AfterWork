@@ -214,6 +214,19 @@ class SortieController extends AbstractController
 
         //Soumission formulaire
         if ($formCreateSortie->isSubmitted() && $formCreateSortie->isValid()){
+
+            //Contrôles coté back
+            $dateDuJour = new DateTime('now') ;
+
+            if($sortie->getDateLimiteInscription() < $dateDuJour | $sortie->getDateHeureDebut() < $dateDuJour ){
+                $this->addFlash('danger', 'La date ne peut pas être inférieur à la date du jour');
+
+                return $this->render('sortie/create.html.twig', [
+                    'formCreateSortie' => $formCreateSortie->createView(),
+                    'action' => 'Créer'
+                ]);
+            }
+
             //Enregistrer la sortie en BDD
             $entityManager->persist($sortie);
             $entityManager->flush();

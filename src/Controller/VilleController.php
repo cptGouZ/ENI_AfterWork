@@ -67,4 +67,5 @@ class VilleController extends AbstractController
         $lieuxJson = $serializer->serialize($lieux, 'json',['groups' => ['lieux']]);
         return new JsonResponse($lieuxJson);
     }
+
 }

@@ -11,11 +11,13 @@
         <div class="col col-7 justify-content-center border rounded-3 border-3 border-primary p-2">
             <div class="mb-3">{{ form_row(formLieu.nom) }}</div>
             <div class="mb-3">{{ form_row(formLieu.rue) }}</div>
-            <div class="mb-3">{{ form_row(formLieu.ville) }}</div>
+            <div id="choixVille" class="mb-3">{{ form_row(formLieu.ville) }}</div>
             <div class="row text-center">
                 <div class="col">
                     {{ form_widget(formLieu.submit) }}
                     <a href="{{ url('ville_ajouter') }}" class="btn btn-outline-light mx-3">Ajouter une ville</a>
+                    <a id="addVille" class="btn btn-outline-light mx-3">test JS</a>
+
                     <a href="{{ url('sortie_index') }}" class="btn btn-outline-info mx-3">Retour</a>
                 </div>
             </div>
@@ -23,3 +25,65 @@
     </div>
     {{ form_end(formLieu) }}
 {%  endblock body %}
+
+{% block javascripts %}
+    <script>
+        addVille = document.getElementById("addVille") ;
+        choixVille = document.getElementById("choixVille");
+        ajoutVille = false ;
+
+        window.addEventListener("load", ()=> {
+            addVille.addEventListener('click' , ajoutFormVille)
+        })
+        function ajoutFormVille() {
+
+            if (!ajoutVille) {
+            var formVille = document.createElement("form");
+                formVille.setAttribute('class', 'col-4');
+                formVille.setAttribute('id', 'toto');
+            formVille.setAttribute('method', "post");
+            formVille.setAttribute('action', "submit.php");
+
+            var labelVille = document.createElement("label");
+            labelVille.setAttribute('for', "ville");
+            labelVille.innerHTML = "Nom Ville : "
+
+            var inputVille = document.createElement("input");
+            inputVille.setAttribute('type', "text");
+            inputVille.setAttribute('name', "ville");
+            inputVille.setAttribute('class', "bg-light form-control");
+
+            var labelCpo = document.createElement("label");
+            labelCpo.setAttribute('for', "ville");
+            labelCpo.innerHTML = "Code Postal : "
+
+            var inputCpo = document.createElement("input");
+            inputCpo.setAttribute('type', "text");
+            inputCpo.setAttribute('name', "ville");
+            inputCpo.setAttribute('class', "bg-light form-control");
+
+            var submitVille = document.createElement("input");
+            submitVille.setAttribute('type', "submit");
+            submitVille.setAttribute('value', "Enregistrer Nouvelle Ville");
+            submitVille.setAttribute('class', 'btn-outline-success btn');
+
+            choixVille.append(formVille);
+            formVille.appendChild(labelVille);
+            formVille.appendChild(inputVille);
+            var br = document.createElement("br");
+            formVille.appendChild(br);
+            formVille.appendChild(labelCpo);
+            formVille.appendChild(inputCpo);
+            formVille.append(submitVille);
+        }else {
+                formVille = document.getElementById("toto") ;
+                formVille.remove();
+            }
+
+            ajoutVille = !ajoutVille ;
+
+        }
+
+    </script>
+
+{% endblock javascripts %}
