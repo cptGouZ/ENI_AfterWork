@@ -4,8 +4,8 @@
 
 {% block body %}
 
-    <h2>Sortie</h2>
-    <h5>Organisateur : {{ sortie.organisateur.prenom }} {{ sortie.organisateur.nom  }}</h5><br>
+    <h5 class="text-end">Organisateur : {{ sortie.organisateur.prenom }} {{ sortie.organisateur.nom  }}</h5><br>
+    <h2 class="text-center">Sortie</h2>
 
 <div class="row justify-content-center">
     <div class="col-8 justify-content-center border rounded-3 border-3 border-primary p-2">
@@ -113,7 +113,7 @@
 
         <div class="row">
             <div class="col-12">
-            <table class="table table-info  ">
+            <table class="table table-primary  ">
                 <h5>Liste des participants</h5>
                 <thead>
                     <tr>
